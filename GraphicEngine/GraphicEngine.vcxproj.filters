@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\baseGame.h">
+    <ClInclude Include="src\export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="export.h">
+    <ClInclude Include="src\gameBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\baseGame.cpp">
+    <ClCompile Include="src\gameBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

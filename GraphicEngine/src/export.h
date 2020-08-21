@@ -4,7 +4,7 @@
 #define ENGINE_API __declspec(dllexport) //clase para exportacion
 #else
 #define ENGINE_API __declspec(dllimport)  // especifica clase para importacion
-#endif // ENGINE_EXPORTS
+#endif // ENGINE_EXPORT
 
 #endif // !EXPORT_H
 

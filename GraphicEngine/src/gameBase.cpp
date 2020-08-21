@@ -1,11 +1,16 @@
-#include "baseGame.h"
-BaseGame::BaseGame() {
+#include "gameBase.h"
+#include <stdlib.h>
+#include <string>
+#include <iostream>
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+GameBase::GameBase() {
 
 }
-BaseGame::~BaseGame() {
+GameBase::~GameBase() {
 
 }
-int BaseGame::OpenWindow() {
+int GameBase::StartWindow(int width, int height, const char* windowName) {
     GLFWwindow* window;
 
     //Initialize the library /
@@ -13,7 +18,7 @@ int BaseGame::OpenWindow() {
         return -1;
 
     // Create a windowed mode window and its OpenGL context /
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     if (!window)
     {
         glfwTerminate();

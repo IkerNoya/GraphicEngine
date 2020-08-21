@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="export.h" />
-    <ClInclude Include="src\baseGame.h" />
+    <ClInclude Include="src\gameBase.h" />
+    <ClInclude Include="src\export.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\baseGame.cpp" />
+    <ClCompile Include="src\gameBase.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

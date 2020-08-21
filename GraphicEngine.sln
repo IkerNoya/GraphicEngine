@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28307.1209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{90BE65E3-FE0D-428F-B221-8FE70048F945}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EECC911A-0DAB-4AA4-A2E3-BDDDF87423B2} = {EECC911A-0DAB-4AA4-A2E3-BDDDF87423B2}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicEngine", "GraphicEngine\GraphicEngine.vcxproj", "{EECC911A-0DAB-4AA4-A2E3-BDDDF87423B2}"
 EndProject

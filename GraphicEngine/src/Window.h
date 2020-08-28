@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
+#define WINDOW_H
+
 #include "export.h"
-#include "gameBase.h"
 #include <stdlib.h>
 #include <string>
 #include <iostream>

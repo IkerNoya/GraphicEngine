@@ -1,5 +1,6 @@
-#include "Window.h"
+#include "window.h"
 Window::Window() {
+
 }
 Window::~Window() {
 

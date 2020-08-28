@@ -11,4 +11,7 @@ GameBase::~GameBase() {
 	if (window != NULL)
 		delete window;
 }
-
+int GameBase::init() {
+	window->StartWindow(800, 600, "Graphics Engine");
+	return 0;
+}

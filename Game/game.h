@@ -6,7 +6,7 @@ class Game : public GameBase{
 public:
 	Game();
 	~Game();
-	int init();
+	int initGame();
 };
 #endif // !GAME_H
 

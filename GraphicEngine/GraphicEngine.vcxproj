@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClInclude Include="src\gameBase.h" />
     <ClInclude Include="src\export.h" />
+    <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gameBase.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

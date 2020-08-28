@@ -11,6 +11,32 @@ GameBase::~GameBase() {
 		delete window;
 }
 int GameBase::init() {
-	window->StartWindow(800, 600, "Graphics Engine");
+	GLFWwindow* newWindow;
+
+	window->StartWindow(800, 600, "Graphics Engine", newWindow);
+	if (!window)
+	{
+		glfwTerminate();
+		return -1;
+	}
+
+	// Make the window's context current /
+	glfwMakeContextCurrent(newWindow);
+
+	//Loop until the user closes the window /
+	while (!glfwWindowShouldClose(newWindow))
+	{
+		// Render here /
+		glClearColor(0.8f, 1.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Swap front and back buffers /
+		glfwSwapBuffers(newWindow);
+
+		// Poll for and process events */
+		glfwPollEvents();
+	}
+
+	glfwTerminate();
 	return 0;
 }

@@ -1,4 +1,9 @@
 #include "Window.h"
+Window::Window() {
+}
+Window::~Window() {
+
+}
 int Window::StartWindow(int width, int height, const char* windowName) {
 	GLFWwindow* window;
 

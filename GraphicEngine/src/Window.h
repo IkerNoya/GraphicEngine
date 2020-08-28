@@ -9,6 +9,8 @@
 class ENGINE_API Window{
 
 public:
+	Window();
+	~Window();
 	int StartWindow(int width, int height, const char* windowName);
 };
 #endif // !WINDOW_H

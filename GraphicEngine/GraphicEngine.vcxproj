@@ -112,6 +112,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)lib\glew-2.1.0\lib\RLibs\Win32;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\lib-vc2017;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>"$(SolutionDir)GraphicEngine\bat.bat" "$(SolutionDir)GraphicEngine\bin\Debug\GraphicEngine.dll" "$(SolutionDir)Game"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

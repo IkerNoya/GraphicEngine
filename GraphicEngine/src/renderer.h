@@ -6,8 +6,8 @@ class ENGINE_API Renderer {
 public:
 	Renderer();
 	~Renderer();
+	void CreateTriangle();
 	void DrawTriangle();
 };
 
 #endif // !RENDERER_H
-

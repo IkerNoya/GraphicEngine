@@ -11,8 +11,8 @@ GameBase::~GameBase() {
 		delete window;
 }
 
-static unsigned int compileShader(unsigned int type, const std::string& source) {
-	unsigned int id = glCreateShader(type);
+static int compileShader(unsigned int type, const std::string& source) {
+	int id = glCreateShader(type);
 	const char* src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
@@ -34,10 +34,10 @@ static unsigned int compileShader(unsigned int type, const std::string& source) 
 	return id;
 }
 
-static unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader) {
-	unsigned int program = glCreateProgram();
-	unsigned int vertexshader = compileShader(GL_VERTEX_SHADER, vertexShader);
-	unsigned int fragmentshader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+static int createShader(const std::string& vertexShader, const std::string& fragmentShader) {
+	int program = glCreateProgram();
+	int vertexshader = compileShader(GL_VERTEX_SHADER, vertexShader);
+	int fragmentshader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
 	glAttachShader(program, vertexshader);
 	glAttachShader(program, fragmentshader);
@@ -96,7 +96,7 @@ int GameBase::init() {
 		"\n"
 		"void main()\n"
 		"{\n"
-		"    color = vec4(1.0, 0.0, 0.0. 1.0);\n"
+		"    color = vec4(1.0, 1.0, 0.0. 1.0);\n"
 		"}\n";
 
 	unsigned int shader = createShader(vertexShader, fragmentShader);
@@ -109,7 +109,7 @@ int GameBase::init() {
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		// Render here /
-		glClearColor(0.8f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);

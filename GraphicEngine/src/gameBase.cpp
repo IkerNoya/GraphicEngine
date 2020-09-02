@@ -5,10 +5,14 @@
 #include "GLFW/glfw3.h"
 GameBase::GameBase() {
 	window = new Window();
+	renderer = NULL;
+	renderer = new Renderer();
 }
 GameBase::~GameBase() {
 	if (window != NULL)
 		delete window;
+	if (renderer != NULL)
+		delete renderer;
 }
 
 int GameBase::compileShader(int type, const std::string& source) {
@@ -65,19 +69,7 @@ int GameBase::init() {
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	float vertexs[6] = {
-		-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.0f, 0.5f,
-	};
-
-	GLuint buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(vertexs), vertexs, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+	renderer->CreateTriangle();
 
 	std::string vertexShader =
 		"#version 330 core\n"
@@ -112,7 +104,7 @@ int GameBase::init() {
 		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		renderer->DrawTriangle();
 
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);

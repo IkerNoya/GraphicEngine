@@ -4,9 +4,11 @@
 #include <iostream>
 #include "export.h"
 #include "window.h"
+#include "renderer.h"
 
 class ENGINE_API GameBase { // consultar
 	Window* window;
+	Renderer* renderer;
 public:
 	GameBase();
 	~GameBase();

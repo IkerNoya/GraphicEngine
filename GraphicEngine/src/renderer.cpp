@@ -12,5 +12,5 @@ Renderer::~Renderer() {
 void Renderer::CreateTriangle() {
 }
 void Renderer::DrawTriangle() {
-
+	
 }

@@ -11,7 +11,7 @@ GameBase::~GameBase() {
 		delete window;
 }
 
-static int compileShader(unsigned int type, const std::string& source) {
+int GameBase::compileShader(int type, const std::string& source) {
 	int id = glCreateShader(type);
 	const char* src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);
@@ -34,7 +34,7 @@ static int compileShader(unsigned int type, const std::string& source) {
 	return id;
 }
 
-static int createShader(const std::string& vertexShader, const std::string& fragmentShader) {
+int GameBase::createShader(const std::string& vertexShader, const std::string& fragmentShader) {
 	int program = glCreateProgram();
 	int vertexshader = compileShader(GL_VERTEX_SHADER, vertexShader);
 	int fragmentshader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -99,7 +99,7 @@ int GameBase::init() {
 		"    color = vec4(1.0, 1.0, 0.0. 1.0);\n"
 		"}\n";
 
-	unsigned int shader = createShader(vertexShader, fragmentShader);
+	int shader = createShader(vertexShader, fragmentShader);
 	glUseProgram(shader);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

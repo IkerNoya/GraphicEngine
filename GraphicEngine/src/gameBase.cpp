@@ -15,9 +15,9 @@ GameBase::~GameBase() {
 		delete renderer;
 }
 
-int GameBase::compileShader(int type, const std::string& source) {
+int GameBase::compileShader(int type, const char*& source) {
 	int id = glCreateShader(type);
-	const char* src = source.c_str();
+	const char* src = source;
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
 
@@ -38,7 +38,7 @@ int GameBase::compileShader(int type, const std::string& source) {
 	return id;
 }
 
-int GameBase::createShader(const std::string& vertexShader, const std::string& fragmentShader) {
+int GameBase::createShader(const GLchar*& vertexShader, const GLchar*& fragmentShader) {
 	int program = glCreateProgram();
 	int vertexshader = compileShader(GL_VERTEX_SHADER, vertexShader);
 	int fragmentshader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -71,25 +71,30 @@ int GameBase::init() {
 
 	renderer->CreateTriangle();
 
-	std::string vertexShader =
-		"#version 330 core\n"
-		"\n"
-		"layout(location = 0)in vec4 position;\n"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"    gl_Position = vec4position;\n"
-		"}\n";
+	const GLchar* vertexShader = R"glsl(
+		#version 150 core
+		
+		in vec2 position;
+		in vec3 customColor;
+		out vec3 color;
 
-	std::string fragmentShader =
-		"#version 330 core\n"
-		"\n"
-		"layout(location = 0)out vec4 color;\n"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"    color = vec4(1.0, 1.0, 0.0. 1.0);\n"
-		"}\n";
+		void main()
+		{
+		gl_Position = vec4(position,0.0,1.0);
+		}
+)glsl";
+
+	const GLchar* fragmentShader = R"glsl(
+		#version 150 core
+		
+
+		out vec4 outColor;
+		
+		void main()
+		{
+		outColor = vec4(1.0, 1.0, 0.0, 1.0);
+		}
+)glsl";
 
 	int shader = createShader(vertexShader, fragmentShader);
 	glUseProgram(shader);

@@ -69,7 +69,7 @@ int GameBase::init() {
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	renderer->CreateTriangle();
+	renderer->CreateTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
 
 	const GLchar* vertexShader = R"glsl(
 		#version 150 core
@@ -106,7 +106,7 @@ int GameBase::init() {
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		// Render here /
-		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		renderer->DrawTriangle();

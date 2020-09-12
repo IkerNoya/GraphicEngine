@@ -3,7 +3,6 @@
 #include <iostream>
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "mat4x4.hpp"
 
 GameBase::GameBase() {
 	window = new Window();

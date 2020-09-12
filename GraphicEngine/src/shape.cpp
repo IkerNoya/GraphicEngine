@@ -5,6 +5,12 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
+Shape::Shape() {
+
+}
+Shape::~Shape() {
+
+}
 void Shape::CreateTriangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 	float vertexs[6] = {
 		x1, y1,

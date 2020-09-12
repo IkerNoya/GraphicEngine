@@ -6,7 +6,7 @@ Game::~Game() {
 
 }
 
-int Game::initGame() {
+int Game::executeGame() {
 	init();
 	return 0;
 }

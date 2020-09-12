@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)lib\glew-2.1.0\include;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)lib\glew-2.1.0\include;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\include;$(ProjectDir)lib\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

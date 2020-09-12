@@ -5,14 +5,16 @@
 #include "GLFW/glfw3.h"
 GameBase::GameBase() {
 	window = new Window();
-	renderer = NULL;
 	renderer = new Renderer();
+	shape = new Shape();
 }
 GameBase::~GameBase() {
 	if (window != NULL)
 		delete window;
 	if (renderer != NULL)
 		delete renderer;
+	if (shape != NULL)
+		delete shape;
 }
 
 int GameBase::compileShader(int type, const char*& source) {
@@ -69,7 +71,7 @@ int GameBase::init() {
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	renderer->CreateTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
+	shape->CreateTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
 
 	const GLchar* vertexShader = R"glsl(
 		#version 150 core

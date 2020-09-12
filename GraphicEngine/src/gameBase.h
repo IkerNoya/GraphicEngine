@@ -4,10 +4,12 @@
 #include "export.h"
 #include "window.h"
 #include "renderer.h"
+#include "shape.h"
 
 class ENGINE_API GameBase { // consultar
 	Window* window;
 	Renderer* renderer;
+	Shape* shape;
 public:
 	GameBase();
 	~GameBase();

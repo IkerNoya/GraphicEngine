@@ -30,6 +30,12 @@
     <ClInclude Include="src\shape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gameBase.cpp">
@@ -42,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,7 +1,9 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 #include "export.h"
-class ENGINE_API Shape {
+#include "entity.h"
+
+class ENGINE_API Shape:public Entity{
 public:
 	Shape();
 	~Shape();
@@ -9,3 +11,4 @@ public:
 };
 #endif // !SHAPE_H
 
+	

@@ -26,6 +26,7 @@ struct ENGINE_API Transform {
 };
 
 class ENGINE_API Entity {
+protected:
 	Renderer* _renderer;
 	TRS trs;
 	void updateTRS();

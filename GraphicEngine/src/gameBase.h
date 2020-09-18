@@ -13,8 +13,6 @@ class ENGINE_API GameBase { // consultar
 public:
 	GameBase();
 	~GameBase();
-	int compileShader(int type, const char*& source);
-	int createShader(const GLchar*& vertexShader, const GLchar*& fragmentShader);
 	int init();
 };
 #endif // !BASEGAME_H

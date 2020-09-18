@@ -9,9 +9,6 @@
 
 #include "renderer.h"
 
-#define ENTITY_2DIMENTIONS 1
-#define ENTITY_3DIMENTIONS 2
-
 void Entity::updateTRS() {
 	trs.TRS = trs.translate * trs.rotationX * trs.rotationY * trs.rotationZ * trs.scale;
 }
@@ -56,7 +53,7 @@ void Entity::setRotY(float y) {
 	axis[1] = 1.0f;
 	axis[2] = 0.0f;
 	trs.rotationX = glm::rotate(glm::mat4(1.0f), y, axis); // Se setea en diagonal la y
-	updateTRS();
+	updateTRS(); // Actualizo el TRS
 }
 
 void Entity::setRotZ(float z) {
@@ -66,7 +63,7 @@ void Entity::setRotZ(float z) {
 	axis[1] = 0.0f;
 	axis[2] = 1.0f;
 	trs.rotationX = glm::rotate(glm::mat4(1.0f), z, axis); // Se setea en diagonal la z
-	updateTRS();
+	updateTRS(); // Actualizo el TRS
 }
 
 void Entity::setScale(float x, float y, float z) {

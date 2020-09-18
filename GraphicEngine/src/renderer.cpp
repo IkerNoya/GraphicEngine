@@ -48,7 +48,7 @@ unsigned int Renderer::compileShader(GLenum type, const std::string& source) {
 int Renderer::createShader() {
 	unsigned int program = glCreateProgram();
 	setVertexShader(CreateVertexShader());
-	setFragmentShader(CreateVertexShader());
+	setFragmentShader(CreateFragmentShader());
 	
 
 	glAttachShader(program, _vertexShader);
@@ -90,7 +90,7 @@ std::string Renderer::CreateFragmentShader() {
 		"#version 330 core\n"
 		"\n"
 		"in vec3 color;\n"
-		"out vec3 outColor;\n"
+		"out vec4 outColor;\n"
 		"\n"
 		"void main()\n"
 		"{\n"

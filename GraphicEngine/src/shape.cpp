@@ -16,9 +16,9 @@ float color[3]{
 };
 void Shape::CreateTriangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 	float vertexs[15] = {
-		x1, y1, 1.0f,0.0f,0.0f,
-		x2, y2, 1.0f,0.0f,0.0f,
-		x3, y3, 1.0f,0.0f,0.0f,
+		x1, y1, color[0],color[1],color[2],
+		x2, y2, color[0],color[1],color[2],
+		x3, y3, color[0],color[1],color[2]
 	};
 
 	unsigned int vbo;

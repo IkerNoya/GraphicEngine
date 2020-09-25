@@ -22,7 +22,7 @@ unsigned int Renderer::getVertexShader() {
 unsigned int Renderer::getFragmentShader() {
 	return _fragmentShader;
 }
-unsigned int Renderer::compileShader(GLenum type, const std::string& source) {
+unsigned int Renderer::compileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);
 	const char* src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);

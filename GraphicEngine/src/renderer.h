@@ -2,8 +2,10 @@
 #define RENDERER_H
 #include "export.h"
 #include <iostream>
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
+#include "vec3.hpp"
+#include "mat4x4.hpp"
+#include "vec4.hpp"
+
 class ENGINE_API Renderer {
 	//unsigned para que no de negativo/errores
 	unsigned int _vertexShader;
@@ -15,7 +17,7 @@ public:
 	void setFragmentShader(const std::string& fragmentShader);
 	unsigned int getVertexShader();
 	unsigned int getFragmentShader();
-	unsigned int compileShader(GLenum type, const std::string& source);
+	unsigned int compileShader(unsigned int type, const std::string& source);
 	int createShader();
 	void createVertexAttrib(int program);
 	void createColorAttrib(int program);

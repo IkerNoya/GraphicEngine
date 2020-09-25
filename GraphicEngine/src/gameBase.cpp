@@ -42,8 +42,6 @@ int GameBase::init() {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	shape->setColor(1.0f, 1.0f, 0.0f);
 	shape->CreateTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
-	shape->CreateRectangle(-0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f);
-
 	int shader = renderer->createShader();
 	glUseProgram(shader);
 
@@ -60,7 +58,7 @@ int GameBase::init() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		//renderer->DrawTriangle();
 
-		renderer->DrawRectangle();
+		renderer->DrawTriangle();
 
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);

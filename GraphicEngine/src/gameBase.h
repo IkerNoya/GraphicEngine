@@ -6,6 +6,10 @@
 #include "renderer.h"
 #include "shape.h"
 
+struct Renderer;
+struct Shape;
+struct Window;
+
 class ENGINE_API GameBase { // consultar
 	Window* window;
 	Renderer* renderer;

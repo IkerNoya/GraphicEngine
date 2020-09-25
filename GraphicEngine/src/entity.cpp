@@ -1,8 +1,5 @@
 #include "entity.h"
 
-#include "vec3.hpp"
-#include "vec4.hpp"
-#include "mat4x4.hpp"
 #include "ext/matrix_transform.hpp"
 #include "ext/matrix_clip_space.hpp"
 #include "ext/scalar_constants.hpp"

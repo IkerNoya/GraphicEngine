@@ -20,6 +20,7 @@ public:
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
 	void DrawTriangle();
+	void DrawRectangle();
 };
 
 #endif // !RENDERER_H

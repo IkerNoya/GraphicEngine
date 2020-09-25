@@ -103,3 +103,7 @@ std::string Renderer::CreateFragmentShader() {
 void Renderer::DrawTriangle() {
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
+
+void Renderer::DrawRectangle() {
+	glDrawArrays(GL_QUADS, 0, 4);
+}

@@ -17,6 +17,8 @@ public:
 	unsigned int getFragmentShader();
 	unsigned int compileShader(GLenum type, const std::string& source);
 	int createShader();
+	void createVertexAttrib(int program);
+	void createColorAttrib(int program);
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
 	void DrawTriangle();

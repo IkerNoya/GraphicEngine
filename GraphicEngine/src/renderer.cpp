@@ -45,6 +45,19 @@ unsigned int Renderer::compileShader(GLenum type, const std::string& source) {
 	return id;
 }
 
+void Renderer::createVertexAttrib(int program)
+{
+	unsigned int posAttrib = glGetAttribLocation(program, "position");
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glEnableVertexAttribArray(posAttrib);
+}
+void Renderer::createColorAttrib(int program)
+{
+	unsigned int colorAttrib = glGetAttribLocation(program, "customColor");
+	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(2 * sizeof(float)));
+	glEnableVertexAttribArray(colorAttrib);
+}
+
 int Renderer::createShader() {
 	unsigned int program = glCreateProgram();
 	setVertexShader(CreateVertexShader());
@@ -58,14 +71,6 @@ int Renderer::createShader() {
 
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
-
-	unsigned int posAttrib = glGetAttribLocation(program, "position");
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
-	glEnableVertexAttribArray(posAttrib);
-
-	unsigned int colorAttrib = glGetAttribLocation(program, "customColor");
-	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(2 * sizeof(float)));
-	glEnableVertexAttribArray(colorAttrib);
 
 	return program;
 }

@@ -38,16 +38,17 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
-	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
-	std::cout << glGetString(GL_VERSION) << std::endl;
 	shape->setColor(1.0f, 1.0f, 0.0f);
 	shape->CreateTriangle(-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f);
+	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
+	std::cout << glGetString(GL_VERSION) << std::endl;
 	int shader = renderer->createShader();
 	glUseProgram(shader);
 
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
 
+	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Loop until the user closes the window /
@@ -56,8 +57,6 @@ int GameBase::init() {
 		// Render here /
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		//renderer->DrawTriangle();
-
 		renderer->DrawTriangle();
 
 		// Swap front and back buffers /

@@ -23,8 +23,9 @@ public:
 	void createColorAttrib(int program);
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
+	void bindVBO(float vertex[15]);
 	void DrawTriangle();
-	void DrawRectangle();
+	void DrawRectangle(float vertex[20]);
 };
 
 #endif // !RENDERER_H

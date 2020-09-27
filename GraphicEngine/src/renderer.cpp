@@ -4,7 +4,7 @@
 #include <iostream>
 #include "GLFW/glfw3.h"
 Renderer::Renderer() {
-
+	
 }
 Renderer::~Renderer() {
 	glDeleteShader(_vertexShader);
@@ -104,11 +104,21 @@ std::string Renderer::CreateFragmentShader() {
 		;
 	return fragmentShader;
 }
-
+void Renderer::bindVBO(float vertex[15]) {
+	unsigned int vbo;
+	int vertexSize = sizeof(vertex) * 15;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
+}
 void Renderer::DrawTriangle() {
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void Renderer::DrawRectangle() {
+void Renderer::DrawRectangle(float vertex[20]) {
+	unsigned int vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
 	glDrawArrays(GL_QUADS, 0, 4);
 }

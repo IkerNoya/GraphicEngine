@@ -5,6 +5,7 @@
 
 class ENGINE_API Shape:public Entity{
 	float _color[3];
+	//float* vertex;
 public:
 	Shape();
 	~Shape();

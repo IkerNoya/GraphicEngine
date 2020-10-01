@@ -43,7 +43,7 @@ int GameBase::init() {
 		return 0;
 	}
 	shape->setColor(1.0f, 1.0f, 0.0f);
-	shape->initTriangleVertex();
+	shape->initRectangleVertex();
 	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
 	glm::mat4 trans = shape->getTRS();
 	vec = trans * vec;
@@ -68,7 +68,7 @@ int GameBase::init() {
 		shape->setPosition(a, 0.0f, 0.0f);
 		shape->setRotZ(rotate);
 		shape->setScale(scale, scale, 1);
-		renderer->DrawTriangle();
+		renderer->DrawRectangle();
 
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
@@ -81,7 +81,6 @@ int GameBase::init() {
 		rotate -= 0.05f;
 		if (scale <= 1 && scale >= 0.1f )
 			scale -= 0.005f;
-		std::cout << scale << std::endl;
 		glfwPollEvents();
 	}
 	glDeleteProgram(shader);

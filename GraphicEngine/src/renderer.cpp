@@ -115,9 +115,9 @@ void Renderer::startProgram(int& shader, glm::mat4 model) {
 	glUseProgram(shader);
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 }
-void Renderer::bindVBO(float vertex[15]) {
+void Renderer::bindVBO(float* vertex, int vertexAmmount) {
 	unsigned int vbo;
-	int vertexSize = sizeof(vertex) * 15;
+	int vertexSize = sizeof(vertex) * vertexAmmount;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
@@ -126,10 +126,6 @@ void Renderer::DrawTriangle() {
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void Renderer::DrawRectangle(float vertex[20]) {
-	unsigned int vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+void Renderer::DrawRectangle() {
 	glDrawArrays(GL_QUADS, 0, 4);
 }

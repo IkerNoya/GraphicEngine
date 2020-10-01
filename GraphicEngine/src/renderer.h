@@ -24,9 +24,9 @@ public:
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
 	void startProgram(int &shader, glm::mat4 model);
-	void bindVBO(float vertex[15]);
+	void bindVBO(float* vertex, int vertexAmmount);
 	void DrawTriangle();
-	void DrawRectangle(float vertex[20]);
+	void DrawRectangle();
 };
 
 #endif // !RENDERER_H

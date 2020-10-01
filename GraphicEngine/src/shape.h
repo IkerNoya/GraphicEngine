@@ -12,7 +12,5 @@ public:
 	void initTriangleVertex();
 	void initRectangleVertex();
 	void setColor(float r, float g, float b);
-	void MoveTriangle(float x, float y, float z);
-	void MoveRectangle(float x, float y, float z);
 };
 #endif // !SHAPE_H

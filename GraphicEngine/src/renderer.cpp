@@ -88,10 +88,14 @@ std::string Renderer::CreateVertexShader() {
 		"\n"
 		"uniform mat4 transform;"
 		"\n"
+		"uniform mat4 view;"
+		"\n"
+		"uniform mat4 projection;"
+		"\n"
 		"void main()\n"
 		"{\n"
 		"  color = customColor;\n"
-		"  gl_Position = transform * vec4(position, 1.0);\n"
+		"  gl_Position = projection * view * transform * vec4(position, 1.0);\n"
 		"}\n"
 		;
 	return vertexShader;
@@ -110,10 +114,14 @@ std::string Renderer::CreateFragmentShader() {
 		;
 	return fragmentShader;
 }
-void Renderer::startProgram(int& shader, glm::mat4 model) {
+void Renderer::startProgram(int& shader, glm::mat4 model, glm::mat4 proj, glm::mat4 view) {
 	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
+	unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
+	unsigned int viewLoc = glGetUniformLocation(shader, "view");
 	glUseProgram(shader);
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
 void Renderer::bindVBO(float* vertex, int vertexAmmount) {
 	unsigned int vbo;

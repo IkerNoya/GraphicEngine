@@ -46,6 +46,12 @@ int GameBase::init() {
 	shape->init();
 	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
 	glm::mat4 trans = shape->getTRS();
+	glm::mat4 proj = glm::mat4(1.0f);
+	glm::mat4 ViewMatrix = glm::mat4(1.0f);
+	//                        FOV                  Aspect          near  front
+	proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	//                           pos                          dir                               up
+	ViewMatrix = glm::lookAt(glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
@@ -62,8 +68,8 @@ int GameBase::init() {
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		renderer->startProgram(shader, shape->getTRS());
-		shape->setPosition(0.0f, 0.0f, 0.0f);
+		renderer->startProgram(shader, shape->getTRS(), proj, ViewMatrix);
+		shape->setPosition(0.0f, 0.0f, 2.0f);
 		shape->setRotZ(rotate);
 		renderer->draw(shape->getType());
 		// Swap front and back buffers /

@@ -6,12 +6,22 @@
 #include "GLFW/glfw3.h"
 
 
-Shape::Shape():Entity(Entity::_renderer) {
-
+Shape::Shape(unsigned int shape, Renderer* renderer):Entity(Entity::_renderer) {
+	_shape = shape;
+	_renderer = renderer;
 }
 Shape::~Shape() {
-	/*if (vertex != NULL)
-		delete[] vertex;*/
+}
+unsigned int Shape::getType() {
+	return _shape;
+}
+void Shape::init() {
+	if (_shape == GL_TRIANGLES) {
+		initTriangleVertex();
+	}
+	else if (_shape == GL_QUADS) {
+		initRectangleVertex();
+	}
 }
 void Shape::initTriangleVertex() {
 	float vertex[15] = {

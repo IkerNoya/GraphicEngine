@@ -5,12 +5,15 @@
 
 class ENGINE_API Shape :public Entity {
 	float _color[3];
-	//float* vertex;
-public:
-	Shape();
-	~Shape();
+	unsigned int _shape;
 	void initTriangleVertex();
 	void initRectangleVertex();
+	//float* vertex;
+public:
+	Shape(unsigned int shape, Renderer* renderer);
+	~Shape();
+	unsigned int getType();
+	void init();
 	void setColor(float r, float g, float b);
 };
 #endif // !SHAPE_H

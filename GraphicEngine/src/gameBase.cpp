@@ -11,7 +11,7 @@
 GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
-	shape = new Shape();
+	shape = new Shape(GL_QUADS, renderer);
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -43,7 +43,7 @@ int GameBase::init() {
 		return 0;
 	}
 	shape->setColor(1.0f, 1.0f, 0.0f);
-	shape->initRectangleVertex();
+	shape->init();
 	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
 	glm::mat4 trans = shape->getTRS();
 	vec = trans * vec;
@@ -54,33 +54,24 @@ int GameBase::init() {
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	float a = 0;
 	float rotate = 0;
-	float scale = 1;
 	//Loop until the user closes the window /
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		// Render here /
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		renderer->startProgram(shader, shape->getTRS());
-		shape->setPosition(a, 0.0f, 0.0f);
+		shape->setPosition(0.0f, 0.0f, 0.0f);
 		shape->setRotZ(rotate);
-		shape->setScale(scale, scale, 1);
-		renderer->DrawRectangle();
-
+		renderer->draw(shape->getType());
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Poll for and process events */
-		if (a < 1.5f)
-			a += 0.01f;
-		else
-			a = -1.5f;
 		rotate -= 0.05f;
-		if (scale <= 1 && scale >= 0.1f )
-			scale -= 0.005f;
 		glfwPollEvents();
 	}
 	glDeleteProgram(shader);

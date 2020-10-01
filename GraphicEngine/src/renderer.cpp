@@ -122,10 +122,14 @@ void Renderer::bindVBO(float* vertex, int vertexAmmount) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
 }
-void Renderer::DrawTriangle() {
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-void Renderer::DrawRectangle() {
-	glDrawArrays(GL_QUADS, 0, 4);
+void Renderer::draw(unsigned int shape) {
+	int size;
+	if (shape == GL_TRIANGLES) {
+		size = 3;
+		glDrawArrays(GL_TRIANGLES, 0, size);
+	}
+	else if (shape == GL_QUADS) {
+		size = 4;
+		glDrawArrays(GL_QUADS, 0, size);
+	}
 }

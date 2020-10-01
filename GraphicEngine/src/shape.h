@@ -3,8 +3,10 @@
 #include "export.h"
 #include "entity.h"
 
-class ENGINE_API Shape:public Entity{
+class ENGINE_API Shape :public Entity {
 	float _color[3];
+	float* initTriangleVertex();
+	float* initRectangleVertex();
 	//float* vertex;
 public:
 	Shape();

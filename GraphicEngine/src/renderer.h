@@ -23,6 +23,7 @@ public:
 	void createColorAttrib(int program);
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
+	void startProgram(int &shader, glm::mat4 model);
 	void bindVBO(float vertex[15]);
 	void DrawTriangle();
 	void DrawRectangle(float vertex[20]);

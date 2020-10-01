@@ -3,6 +3,9 @@
 
 #include "export.h"
 #include "renderer.h"
+#include "mat4x4.hpp"
+
+
 
 struct ENGINE_API TRS {
 	glm::mat4 translate;
@@ -28,6 +31,7 @@ public:
 	~Entity();
 	Transform transform;
 	Renderer* getRenderer();
+	glm::mat4 getTRS();
 	void setPosition(float x, float y, float z);
 	void setRotX(float x);
 	void setRotY(float y);

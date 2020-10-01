@@ -12,6 +12,13 @@ void Entity::updateTRS() {
 
 Entity::Entity(Renderer* renderer) {
 	_renderer = renderer;
+	// se setea la identidad de las matrices
+	trs.translate = glm::mat4(1.0);
+	trs.rotationX = glm::mat4(1.0);
+	trs.rotationY = glm::mat4(1.0);
+	trs.rotationZ = glm::mat4(1.0);
+	trs.scale = glm::mat4(1.0);
+
 	setScale(1.0f, 1.0f, 1.0f);
 	setPosition(0.0f, 0.0f, 0.0f);
 	setRotX(0.0f);
@@ -24,7 +31,9 @@ Entity::~Entity() {}
 Renderer* Entity::getRenderer() {
 	return _renderer;
 }
-
+glm::mat4 Entity::getTRS() {
+	return trs.TRS;
+}
 void Entity::setPosition(float x, float y, float z) {
 	transform.position[0] = x; // Actualizo vec3 de posicion con nuevos valores
 	transform.position[1] = y;
@@ -39,7 +48,7 @@ void Entity::setRotX(float x) {
 	axis[0] = 1.0f;
 	axis[1] = 0.0f;
 	axis[2] = 0.0f;
-	trs.rotationX = glm::rotate(glm::mat4(1.0f), x, axis); // Se setea en diagonal la x
+	trs.rotationX = glm::rotate(glm::mat4(1.0f), x, axis); // Se setea en diagonal la x y la variable representaria el angulo
 	updateTRS();
 }
 

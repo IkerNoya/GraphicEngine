@@ -5,14 +5,14 @@
 
 class ENGINE_API Shape :public Entity {
 	float _color[3];
-	float* initTriangleVertex();
-	float* initRectangleVertex();
 	//float* vertex;
 public:
 	Shape();
 	~Shape();
+	void initTriangleVertex();
+	void initRectangleVertex();
 	void setColor(float r, float g, float b);
-	void CreateTriangle(float x1, float y1, float x2, float y2, float x3, float y3);
-	void CreateRectangle(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+	void MoveTriangle(float x, float y, float z);
+	void MoveRectangle(float x, float y, float z);
 };
 #endif // !SHAPE_H

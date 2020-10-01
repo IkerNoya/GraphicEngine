@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <iostream>
 #include "GLFW/glfw3.h"
-#include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 
@@ -14,6 +13,7 @@ Renderer::~Renderer() {
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
 }
+
 void Renderer::setVertexShader(const std::string& vertexShader) {
 	_vertexShader = compileShader(GL_VERTEX_SHADER, vertexShader);
 }
@@ -109,6 +109,11 @@ std::string Renderer::CreateFragmentShader() {
 		"}\n"
 		;
 	return fragmentShader;
+}
+void Renderer::startProgram(int& shader, glm::mat4 model) {
+	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
+	glUseProgram(shader);
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 }
 void Renderer::bindVBO(float vertex[15]) {
 	unsigned int vbo;

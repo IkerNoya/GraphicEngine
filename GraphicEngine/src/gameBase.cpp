@@ -26,7 +26,7 @@ int GameBase::init() {
 	GLFWwindow* newWindow;
 
 	window->StartWindow(800, 600, "Graphics Engine", newWindow);
-	if (!window)
+	if (!newWindow)
 	{
 		glfwTerminate();
 		return -1;
@@ -51,7 +51,7 @@ int GameBase::init() {
 	//                               FOV              Aspect      near  front
 	proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 	//                                 pos                        direction                          up
-	ViewMatrix = glm::lookAt(glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	ViewMatrix = glm::lookAt(glm::vec3(0.0f,0.0f,1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
@@ -59,8 +59,10 @@ int GameBase::init() {
 
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
+	shape->setPosition(0, 0, -1.0f);
 	
 	float rotate = 0;
+	float x = 0; float y = 0; float z = -1;
 	//Loop until the user closes the window /
 	while (!glfwWindowShouldClose(newWindow))
 	{
@@ -69,15 +71,33 @@ int GameBase::init() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		renderer->startProgram(shader, shape->getTRS(), proj, ViewMatrix);
-		shape->setPosition(0.0f, 0.0f, 2.0f);
-		shape->setRotZ(rotate);
 		renderer->draw(shape->getType());
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		// Poll for and process events */
-		rotate -= 0.05f;
+		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+			x += 0.02f;
+			shape->setPosition(x, y, z);
+		}
+		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
+			x -= 0.02f;
+			shape->setPosition(x, y, z);
+		}
+		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
+			y += 0.02f;
+			shape->setPosition(x, y, z);
+		}
+		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			y -= 0.02f;
+			shape->setPosition(x, y, z);
+		}
+		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
+			rotate -= 0.04f;
+		}
+		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
+			rotate += 0.04f;
+		}
+		shape->setRotZ(rotate);
 		glfwPollEvents();
 	}
 	glDeleteProgram(shader);

@@ -4,11 +4,10 @@
 #include "entity.h"
 
 class ENGINE_API Shape :public Entity {
-	float _color[3];
+	//float _color[3];
 	unsigned int _shape;
 	void initTriangleVertex();
 	void initRectangleVertex();
-	//float* vertex;
 public:
 	Shape(unsigned int shape, Renderer* renderer);
 	~Shape();

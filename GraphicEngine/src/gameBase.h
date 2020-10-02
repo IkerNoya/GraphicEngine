@@ -5,6 +5,7 @@
 #include "window.h"
 #include "renderer.h"
 #include "shape.h"
+#include "material.h"
 
 struct Renderer;
 struct Shape;

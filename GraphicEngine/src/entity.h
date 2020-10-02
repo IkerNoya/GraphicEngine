@@ -3,6 +3,7 @@
 
 #include "export.h"
 #include "renderer.h"
+#include "material.h"
 #include "mat4x4.hpp"
 
 
@@ -24,6 +25,7 @@ struct ENGINE_API Transform {
 class ENGINE_API Entity {
 protected:
 	Renderer* _renderer;
+	Material* _material;
 	TRS trs;
 	void updateTRS();
 public:
@@ -31,6 +33,7 @@ public:
 	~Entity();
 	Transform transform;
 	Renderer* getRenderer();
+	Material* getMaterial();
 	glm::mat4 getTRS();
 	void setPosition(float x, float y, float z);
 	void setRotX(float x);

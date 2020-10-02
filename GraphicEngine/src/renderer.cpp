@@ -66,7 +66,7 @@ int Renderer::createShader() {
 	unsigned int program = glCreateProgram();
 	setVertexShader(CreateVertexShader());
 	setFragmentShader(CreateFragmentShader());
-	
+
 
 	glAttachShader(program, _vertexShader);
 	glAttachShader(program, _fragmentShader);

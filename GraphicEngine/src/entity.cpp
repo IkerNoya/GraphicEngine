@@ -31,6 +31,9 @@ Entity::~Entity() {}
 Renderer* Entity::getRenderer() {
 	return _renderer;
 }
+Material* Entity::getMaterial() {
+	return _material;
+}
 glm::mat4 Entity::getTRS() {
 	return trs.TRS;
 }

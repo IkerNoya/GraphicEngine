@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entity.h" />
-    <ClInclude Include="src\entity2D.h" />
     <ClInclude Include="src\gameBase.h" />
     <ClInclude Include="src\export.h" />
     <ClInclude Include="src\material.h" />
@@ -30,7 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entity.cpp" />
-    <ClCompile Include="src\entity2D.cpp" />
     <ClCompile Include="src\gameBase.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\renderer.cpp" />

@@ -10,11 +10,14 @@ public:
 	Material();
 	Material(float r, float g, float b);
 	~Material();
-	void SetColor(float r, float g, float b);
-	float GetR();
-	float GetG();
-	float GetB();
-	float GetColorRGB();
+	void setColor(float r, float g, float b);
+	void setR(float r);
+	void setG(float g);
+	void setB(float b);
+	float getR();
+	float getG();
+	float getB();
+	float getColorRGB();
 };
 
 #endif

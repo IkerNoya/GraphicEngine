@@ -28,9 +28,9 @@ void Shape::init() {
 }
 void Shape::initTriangleVertex() {
 	float vertex[15] = {
-	   -0.5f, 0.0f, _material->GetR(),_material->GetG(),_material->GetB(),
+	   -0.5f, -0.5f, _material->GetR(),_material->GetG(),_material->GetB(),
 	   0.0f, 0.5f, _material->GetR(),_material->GetG(),_material->GetB(),
-	   0.5f, 0.0f, _material->GetR(),_material->GetG(),_material->GetB()
+	   0.5f, -0.5f, _material->GetR(),_material->GetG(),_material->GetB()
 	};
 	_renderer->bindVBO(vertex, 15);
 }

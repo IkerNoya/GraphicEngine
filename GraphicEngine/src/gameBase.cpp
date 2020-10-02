@@ -11,7 +11,7 @@
 GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
-	shape = new Shape(GL_QUADS, renderer);
+	shape = new Shape(GL_TRIANGLES, renderer);
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -48,9 +48,9 @@ int GameBase::init() {
 	glm::mat4 trans = shape->getTRS();
 	glm::mat4 proj = glm::mat4(1.0f);
 	glm::mat4 ViewMatrix = glm::mat4(1.0f);
-	//                        FOV                  Aspect          near  front
+	//                               FOV              Aspect      near  front
 	proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-	//                           pos                          dir                               up
+	//                                 pos                        direction                          up
 	ViewMatrix = glm::lookAt(glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);

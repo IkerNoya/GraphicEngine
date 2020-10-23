@@ -12,6 +12,7 @@ Renderer::Renderer() {
 Renderer::~Renderer() {
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
+	glDeleteShader(_textureShader);
 }
 
 void Renderer::setVertexShader(const std::string& vertexShader) {
@@ -19,6 +20,9 @@ void Renderer::setVertexShader(const std::string& vertexShader) {
 }
 void Renderer::setFragmentShader(const std::string& fragmentShader) {
 	_fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+}
+void Renderer::setFragmentShader(const std::string& fragmentShader) {
+	_textureShader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
 }
 unsigned int Renderer::getVertexShader() {
 	return _vertexShader;
@@ -83,18 +87,20 @@ std::string Renderer::CreateVertexShader() {
 		"#version 330 core\n"
 		"\n"
 		"layout (location = 0) in vec3 position;\n"
-		"in vec3 customColor;\n"
+		"layout (location = 1) in vec3 customColor;\n"
+		"layout (location = 2) in vec2 aTexCoord;\n"
+		"\n"
 		"out vec3 color;\n"
+		"out vec2 TexCoord;\n"
 		"\n"
-		"uniform mat4 transform;"
-		"\n"
-		"uniform mat4 view;"
-		"\n"
-		"uniform mat4 projection;"
+		"uniform mat4 transform;\n"
+		"uniform mat4 view;\n"
+		"uniform mat4 projection;\n"
 		"\n"
 		"void main()\n"
 		"{\n"
 		"  color = customColor;\n"
+		"  TexCoord = aTexCoord;\n"
 		"  gl_Position = projection * view * transform * vec4(position, 1.0);\n"
 		"}\n"
 		;

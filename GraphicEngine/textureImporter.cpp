@@ -1,9 +1,10 @@
 #include "textureImporter.h"
-#include "stb_image.h"
 #include "GL/glew.h";
 #include "GLFW/glfw3.h";
-
+//stb se encarga de cargar imagenes
 #define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 TextureImporter::TextureImporter() {
 	_height = 0;
 	_width = 0;

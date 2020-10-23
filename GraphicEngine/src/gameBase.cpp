@@ -59,6 +59,7 @@ int GameBase::init() {
 
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
+	renderer->createTextureAttrib(shader);
 	shape->setPosition(0, 0, -1.0f);
 	
 	float rotate = 0;

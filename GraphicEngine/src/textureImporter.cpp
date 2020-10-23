@@ -1,68 +1,29 @@
 #include "textureImporter.h"
-#include "GL/glew.h";
-#include "GLFW/glfw3.h";
 //stb se encarga de cargar imagenes
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 TextureImporter::TextureImporter() {
-	_height = 0;
-	_width = 0;
-	_nrChannels = 0;
+	_data = 0;
 }
 
 TextureImporter::TextureImporter(int height, int width, int nrChannels, const char* path) {
-	_height = height;
-	_width = width;
-	_nrChannels = nrChannels;
-	_data = stbi_load(path, &_width, &_height, &_nrChannels, 0);
+	_data = stbi_load(path, &width, &height, &nrChannels, 0);
 }
 
 TextureImporter::~TextureImporter() {
 
 }
 
-void TextureImporter::setHeight(int height) {
-	_height = height;
+void TextureImporter::loadImage(int height, int width, int nrChannels, const char* path) {
+	_data = stbi_load(path, &width, &height, &nrChannels, 0);
 }
 
-int TextureImporter::getHeight() {
-	return _height;
+unsigned char* TextureImporter::getData() {
+	return _data;
 }
 
-void TextureImporter::setWidth(int width) {
-	_width = width;
-}
-
-int TextureImporter::getWidth() {
-	return _width;
-}
-
-void TextureImporter::setNrChanels(int nrChannels) {
-	_nrChannels = nrChannels;
-}
-
-int TextureImporter::getNrChannels() {
-	return _nrChannels;
-}
-
-unsigned int TextureImporter::getTexture() {
-	return _texture;
-}
-
-void TextureImporter::generateTexture() {
-	glGenTextures(1, &_texture);
-	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//se carga la textura
-	if (_data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}else {
-		std::cout << "Error - Couldn't load texture" << std::endl;
-	}
+void TextureImporter::freeSpace() {
 	stbi_image_free(_data);
 }
+

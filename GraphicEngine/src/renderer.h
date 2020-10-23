@@ -24,6 +24,7 @@ public:
 	int createShader();
 	void createVertexAttrib(int program);
 	void createColorAttrib(int program);
+	void createTextureAttrib(int program);
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
 	std::string CreateTextureShader();

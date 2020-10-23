@@ -8,7 +8,9 @@
 #include <fstream>
 
 Renderer::Renderer() {
+
 }
+
 Renderer::~Renderer() {
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
@@ -68,7 +70,11 @@ void Renderer::createColorAttrib(int program)
 	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(2 * sizeof(float)));
 	glEnableVertexAttribArray(colorAttrib);
 }
-
+void Renderer::createTextureAttrib(int program) {
+	unsigned int textureAttrib = glGetAttribLocation(program, "aTexCoord");
+	glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(textureAttrib);
+}
 int Renderer::createShader() {
 	unsigned int program = glCreateProgram();
 	setVertexShader(CreateVertexShader());

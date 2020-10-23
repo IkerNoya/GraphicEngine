@@ -8,7 +8,6 @@
 
 Shape::Shape(unsigned int shape, Renderer* renderer):Entity(Entity::_renderer) {
 	_shape = shape;
-	_renderer = renderer;
 	_material = new Material();
 }
 Shape::~Shape() {

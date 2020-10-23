@@ -10,6 +10,7 @@ class ENGINE_API Renderer {
 	//unsigned para que no de negativo/errores
 	unsigned int _vertexShader;
 	unsigned int _fragmentShader;
+	unsigned int _textureShader;
 public:
 	Renderer();
 	~Renderer();
@@ -18,6 +19,7 @@ public:
 	void setTextureShader(const std::string& textureShader);
 	unsigned int getVertexShader();
 	unsigned int getFragmentShader();
+	unsigned int getTextureShader();
 	unsigned int compileShader(unsigned int type, const std::string& source);
 	int createShader();
 	void createVertexAttrib(int program);

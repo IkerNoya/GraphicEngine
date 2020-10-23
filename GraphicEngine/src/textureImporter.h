@@ -6,6 +6,7 @@ class TextureImporter {
 	int _width;
 	int _nrChannels;
 	unsigned char* _data;
+	unsigned int _texture;
 public:
 	TextureImporter();
 	TextureImporter(int height, int width, int nrChannels, const char* path);
@@ -16,6 +17,7 @@ public:
 	int getWidth();
 	void setNrChanels(int nrChannels);
 	int getNrChannels();
+	unsigned int getTexture();
 	void generateTexture();
 };
 #endif // !TEXTURE_IMPORTER

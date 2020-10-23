@@ -25,9 +25,9 @@
     <ClInclude Include="src\material.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\shape.h" />
+    <ClInclude Include="src\textureImporter.h" />
     <ClInclude Include="src\window.h" />
     <ClInclude Include="stb_image.h" />
-    <ClInclude Include="textureImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entity.cpp" />
@@ -35,8 +35,8 @@
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\shape.cpp" />
+    <ClCompile Include="src\textureImporter.cpp" />
     <ClCompile Include="src\window.cpp" />
-    <ClCompile Include="textureImporter.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

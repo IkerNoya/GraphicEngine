@@ -5,9 +5,9 @@
 #include "GLFW/glfw3.h"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
+#include <fstream>
 
 Renderer::Renderer() {
-	
 }
 Renderer::~Renderer() {
 	glDeleteShader(_vertexShader);
@@ -21,14 +21,17 @@ void Renderer::setVertexShader(const std::string& vertexShader) {
 void Renderer::setFragmentShader(const std::string& fragmentShader) {
 	_fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
 }
-void Renderer::setFragmentShader(const std::string& fragmentShader) {
-	_textureShader = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+void Renderer::setTextureShader(const std::string& textureShader) {
+	_textureShader = compileShader(GL_FRAGMENT_SHADER, textureShader);
 }
 unsigned int Renderer::getVertexShader() {
 	return _vertexShader;
 }
 unsigned int Renderer::getFragmentShader() {
 	return _fragmentShader;
+}
+unsigned int Renderer::getTextureShader() {
+	return _textureShader;
 }
 unsigned int Renderer::compileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);
@@ -74,11 +77,13 @@ int Renderer::createShader() {
 
 	glAttachShader(program, _vertexShader);
 	glAttachShader(program, _fragmentShader);
+	glAttachShader(program, _textureShader);
 	glLinkProgram(program);
 	glValidateProgram(program);
 
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
+	glDeleteShader(_textureShader);
 
 	return program;
 }
@@ -119,6 +124,22 @@ std::string Renderer::CreateFragmentShader() {
 		"}\n"
 		;
 	return fragmentShader;
+}
+std::string Renderer::CreateTextureShader() {
+	std::string textureShader =
+		"#version 330 core\n"
+		"out vec4 Texture\n"
+		"\n"
+		"in vec2 TexCoord;\n"
+		"\n"
+		"uniform sampler2D ourTexture;\n"
+		"\n"
+		"void main()\n"
+		"{\n"
+		"Texture = texture(ourTexture, TexCoord)\n"
+		"}\n"
+		;
+	return textureShader;
 }
 void Renderer::startProgram(int& shader, glm::mat4 model, glm::mat4 proj, glm::mat4 view) {
 	unsigned int transformLoc = glGetUniformLocation(shader, "transform");

@@ -12,6 +12,7 @@ GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
 	shape = new Shape(GL_TRIANGLES, renderer);
+	input = new Input();
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -20,6 +21,8 @@ GameBase::~GameBase() {
 		delete renderer;
 	if (shape != NULL)
 		delete shape;
+	if (window != NULL)
+		delete window;
 }
 
 int GameBase::init() {
@@ -62,7 +65,9 @@ int GameBase::init() {
 	shape->setPosition(0, 0, -1.0f);
 	
 	float rotate = 0;
-	float x = 0; float y = 0; float z = -1;
+	float x = 0.0f; float y = 0.0f; float z = -1;
+
+	input->setInputWindow(newWindow);
 	//Loop until the user closes the window /
 	while (!glfwWindowShouldClose(newWindow))
 	{
@@ -75,26 +80,30 @@ int GameBase::init() {
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		if (input->getKey(input->keys = keyCode::RIGHT)) {
 			x += 0.02f;
 			shape->setPosition(x, y, z);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		/*if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+			x += 0.02f;
+			shape->setPosition(x, y, z);
+		}*/
+		if (input->getKey(input->keys = keyCode::LEFT)) {
 			x -= 0.02f;
 			shape->setPosition(x, y, z);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
+		if (input->getKey(input->keys = keyCode::UP)) {
 			y += 0.02f;
 			shape->setPosition(x, y, z);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		if (input->getKey(input->keys = keyCode::DOWN)) {
 			y -= 0.02f;
 			shape->setPosition(x, y, z);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
+		if (input->getKey(input->keys = keyCode::E)) {
 			rotate -= 0.04f;
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
+		if (input->getKey(input->keys = keyCode::Q)) {
 			rotate += 0.04f;
 		}
 		shape->setRotZ(rotate);

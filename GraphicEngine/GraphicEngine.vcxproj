@@ -22,6 +22,7 @@
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\gameBase.h" />
     <ClInclude Include="src\export.h" />
+    <ClInclude Include="src\input.h" />
     <ClInclude Include="src\material.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\shape.h" />
@@ -30,6 +31,7 @@
   <ItemGroup>
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\gameBase.cpp" />
+    <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\shape.cpp" />

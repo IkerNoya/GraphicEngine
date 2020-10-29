@@ -60,14 +60,13 @@ int GameBase::init() {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	unsigned int shader = renderer->createTextureProgram();
 	sprite->setColor(1, 1, 1);
-	sprite->setTexture("res/raw/faceSwap.jpg");
+	sprite->setTexture("res/raw/meme.jpg");
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
 	renderer->createTextureAttrib(shader);
 	sprite->setPosition(0, 0, -1.0f);
 	float rotate = 0;
 	float x = 0; float y = 0; float z = -1;
-	sprite->setColor(0, 0, 0);
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		// Render here /

@@ -147,10 +147,10 @@ std::string Renderer::CreateFragmentShader() {
 std::string Renderer::CreateTextureShader() {
 	std::string textureShader =
 		"#version 330 core\n"
+		"out vec4 Texture;\n"
+		"\n"
 		"in vec2 TexCoord;\n"
 		"in vec3 color;\n"
-		"\n"
-		"out vec4 Texture;\n"
 		"\n"
 		"uniform sampler2D ourTexture;\n"
 		"\n"
@@ -178,6 +178,18 @@ void Renderer::bindVBO(float* vertex, int vertexAmmount) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
 }
+void Renderer::bindEBO(unsigned int* index) {
+	unsigned int ebo;
+	unsigned int indexSize = sizeof(index) * 6;
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize, index, GL_STATIC_DRAW);
+}
+void Renderer::bindVAO() {
+	unsigned int vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+}
 void Renderer::draw(unsigned int shape) {
 	int size;
 	if (shape == GL_TRIANGLES) {
@@ -190,6 +202,6 @@ void Renderer::draw(unsigned int shape) {
 	}
 }
 void Renderer::drawTexture() {
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glDrawArrays(GL_QUADS, 0, 4);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//glDrawArrays(GL_QUADS, 0, 4);
 }

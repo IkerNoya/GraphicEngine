@@ -8,7 +8,7 @@ Sprite::Sprite(Renderer* renderer):Entity(Entity::_renderer){
 }
 
 Sprite::~Sprite() {
-
+	glDeleteTextures(1, &_texture);
 }
 
 #pragma region SETTERS/GETTERS
@@ -42,19 +42,23 @@ void Sprite::setTexture(const char* path) {
 	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
 	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
 	};
+	unsigned int index[] = {
+		0, 1, 3,
+		1, 2, 3
+	};
+	_renderer->bindVAO();
+	_renderer->bindEBO(index);
 	_renderer->bindVBO(vertex, 32);
 }
 
 void Sprite::generateTexture(const char* path) {
-	stbi_set_flip_vertically_on_load(1);
+	//se carga la textura
 	glGenTextures(1, &_texture);
-	glActiveTexture(GL_TEXTURE0);
 	bindTexture();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
-	//se carga la textura
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	texImporter->loadImage(_height,_width,_nrChannels, path);
 	if (texImporter->getData()) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, texImporter->getData());
@@ -63,6 +67,7 @@ void Sprite::generateTexture(const char* path) {
 	else {
 		std::cout << "Error - Couldn't load texture" << std::endl;
 	}
+
 	texImporter->freeSpace();
 }
 
@@ -72,4 +77,5 @@ unsigned int Sprite::getTexture() {
 
 void Sprite::bindTexture() {
 	glBindTexture(GL_TEXTURE_2D, _texture);
+	//glBindTextureUnit(0, _texture);
 }

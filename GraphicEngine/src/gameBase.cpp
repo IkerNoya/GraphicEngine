@@ -62,7 +62,7 @@ int GameBase::init() {
 	sprite->setTexture("res/raw/prueba.png");
 
 	renderer->createVertexAttrib(shader);
-	//renderer->createColorAttrib(shader);
+	renderer->createColorAttrib(shader);
 	renderer->createTextureAttrib(shader);
 	sprite->setPosition(0, 0, -1.0f);
 	
@@ -73,6 +73,7 @@ int GameBase::init() {
 		// Render here /
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		sprite->bindTexture();
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		renderer->startProgram(shader, sprite->getTRS(), proj, ViewMatrix);
 		/*renderer->draw(shape->getType());*/

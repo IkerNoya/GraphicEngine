@@ -31,7 +31,7 @@ public:
 	std::string CreateTextureShader();
 	void startProgram(unsigned int &shader, glm::mat4 model, glm::mat4 projection, glm::mat4 view);
 	void bindVBO(float* vertex, int vertexAmmount);
-	void bindEBO(unsigned int* index);
+	void bindEBO(unsigned int* index, int indexAmmount);
 	void bindVAO();
 	void draw(unsigned int shape);
 	void drawTexture();

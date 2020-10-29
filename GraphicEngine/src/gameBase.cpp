@@ -37,7 +37,7 @@ int GameBase::init() {
 
 	// Make the window's context current /
 	glfwMakeContextCurrent(newWindow);
-
+	glViewport(0, 0, 800, 600);
 	glewExperimental = GL_TRUE;
 
 	glewInit();
@@ -59,7 +59,7 @@ int GameBase::init() {
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	unsigned int shader = renderer->createTextureProgram();
-	sprite->setTexture("res/raw/prueba.png");
+	sprite->setTexture("res/raw/faceSwap.jpg");
 
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
@@ -73,35 +73,35 @@ int GameBase::init() {
 		// Render here /
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		sprite->bindTexture();
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		renderer->startProgram(shader, sprite->getTRS(), proj, ViewMatrix);
 		/*renderer->draw(shape->getType());*/
+		sprite->bindTexture();
 		renderer->drawTexture();
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			x += 0.0002f;
+			x += 0.0004f;
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			x -= 0.0002f;
+			x -= 0.0004f;
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-			y += 0.0002f;
+			y += 0.0004f;
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			y -= 0.0002f;
+			y -= 0.0004f;
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
-			rotate -= 0.004f;
+			rotate -= 0.0007f;
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
-			rotate += 0.004f;
+			rotate += 0.0007f;
 		}
 		sprite->setRotZ(rotate);
 		glfwPollEvents();

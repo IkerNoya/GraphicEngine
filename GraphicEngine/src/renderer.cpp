@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
+#include "stb_image.h"
 #include <fstream>
 
 Renderer::Renderer() {
@@ -70,10 +71,8 @@ void Renderer::createColorAttrib(unsigned int &program)
 	glEnableVertexAttribArray(colorAttrib);
 }
 void Renderer::createTextureAttrib(unsigned int &program) {
-	unsigned int textureAttrib;
-	glUniform1i(textureAttrib = glGetAttribLocation(program, "ourTexture"), 0);
-	glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(textureAttrib);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 }
 int Renderer::createColorProgram() {
 	unsigned int program = glCreateProgram();
@@ -112,7 +111,7 @@ std::string Renderer::CreateVertexShader() {
 		"\n"
 		"in vec3 position;\n"
 		"in vec3 customColor;\n"
-		"in vec2 aTexCoord;\n"
+		"layout (location = 2) in vec2 aTexCoord;\n"
 		"\n"
 		"out vec3 color;\n"
 		"out vec2 TexCoord;\n"
@@ -178,12 +177,13 @@ void Renderer::bindVBO(float* vertex, int vertexAmmount) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
 }
-void Renderer::bindEBO(unsigned int* index) {
+void Renderer::bindEBO(unsigned int* index, int indexAmmount) {
 	unsigned int ebo;
-	unsigned int indexSize = sizeof(index) * 6;
+	unsigned int indexSize = sizeof(index) * indexAmmount;
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize, index, GL_STATIC_DRAW);
+
 }
 void Renderer::bindVAO() {
 	unsigned int vao;

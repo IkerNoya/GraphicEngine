@@ -8,7 +8,6 @@
 
 Shape::Shape(unsigned int shape, Renderer* renderer):Entity(Entity::_renderer) {
 	_shape = shape;
-	_renderer = renderer;
 	_material = new Material();
 }
 Shape::~Shape() {
@@ -28,18 +27,18 @@ void Shape::init() {
 }
 void Shape::initTriangleVertex() {
 	float vertex[15] = {
-	   -0.5f, -0.5f, _material->getR(),_material->getG(),_material->getB(),
-	   0.0f, 0.5f, _material->getR(),_material->getG(),_material->getB(),
-	   0.5f, -0.5f, _material->getR(),_material->getG(),_material->getB()
+	   -0.5f, -0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
+	   0.0f, 0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
+	   0.5f, -0.5f, *_material->getR(),*_material->getG(),*_material->getB()
 	};
 	_renderer->bindVBO(vertex, 15);
 }
 void Shape::initRectangleVertex() {
 	float vertex[20] = {
-	-0.5f, -0.5f, _material->getR(),_material->getG(),_material->getB(),
-	-0.5f, 0.5f, _material->getR(),_material->getG(),_material->getB(),
-	0.5f, 0.5f, _material->getR(),_material->getG(),_material->getB(),
-	0.5f, -0.5f, _material->getR(),_material->getG(),_material->getB()
+	-0.5f, -0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
+	-0.5f, 0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
+	0.5f, 0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
+	0.5f, -0.5f, *_material->getR(),*_material->getG(),*_material->getB()
 	};
 	_renderer->bindVBO(vertex, 20);
 }

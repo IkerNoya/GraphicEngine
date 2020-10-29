@@ -12,7 +12,7 @@ GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
 	shape = new Shape(GL_TRIANGLES, renderer);
-	input = new Input();
+	sprite = new Sprite(renderer);
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -21,8 +21,8 @@ GameBase::~GameBase() {
 		delete renderer;
 	if (shape != NULL)
 		delete shape;
-	if (window != NULL)
-		delete window;
+	if (sprite != NULL)
+		delete sprite;
 }
 
 int GameBase::init() {
@@ -37,7 +37,7 @@ int GameBase::init() {
 
 	// Make the window's context current /
 	glfwMakeContextCurrent(newWindow);
-
+	glViewport(0, 0, 800, 600);
 	glewExperimental = GL_TRUE;
 
 	glewInit();
@@ -45,10 +45,10 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
-	shape->setColor(1.0f, 1.0f, 0.0f);
-	shape->init();
+	/*shape->setColor(1.0f, 1.0f, 0.0f);
+	shape->init();*/
 	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans = shape->getTRS();
+	glm::mat4 trans = sprite->getTRS();
 	glm::mat4 proj = glm::mat4(1.0f);
 	glm::mat4 ViewMatrix = glm::mat4(1.0f);
 	//                               FOV              Aspect      near  front
@@ -58,55 +58,52 @@ int GameBase::init() {
 	vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	int shader = renderer->createShader();
-
+	unsigned int shader = renderer->createTextureProgram();
+	sprite->setColor(1, 1, 1);
+	sprite->setTexture("res/raw/faceSwap.jpg");
 	renderer->createVertexAttrib(shader);
 	renderer->createColorAttrib(shader);
-	shape->setPosition(0, 0, -1.0f);
-	
+	renderer->createTextureAttrib(shader);
+	sprite->setPosition(0, 0, -1.0f);
 	float rotate = 0;
-	float x = 0.0f; float y = 0.0f; float z = -1;
-
-	input->setInputWindow(newWindow);
-	//Loop until the user closes the window /
+	float x = 0; float y = 0; float z = -1;
+	sprite->setColor(0, 0, 0);
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		// Render here /
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		renderer->startProgram(shader, shape->getTRS(), proj, ViewMatrix);
-		renderer->draw(shape->getType());
+		renderer->startProgram(shader, sprite->getTRS(), proj, ViewMatrix);
+		/*renderer->draw(shape->getType());*/
+		sprite->bindTexture();
+		renderer->drawTexture();
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		if (input->getKey(input->keys = keyCode::RIGHT)) {
-			x += 0.02f;
-			shape->setPosition(x, y, z);
+		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+			x += 0.0004f;
+			sprite->setPosition(x, y, z);
 		}
-		/*if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			x += 0.02f;
-			shape->setPosition(x, y, z);
-		}*/
-		if (input->getKey(input->keys = keyCode::LEFT)) {
-			x -= 0.02f;
-			shape->setPosition(x, y, z);
+		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
+			x -= 0.0004f;
+			sprite->setPosition(x, y, z);
 		}
-		if (input->getKey(input->keys = keyCode::UP)) {
-			y += 0.02f;
-			shape->setPosition(x, y, z);
+		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
+			y += 0.0004f;
+			sprite->setPosition(x, y, z);
 		}
-		if (input->getKey(input->keys = keyCode::DOWN)) {
-			y -= 0.02f;
-			shape->setPosition(x, y, z);
+		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			y -= 0.0004f;
+			sprite->setPosition(x, y, z);
 		}
-		if (input->getKey(input->keys = keyCode::E)) {
-			rotate -= 0.04f;
+		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
+			rotate -= 0.0007f;
 		}
-		if (input->getKey(input->keys = keyCode::Q)) {
-			rotate += 0.04f;
+		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
+			rotate += 0.0007f;
 		}
-		shape->setRotZ(rotate);
+		sprite->setRotZ(rotate);
 		glfwPollEvents();
 	}
 	glDeleteProgram(shader);

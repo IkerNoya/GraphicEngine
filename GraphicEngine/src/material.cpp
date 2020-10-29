@@ -30,14 +30,17 @@ void Material::setB(float b) {
 	_color[2] = b;
 }
 
-float Material::getR() {
-	return _color[0];
+float* Material::getR() {
+	float* r = &_color[0];
+	return r;
 }
-float Material::getG() {
-	return _color[1];
+float* Material::getG() {
+	float* g = &_color[1];
+	return g;
 }
-float Material::getB() {
-	return _color[2];
+float* Material::getB() {
+	float* b = &_color[2];
+	return b;
 }
 
 float Material::getColorRGB() {

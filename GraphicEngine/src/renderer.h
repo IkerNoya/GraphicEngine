@@ -21,16 +21,18 @@ public:
 	unsigned int getFragmentShader();
 	unsigned int getTextureShader();
 	unsigned int compileShader(unsigned int type, const std::string& source);
-	int createShader();
-	void createVertexAttrib(int program);
-	void createColorAttrib(int program);
-	void createTextureAttrib(int program);
+	int createColorProgram();
+	int createTextureProgram();
+	void createVertexAttrib(unsigned int &program);
+	void createColorAttrib(unsigned int &program);
+	void createTextureAttrib(unsigned int &program);
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
 	std::string CreateTextureShader();
-	void startProgram(int &shader, glm::mat4 model, glm::mat4 projection, glm::mat4 view);
+	void startProgram(unsigned int &shader, glm::mat4 model, glm::mat4 projection, glm::mat4 view);
 	void bindVBO(float* vertex, int vertexAmmount);
 	void draw(unsigned int shape);
+	void drawTexture();
 };
 
 #endif // !RENDERER_H

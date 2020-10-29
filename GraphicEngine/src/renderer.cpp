@@ -54,41 +54,54 @@ unsigned int Renderer::compileShader(unsigned int type, const std::string& sourc
 		glDeleteShader(id);
 		return 0;
 	}
-
 	return id;
 }
 
-void Renderer::createVertexAttrib(int program)
+void Renderer::createVertexAttrib(unsigned int &program)
 {
 	unsigned int posAttrib = glGetAttribLocation(program, "position");
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, 0);
 	glEnableVertexAttribArray(posAttrib);
 }
-void Renderer::createColorAttrib(int program)
+void Renderer::createColorAttrib(unsigned int &program)
 {
 	unsigned int colorAttrib = glGetAttribLocation(program, "customColor");
-	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(2 * sizeof(float)));
+	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(colorAttrib);
 }
-void Renderer::createTextureAttrib(int program) {
-	unsigned int textureAttrib = glGetAttribLocation(program, "aTexCoord");
+void Renderer::createTextureAttrib(unsigned int &program) {
+	unsigned int textureAttrib;
+	glUniform1i(textureAttrib = glGetAttribLocation(program, "ourTexture"), 0);
 	glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(textureAttrib);
 }
-int Renderer::createShader() {
+int Renderer::createColorProgram() {
 	unsigned int program = glCreateProgram();
 	setVertexShader(CreateVertexShader());
 	setFragmentShader(CreateFragmentShader());
 
-
 	glAttachShader(program, _vertexShader);
 	glAttachShader(program, _fragmentShader);
-	glAttachShader(program, _textureShader);
+
 	glLinkProgram(program);
 	glValidateProgram(program);
 
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
+
+	return program;
+}
+int Renderer::createTextureProgram() {
+	unsigned int program = glCreateProgram();
+	setVertexShader(CreateVertexShader());
+	setTextureShader(CreateTextureShader());
+
+	glAttachShader(program, _vertexShader);
+	glAttachShader(program, _textureShader);
+	glLinkProgram(program);
+	glValidateProgram(program);
+
+	glDeleteShader(_vertexShader);
 	glDeleteShader(_textureShader);
 
 	return program;
@@ -97,9 +110,9 @@ std::string Renderer::CreateVertexShader() {
 	std::string vertexShader =
 		"#version 330 core\n"
 		"\n"
-		"layout (location = 0) in vec3 position;\n"
-		"layout (location = 1) in vec3 customColor;\n"
-		"layout (location = 2) in vec2 aTexCoord;\n"
+		"in vec3 position;\n"
+		"in vec3 customColor;\n"
+		"in vec2 aTexCoord;\n"
 		"\n"
 		"out vec3 color;\n"
 		"out vec2 TexCoord;\n"
@@ -134,23 +147,25 @@ std::string Renderer::CreateFragmentShader() {
 std::string Renderer::CreateTextureShader() {
 	std::string textureShader =
 		"#version 330 core\n"
-		"out vec4 Texture\n"
-		"\n"
 		"in vec2 TexCoord;\n"
+		"in vec3 color;\n"
+		"\n"
+		"out vec4 Texture;\n"
 		"\n"
 		"uniform sampler2D ourTexture;\n"
 		"\n"
 		"void main()\n"
 		"{\n"
-		"Texture = texture(ourTexture, TexCoord)\n"
+		"Texture = texture(ourTexture, TexCoord) * vec4(color, 1.0);\n"
 		"}\n"
 		;
 	return textureShader;
 }
-void Renderer::startProgram(int& shader, glm::mat4 model, glm::mat4 proj, glm::mat4 view) {
+void Renderer::startProgram(unsigned int& shader, glm::mat4 model, glm::mat4 proj, glm::mat4 view) {
 	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
 	unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
 	unsigned int viewLoc = glGetUniformLocation(shader, "view");
+
 	glUseProgram(shader);
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(proj));
@@ -173,4 +188,8 @@ void Renderer::draw(unsigned int shape) {
 		size = 4;
 		glDrawArrays(GL_QUADS, 0, size);
 	}
+}
+void Renderer::drawTexture() {
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_QUADS, 0, 4);
 }

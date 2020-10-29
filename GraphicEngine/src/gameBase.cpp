@@ -12,6 +12,7 @@ GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
 	shape = new Shape(GL_TRIANGLES, renderer);
+	sprite = new Sprite(renderer);
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -20,6 +21,8 @@ GameBase::~GameBase() {
 		delete renderer;
 	if (shape != NULL)
 		delete shape;
+	if (sprite != NULL)
+		delete sprite;
 }
 
 int GameBase::init() {
@@ -42,10 +45,10 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
-	shape->setColor(1.0f, 1.0f, 0.0f);
-	shape->init();
+	/*shape->setColor(1.0f, 1.0f, 0.0f);
+	shape->init();*/
 	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans = shape->getTRS();
+	glm::mat4 trans = sprite->getTRS();
 	glm::mat4 proj = glm::mat4(1.0f);
 	glm::mat4 ViewMatrix = glm::mat4(1.0f);
 	//                               FOV              Aspect      near  front
@@ -55,50 +58,51 @@ int GameBase::init() {
 	vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	int shader = renderer->createShader();
+	unsigned int shader = renderer->createTextureProgram();
+	sprite->setTexture("res/raw/prueba.png");
 
 	renderer->createVertexAttrib(shader);
-	renderer->createColorAttrib(shader);
+	//renderer->createColorAttrib(shader);
 	renderer->createTextureAttrib(shader);
-	shape->setPosition(0, 0, -1.0f);
+	sprite->setPosition(0, 0, -1.0f);
 	
 	float rotate = 0;
 	float x = 0; float y = 0; float z = -1;
-	//Loop until the user closes the window /
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		// Render here /
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		renderer->startProgram(shader, shape->getTRS(), proj, ViewMatrix);
-		renderer->draw(shape->getType());
+		renderer->startProgram(shader, sprite->getTRS(), proj, ViewMatrix);
+		/*renderer->draw(shape->getType());*/
+		renderer->drawTexture();
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			x += 0.02f;
-			shape->setPosition(x, y, z);
+			x += 0.0002f;
+			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			x -= 0.02f;
-			shape->setPosition(x, y, z);
+			x -= 0.0002f;
+			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-			y += 0.02f;
-			shape->setPosition(x, y, z);
+			y += 0.0002f;
+			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			y -= 0.02f;
-			shape->setPosition(x, y, z);
+			y -= 0.0002f;
+			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
-			rotate -= 0.04f;
+			rotate -= 0.004f;
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
-			rotate += 0.04f;
+			rotate += 0.004f;
 		}
-		shape->setRotZ(rotate);
+		sprite->setRotZ(rotate);
 		glfwPollEvents();
 	}
 	glDeleteProgram(shader);

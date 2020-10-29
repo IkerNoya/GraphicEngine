@@ -13,7 +13,7 @@ class ENGINE_API Sprite : public Entity {
 	const char* _path;
 	TextureImporter* texImporter;
 public:
-	Sprite(Renderer* renderer, const char* path);
+	Sprite(Renderer* renderer);
 	~Sprite();
 	void setHeight(int height);
 	int getHeight();
@@ -21,9 +21,10 @@ public:
 	int getWidth();
 	void setNrChanels(int nrChannels);
 	int getNrChannels();
-	void createTexture(int height, int width, int nrChannels, const char* path);
-	void generateTexture();
+	void setTexture(const char* path);
+	void generateTexture(const char* path);
 	unsigned int getTexture();
+	void bindTexture();
 };
 #endif // !SPRITE_H
 

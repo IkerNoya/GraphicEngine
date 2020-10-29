@@ -5,10 +5,17 @@
 
 Sprite::Sprite(Renderer* renderer):Entity(Entity::_renderer){
 	texImporter = new TextureImporter();
+	mat = new Material();
 }
 
 Sprite::~Sprite() {
 	glDeleteTextures(1, &_texture);
+	if (_vertex != NULL) {
+		delete _vertex;
+	}
+	if (mat != NULL) {
+		delete mat;
+	}
 }
 
 #pragma region SETTERS/GETTERS
@@ -37,11 +44,11 @@ int Sprite::getNrChannels() {
 void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
-	float vertex[32] = {
-	 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-	 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
+	_vertex = new float[32] {
+	 0.5f,  0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   1.0f, 1.0f,
+	 0.5f, -0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   1.0f, 0.0f,
+	-0.5f, -0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   0.0f, 0.0f,
+	-0.5f,  0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   0.0f, 1.0f
 	};
 	unsigned int index[] = {
 		0, 1, 3,
@@ -49,7 +56,7 @@ void Sprite::setTexture(const char* path) {
 	};
 	_renderer->bindVAO();
 	_renderer->bindEBO(index, 6);
-	_renderer->bindVBO(vertex, 32);
+	_renderer->bindVBO(_vertex, 32);
 }
 
 void Sprite::generateTexture(const char* path) {
@@ -71,4 +78,12 @@ unsigned int Sprite::getTexture() {
 
 void Sprite::bindTexture() {
 	glBindTexture(GL_TEXTURE_2D, _texture);
+}
+
+float* Sprite::getVertex() {
+	return _vertex;
+}
+
+void Sprite::setColor(float r, float g, float b) {
+	mat->setColor(r, g, b);
 }

@@ -4,6 +4,7 @@
 #include "export.h"
 #include "entity.h"
 #include "textureImporter.h"
+#include "material.h"
 
 class ENGINE_API Sprite : public Entity {
 	int _height;
@@ -11,8 +12,11 @@ class ENGINE_API Sprite : public Entity {
 	int _nrChannels;
 	unsigned int _texture;
 	const char* _path;
+
+	Material* mat;
 	TextureImporter* texImporter;
 public:
+	float* _vertex;
 	Sprite(Renderer* renderer);
 	~Sprite();
 	void setHeight(int height);
@@ -25,6 +29,8 @@ public:
 	void generateTexture(const char* path);
 	unsigned int getTexture();
 	void bindTexture();
+	float* getVertex();
+	void setColor(float r, float g, float b);
 };
 #endif // !SPRITE_H
 

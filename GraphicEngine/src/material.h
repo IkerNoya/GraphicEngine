@@ -14,9 +14,9 @@ public:
 	void setR(float r);
 	void setG(float g);
 	void setB(float b);
-	float getR();
-	float getG();
-	float getB();
+	float* getR();
+	float* getG();
+	float* getB();
 	float getColorRGB();
 };
 

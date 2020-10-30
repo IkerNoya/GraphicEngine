@@ -71,15 +71,11 @@ int GameBase::init() {
 	sprite->setPosition(0, 0, -1.0f);
 	float rotate = 0;
 	float x = 0; float y = 0; float z = -1;
-	float targetFramerate = 60.0f;
 	float timer = 0; int secods = 0;
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		time->tick();
-		time->calculateFps();
-		if (time->deltaTime() >= 1.0f / time->getFPS()) {
-			time->reset();
-		}
+		time->reset();
 		if (timer >= 1) {
 			secods++;
 			std::cout << secods << std::endl;

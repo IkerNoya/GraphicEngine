@@ -8,10 +8,10 @@ class ENGINE_API Time {
 	std::chrono::system_clock::time_point _startTime;
 	std::chrono::duration<float> _deltaTime;
 	float _timeScale;
-	float _elapsedTime;
+	float _elapsedTime = 0;
 	float _framesCounter;
 	int frames;
-	float fps;
+	float fps=0;
 public:
 	Time();
 	~Time();

@@ -13,6 +13,7 @@ GameBase::GameBase() {
 	renderer = new Renderer();
 	shape = new Shape(GL_TRIANGLES, renderer);
 	sprite = new Sprite(renderer);
+	time = new Time();
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -23,6 +24,9 @@ GameBase::~GameBase() {
 		delete shape;
 	if (sprite != NULL)
 		delete sprite;
+	if (time != NULL) {
+		delete time;
+	}
 }
 
 int GameBase::init() {
@@ -67,9 +71,20 @@ int GameBase::init() {
 	sprite->setPosition(0, 0, -1.0f);
 	float rotate = 0;
 	float x = 0; float y = 0; float z = -1;
+	float targetFramerate = 60.0f;
+	float timer = 0; int secods = 0;
 	while (!glfwWindowShouldClose(newWindow))
 	{
-		// Render here /
+		time->tick();
+		time->calculateFps();
+		if (time->deltaTime() >= 1.0f / time->getFPS()) {
+			time->reset();
+		}
+		if (timer >= 1) {
+			secods++;
+			std::cout << secods << std::endl;
+			timer = 0;
+		}
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -81,27 +96,28 @@ int GameBase::init() {
 		glfwSwapBuffers(newWindow);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			x += 0.0004f;
+			x += 2 * time->deltaTime();
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			x -= 0.0004f;
+			x -= 2 * time->deltaTime();
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-			y += 0.0004f;
+			y += 2 * time->deltaTime();
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			y -= 0.0004f;
+			y -= 2 * time->deltaTime();
 			sprite->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
-			rotate -= 0.0007f;
+			rotate -= 2 * time->deltaTime();
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
-			rotate += 0.0007f;
+			rotate += 2 * time->deltaTime();
 		}
+		timer += time->deltaTime();
 		sprite->setRotZ(rotate);
 		glfwPollEvents();
 	}

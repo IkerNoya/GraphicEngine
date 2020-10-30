@@ -7,6 +7,7 @@
 #include "shape.h"
 #include "material.h"
 #include "sprite.h";
+#include "Time.h"
 
 struct Renderer;
 struct Shape;
@@ -17,6 +18,7 @@ class ENGINE_API GameBase { // consultar
 	Renderer* renderer;
 	Shape* shape;
 	Sprite* sprite;
+	Time* time;
 public:
 	GameBase();
 	~GameBase();

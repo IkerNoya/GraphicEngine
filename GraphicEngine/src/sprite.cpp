@@ -118,4 +118,5 @@ void Sprite::setColor(float r, float g, float b) {
 
 void Sprite::draw(unsigned int &shader, glm::mat4 trs) {
 	_renderer->drawTexture(getVBO(), shader, trs);
+	bindTexture();
 }

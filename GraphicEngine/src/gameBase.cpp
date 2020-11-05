@@ -92,15 +92,13 @@ int GameBase::init() {
 		//renderer->draw(shape->getType());
 		sprite1->draw(shader, sprite1->getTRS());
 		sprite2->draw(shader, sprite2->getTRS());
-		sprite2->bindTexture();
-		sprite1->bindTexture();
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		if (input->getKey(D)) {
 			x1 += 2 * time->deltaTime();
 			sprite1->setPosition(x1, y1, z1);
 		}
-		if (input->getKey(L)) {
+		if (input->getKey(RIGHT)) {
 			x2 += 2 * time->deltaTime();
 			sprite2->setPosition(x2, y2, z2);
 		}
@@ -108,7 +106,7 @@ int GameBase::init() {
 			x1 -= 2 * time->deltaTime();
 			sprite1->setPosition(x1, y1, z1);
 		}
-		if (input->getKey(J)) {
+		if (input->getKey(LEFT)) {
 			x2 -= 2 * time->deltaTime();
 			sprite2->setPosition(x2, y2, z2);
 		}
@@ -116,7 +114,7 @@ int GameBase::init() {
 			y1 += 2 * time->deltaTime();
 			sprite1->setPosition(x1, y1, z1);
 		}
-		if (input->getKey(I)) {
+		if (input->getKey(UP)) {
 			y2 += 2 * time->deltaTime();
 			sprite2->setPosition(x2, y2, z2);
 		}
@@ -124,7 +122,7 @@ int GameBase::init() {
 			y1 -= 2 * time->deltaTime();
 			sprite1->setPosition(x1, y1, z1);
 		}
-		if (input->getKey(K)) {
+		if (input->getKey(DOWN)) {
 			y2 -= 2 * time->deltaTime();
 			sprite2->setPosition(x2, y2, z2);
 		}

@@ -3,9 +3,12 @@
 #include "GLFW/glfw3.h"
 
 Input::Input() {
+	_window = NULL;
 }
 
 Input::~Input() {
+	if (_window != NULL)
+		delete _window;
 }
 
 void Input::setInputWindow(GLFWwindow* window) {

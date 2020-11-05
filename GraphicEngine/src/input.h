@@ -1,9 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
-#include "GLFW/glfw3.h"
 #include "export.h"
 #include <iostream>
-
 enum ENGINE_API keyCode {
 	SPACE,
 	A,
@@ -115,6 +113,7 @@ enum ENGINE_API keyCode {
 
 	MENU
 };
+struct GLFWwindow;
 
 class ENGINE_API Input {
 private:

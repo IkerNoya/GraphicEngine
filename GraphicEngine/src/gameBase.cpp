@@ -14,6 +14,7 @@ GameBase::GameBase() {
 	shape = new Shape(GL_QUADS, renderer);
 	sprite1 = new Sprite(renderer, false, false);
 	sprite2 = new Sprite(renderer, false, true);
+	sprite3 = new Sprite(renderer, false, true);
 	time = new Time();
 	input = new Input();
 }
@@ -28,6 +29,8 @@ GameBase::~GameBase() {
 		delete sprite1;
 	if (sprite2 != NULL)
 		delete sprite2;
+	if (sprite3 != NULL)
+		delete sprite3;
 	if (time != NULL) {
 		delete time;
 	}
@@ -64,13 +67,17 @@ int GameBase::init() {
 	//unsigned int colorShader = renderer->createColorProgram();
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/spriteSheet.png");
-	sprite1->setColor(1, 1, 1);
+	sprite3->setTexture("res/raw/Sun.png");
 	renderer->setSpriteAttrib(textureShader);
+	sprite1->setColor(1, 1, 1);
 	sprite2->setColor(1, 1, 1);
+	sprite3->setColor(1, 1, 1);
 	sprite1->setPosition(0, 0, -1.0f);
 	sprite1->setScale(0.5f, 0.5f, 0.5f);
 	sprite2->setPosition(0.5f, 0, -1.0f);
 	sprite2->setScale(1, 0.2f, 0.5f);
+	sprite3->setPosition(0, 0.75f, -1.0f);
+	sprite3->setScale(0.25f, 0.25f, 0.5f);
 	float rotate = 0;
 	float x1 = 0; float y1 = 0; float z1 = -1;
 	float x2 = 0; float y2 = 0; float z2 = -1;
@@ -90,6 +97,7 @@ int GameBase::init() {
 		//shape->draw(colorShader, shape->getTRS());
 		sprite1->draw(textureShader, sprite1->getTRS());
 		sprite2->draw(textureShader, sprite2->getTRS());
+		sprite3->draw(textureShader, sprite3->getTRS());
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		if (input->getKey(D)) {
@@ -137,4 +145,11 @@ int GameBase::init() {
 	glDeleteProgram(textureShader);
 	glfwTerminate();
 	return 0;
+}
+
+void GameBase::update() {
+
+}
+void GameBase::unload() {
+
 }

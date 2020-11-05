@@ -15,6 +15,7 @@ GameBase::GameBase() {
 	sprite1 = new Sprite(renderer);
 	sprite2 = new Sprite(renderer);
 	time = new Time();
+	input = new Input();
 }
 GameBase::~GameBase() {
 	if (window != NULL)
@@ -41,6 +42,7 @@ int GameBase::init() {
 		glfwTerminate();
 		return -1;
 	}
+	input->setInputWindow(newWindow);
 
 	// Make the window's context current /
 	glfwMakeContextCurrent(newWindow);
@@ -69,8 +71,11 @@ int GameBase::init() {
 	renderer->setSpriteAttrib(shader);
 	sprite1->setPosition(0, 0, -1.0f);
 	sprite2->setPosition(0.5f, 0, -1.0f);
+	sprite1->setScale(0.5f, 0.5f, 0.5f);
+	sprite2->setScale(0.5f, 0.5f, 0.5f);
 	float rotate = 0;
-	float x = 0; float y = 0; float z = -1;
+	float x1 = 0; float y1 = 0; float z1 = -1;
+	float x2 = 0; float y2 = 0; float z2 = -1;
 	float timer = 0; int seconds = 0;
 	while (!glfwWindowShouldClose(newWindow))
 	{
@@ -91,26 +96,42 @@ int GameBase::init() {
 		sprite1->bindTexture();
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
-		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			x += 2 * time->deltaTime();
-			sprite1->setPosition(x, y, z);
+		if (input->getKey(D)) {
+			x1 += 2 * time->deltaTime();
+			sprite1->setPosition(x1, y1, z1);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			x -= 2 * time->deltaTime();
-			sprite1->setPosition(x, y, z);
+		if (input->getKey(L)) {
+			x2 += 2 * time->deltaTime();
+			sprite2->setPosition(x2, y2, z2);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-			y += 2 * time->deltaTime();
-			sprite1->setPosition(x, y, z);
+		if (input->getKey(A)) {
+			x1 -= 2 * time->deltaTime();
+			sprite1->setPosition(x1, y1, z1);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			y -= 2 * time->deltaTime();
-			sprite1->setPosition(x, y, z);
+		if (input->getKey(J)) {
+			x2 -= 2 * time->deltaTime();
+			sprite2->setPosition(x2, y2, z2);
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
+		if (input->getKey(W)) {
+			y1 += 2 * time->deltaTime();
+			sprite1->setPosition(x1, y1, z1);
+		}
+		if (input->getKey(I)) {
+			y2 += 2 * time->deltaTime();
+			sprite2->setPosition(x2, y2, z2);
+		}
+		if (input->getKey(S)) {
+			y1 -= 2 * time->deltaTime();
+			sprite1->setPosition(x1, y1, z1);
+		}
+		if (input->getKey(K)) {
+			y2 -= 2 * time->deltaTime();
+			sprite2->setPosition(x2, y2, z2);
+		}
+		if (input->getKey(E)) {
 			rotate -= 2 * time->deltaTime();
 		}
-		if (glfwGetKey(newWindow, GLFW_KEY_Q) == GLFW_PRESS) {
+		if (input->getKey(Q)) {
 			rotate += 2 * time->deltaTime();
 		}
 		timer += time->deltaTime();

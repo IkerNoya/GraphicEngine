@@ -8,6 +8,7 @@
 #include "material.h"
 #include "sprite.h";
 #include "Time.h"
+#include "input.h"
 
 struct Renderer;
 struct Shape;
@@ -20,6 +21,7 @@ class ENGINE_API GameBase { // consultar
 	Sprite* sprite1;
 	Sprite* sprite2;
 	Time* time;
+	Input* input;
 public:
 	GameBase();
 	~GameBase();

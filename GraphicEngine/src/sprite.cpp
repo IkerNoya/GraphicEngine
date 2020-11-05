@@ -73,10 +73,10 @@ void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
 	_vertex = new float[32] {
-	 0.5f,  0.5f, 0.0f,   1,1,1,   1.0f, 1.0f,
-	 0.5f, -0.5f, 0.0f,   1,1,1,   1.0f, 0.0f,
-	-0.5f, -0.5f, 0.0f,   1,1,1,   0.0f, 0.0f,
-	-0.5f,  0.5f, 0.0f,   1,1,1,   0.0f, 1.0f
+	 0.5f,  0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  1.0f, 1.0f,
+	 0.5f, -0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  1.0f, 0.0f,
+	-0.5f, -0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  0.0f, 0.0f,
+	-0.5f,  0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  0.0f, 1.0f
 	};
 	_size = 32;
 	unsigned int index[] = {

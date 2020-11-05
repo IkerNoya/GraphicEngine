@@ -11,7 +11,7 @@
 GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
-	shape = new Shape(GL_TRIANGLES, renderer);
+	shape = new Shape(GL_QUADS, renderer);
 	sprite1 = new Sprite(renderer);
 	sprite2 = new Sprite(renderer);
 	time = new Time();
@@ -54,21 +54,22 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
-	/*shape->setColor(1.0f, 1.0f, 0.0f);
-	shape->init();*/
-	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans = sprite1->getTRS();
+	shape->setColor(0.5f, 1.0f, 0.7f);
+	shape->init();
+	//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+	//glm::mat4 trans = sprite1->getTRS();
 	renderer->setDefaultProjection();
 	renderer->setDefaultView();
-	vec = trans * vec;
+	//vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	unsigned int shader = renderer->createTextureProgram();
-	//sprite1->setColor(1, 1, 1);
+	unsigned int textureShader = renderer->createTextureProgram();
+	unsigned int colorShader = renderer->createColorProgram();
+	sprite1->setColor(1, 1, 1);
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/prueba.jpg");
-	//sprite2->setColor(1, 1, 1);
-	renderer->setSpriteAttrib(shader);
+	sprite2->setColor(1, 1, 1);
+	renderer->setSpriteAttrib(textureShader);
 	sprite1->setPosition(0, 0, -1.0f);
 	sprite2->setPosition(0.5f, 0, -1.0f);
 	sprite1->setScale(0.5f, 0.5f, 0.5f);
@@ -89,9 +90,9 @@ int GameBase::init() {
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		//renderer->draw(shape->getType());
-		sprite1->draw(shader, sprite1->getTRS());
-		sprite2->draw(shader, sprite2->getTRS());
+		shape->draw(colorShader, shape->getTRS());
+		sprite1->draw(textureShader, sprite1->getTRS());
+		sprite2->draw(textureShader, sprite2->getTRS());
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
 		if (input->getKey(D)) {
@@ -136,7 +137,7 @@ int GameBase::init() {
 		sprite1->setRotZ(rotate);
 		glfwPollEvents();
 	}
-	glDeleteProgram(shader);
+	glDeleteProgram(textureShader);
 	glfwTerminate();
 	return 0;
 }

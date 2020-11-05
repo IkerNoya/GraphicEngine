@@ -12,8 +12,8 @@ GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
 	shape = new Shape(GL_QUADS, renderer);
-	sprite1 = new Sprite(renderer);
-	sprite2 = new Sprite(renderer);
+	sprite1 = new Sprite(renderer, false, false);
+	sprite2 = new Sprite(renderer, false, true);
 	time = new Time();
 	input = new Input();
 }
@@ -56,24 +56,21 @@ int GameBase::init() {
 	}
 	//shape->setColor(0.5f, 1.0f, 0.7f);
 	//shape->init();
-	//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	//glm::mat4 trans = sprite1->getTRS();
 	renderer->setDefaultProjection();
 	renderer->setDefaultView();
-	//vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	unsigned int textureShader = renderer->createTextureProgram();
-	unsigned int colorShader = renderer->createColorProgram();
-	sprite1->setColor(1, 1, 1);
+	//unsigned int colorShader = renderer->createColorProgram();
 	sprite1->setTexture("res/raw/meme.jpg");
-	sprite2->setTexture("res/raw/prueba.jpg");
-	sprite2->setColor(1, 1, 1);
+	sprite2->setTexture("res/raw/spriteSheet.png");
+	sprite1->setColor(1, 1, 1);
 	renderer->setSpriteAttrib(textureShader);
+	sprite2->setColor(1, 1, 1);
 	sprite1->setPosition(0, 0, -1.0f);
-	sprite2->setPosition(0.5f, 0, -1.0f);
 	sprite1->setScale(0.5f, 0.5f, 0.5f);
-	sprite2->setScale(0.5f, 0.5f, 0.5f);
+	sprite2->setPosition(0.5f, 0, -1.0f);
+	sprite2->setScale(1, 0.2f, 0.5f);
 	float rotate = 0;
 	float x1 = 0; float y1 = 0; float z1 = -1;
 	float x2 = 0; float y2 = 0; float z2 = -1;
@@ -84,7 +81,7 @@ int GameBase::init() {
 		time->reset();
 		if (timer >= 1) {
 			seconds++;
-			std::cout << seconds << std::endl;
+			//std::cout << seconds << std::endl;
 			timer = 0;
 		}
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);

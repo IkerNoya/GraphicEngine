@@ -9,7 +9,7 @@ public:
 	TextureImporter();
 	TextureImporter(int height, int width, int nrChannels, const char* path);
 	~TextureImporter();
-	void loadImage(int height, int width, int nrChannels, const char* path);
+	void loadImage(int height, int width, int nrChannels, const char* path, bool transparency, unsigned int& texture);
 	unsigned char *getData(); // returns the image
 	void freeSpace();
 };

@@ -3,9 +3,17 @@
 #include "sprite.h"
 #include "stb_image.h"
 
-Sprite::Sprite(Renderer* renderer):Entity(Entity::_renderer){
+Sprite::Sprite(Renderer* renderer, bool isAnimated, bool transparency):Entity(Entity::_renderer){
 	texImporter = new TextureImporter();
 	mat = new Material();
+	_isAnimated = isAnimated;
+	_transparency = transparency;
+	if (!_isAnimated) {
+		uv[0].u = 1.0f; uv[0].v = 1.0f;
+		uv[1].u = 1.0f; uv[1].v = 0;
+		uv[2].u = 0;    uv[2].v = 0;
+		uv[3].u = 0;    uv[3].v = 1.0f;
+	}
 }
 
 Sprite::~Sprite() {
@@ -15,6 +23,12 @@ Sprite::~Sprite() {
 	}
 	if (mat != NULL) {
 		delete mat;
+	} 
+	if (anim != NULL) {
+		delete anim;
+	}
+	if (_vertex != NULL) {
+		delete _vertex;
 	}
 }
 
@@ -38,9 +52,6 @@ void Sprite::setNrChanels(int nrChannels) {
 int Sprite::getNrChannels() {
 	return _nrChannels;
 }
-
-#pragma endregion
-
 void Sprite::createVBO(float* vertex, int vertexAmmount) {
 	int vertexSize = sizeof(vertex) * vertexAmmount;
 	glGenBuffers(1, &_vbo);
@@ -68,15 +79,23 @@ void Sprite::createVAO() {
 unsigned int Sprite::getVAO() {
 	return _vao;
 }
+void Sprite::setAnimation(Animation* animation) {
+	anim = animation;
+	_previousFrame = std::numeric_limits<unsigned int>::max_digits10;
+}
+Animation* Sprite::getAnimation() {
+	return anim;
+}
+#pragma endregion
 
 void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
 	_vertex = new float[32] {
-	 0.5f,  0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  1.0f, 1.0f,
-	 0.5f, -0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  1.0f, 0.0f,
-	-0.5f, -0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  0.0f, 0.0f,
-	-0.5f,  0.5f, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  0.0f, 1.0f
+	 1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[0].u, uv[0].v,
+	 1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[1].u, uv[1].v,
+	-1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[2].u, uv[2].v,
+	-1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[3].u, uv[3].v
 	};
 	_size = 32;
 	unsigned int index[] = {
@@ -89,15 +108,7 @@ void Sprite::setTexture(const char* path) {
 }
 
 void Sprite::generateTexture(const char* path) {
-	glGenTextures(1, &_texture);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	texImporter->loadImage(_width, _height, _nrChannels, path);
-	texImporter->freeSpace();
+	texImporter->loadImage(_width, _height, _nrChannels, path, _transparency, _texture);
 }
 
 unsigned int Sprite::getTexture() {
@@ -112,11 +123,49 @@ float* Sprite::getVertex() {
 	return _vertex;
 }
 
+void Sprite::setAnimCoords(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3) {
+	uv[0].u = u0; uv[0].v = v0;
+	uv[1].u = u1; uv[1].v = v1;
+	uv[2].u = u2; uv[2].v = v2;
+	uv[3].u = u3; uv[3].v = v3;
+}
+void Sprite::updateAnimation(Time& time) {
+	if (anim != NULL) {
+		anim->update(time);
+		_currentFrame = anim->getCurrentFrame();
+		if (_currentFrame != _previousFrame) {
+			setAnimCoords(anim->GetFrames()[_currentFrame].frameCoordinates[0].u, anim->GetFrames()[_currentFrame].frameCoordinates[0].v,
+				anim->GetFrames()[_currentFrame].frameCoordinates[1].u, anim->GetFrames()[_currentFrame].frameCoordinates[1].v,
+				anim->GetFrames()[_currentFrame].frameCoordinates[2].u, anim->GetFrames()[_currentFrame].frameCoordinates[2].v,
+				anim->GetFrames()[_currentFrame].frameCoordinates[3].u, anim->GetFrames()[_currentFrame].frameCoordinates[3].v);
+			_previousFrame = _currentFrame;
+		}
+		setAnimation(anim);
+	}
+}
+
 void Sprite::setColor(float r, float g, float b) {
 	mat->setColor(r, g, b);
 }
 
 void Sprite::draw(unsigned int &shader, glm::mat4 trs) {
-	_renderer->drawTexture(getVBO(), shader, trs);
-	bindTexture();
+	if (_transparency) {
+		blendSprite();
+		bindTexture();
+		_renderer->drawTexture(getVBO(), shader, trs);
+		unblendSprite();
+		glDisable(GL_TEXTURE_2D);
+	}
+	else {
+		bindTexture();
+		_renderer->drawTexture(getVBO(), shader, trs);
+		glDisable(GL_TEXTURE_2D);
+	}
+}
+void Sprite::blendSprite() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+void Sprite::unblendSprite() {
+	glDisable(GL_BLEND);
 }

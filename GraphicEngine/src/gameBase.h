@@ -17,7 +17,8 @@ class ENGINE_API GameBase { // consultar
 	Window* window;
 	Renderer* renderer;
 	Shape* shape;
-	Sprite* sprite;
+	Sprite* sprite1;
+	Sprite* sprite2;
 	Time* time;
 public:
 	GameBase();

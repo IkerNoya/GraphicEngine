@@ -33,6 +33,18 @@ float Time::getSeconds() {
 	return 0;
 }
 
+float Time::getMinutes() {
+	return 0;
+}
+
+float Time::getHours() {
+	return 0;
+}
+
+float Time::getCurrentTime() {
+	return 0;
+}
+
 void Time::startTime() {
 }
 void Time::tick() {

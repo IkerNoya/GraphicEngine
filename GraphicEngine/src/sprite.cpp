@@ -41,26 +41,54 @@ int Sprite::getNrChannels() {
 
 #pragma endregion
 
+void Sprite::createVBO(float* vertex, int vertexAmmount) {
+	int vertexSize = sizeof(vertex) * vertexAmmount;
+	glGenBuffers(1, &_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
+}
+unsigned int Sprite::getVBO() {
+	return _vbo;
+}
+
+void Sprite::createEBO(unsigned int* index, int indexAmmount) {
+	unsigned int indexSize = sizeof(index) * indexAmmount;
+	glGenBuffers(1, &_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize, index, GL_STATIC_DRAW);
+
+}
+unsigned int Sprite::getEBO() {
+	return _ebo;
+}
+void Sprite::createVAO() {
+	glGenVertexArrays(1, &_vao);
+	glBindVertexArray(_vao);
+}
+unsigned int Sprite::getVAO() {
+	return _vao;
+}
+
 void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
 	_vertex = new float[32] {
-	 0.5f,  0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   1.0f, 1.0f,
-	 0.5f, -0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   1.0f, 0.0f,
-	-0.5f, -0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   0.0f, 0.0f,
-	-0.5f,  0.5f, 0.0f,   *mat->getR(), *mat->getG(), *mat->getB(),   0.0f, 1.0f
+	 0.5f,  0.5f, 0.0f,   1,1,1,   1.0f, 1.0f,
+	 0.5f, -0.5f, 0.0f,   1,1,1,   1.0f, 0.0f,
+	-0.5f, -0.5f, 0.0f,   1,1,1,   0.0f, 0.0f,
+	-0.5f,  0.5f, 0.0f,   1,1,1,   0.0f, 1.0f
 	};
+	_size = 32;
 	unsigned int index[] = {
 		0, 1, 3,
 		1, 2, 3
 	};
-	_renderer->bindVAO();
-	_renderer->bindEBO(index, 6);
-	_renderer->bindVBO(_vertex, 32);
+	createVAO();
+	createEBO(index, 6);
+	createVBO(_vertex, _size);
 }
 
 void Sprite::generateTexture(const char* path) {
-	
 	glGenTextures(1, &_texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture);
@@ -86,4 +114,8 @@ float* Sprite::getVertex() {
 
 void Sprite::setColor(float r, float g, float b) {
 	mat->setColor(r, g, b);
+}
+
+void Sprite::draw(unsigned int &shader, glm::mat4 trs) {
+	_renderer->drawTexture(getVBO(), shader, trs);
 }

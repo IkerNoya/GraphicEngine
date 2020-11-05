@@ -27,6 +27,14 @@ void Renderer::setFragmentShader(const std::string& fragmentShader) {
 void Renderer::setTextureShader(const std::string& textureShader) {
 	_textureShader = compileShader(GL_FRAGMENT_SHADER, textureShader);
 }
+void Renderer::setDefaultView() {
+	//                                 pos                        direction                          up
+	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+}
+void Renderer::setDefaultProjection() {
+	//                               FOV              Aspect      near  front
+	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+}
 unsigned int Renderer::getVertexShader() {
 	return _vertexShader;
 }
@@ -35,6 +43,12 @@ unsigned int Renderer::getFragmentShader() {
 }
 unsigned int Renderer::getTextureShader() {
 	return _textureShader;
+}
+glm::mat4 Renderer::getView() {
+	return view;
+}
+glm::mat4 Renderer::getProjection() {
+	return projection;
 }
 unsigned int Renderer::compileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);
@@ -57,20 +71,22 @@ unsigned int Renderer::compileShader(unsigned int type, const std::string& sourc
 	}
 	return id;
 }
-
-void Renderer::createVertexAttrib(unsigned int &program)
-{
-	unsigned int posAttrib = glGetAttribLocation(program, "position");
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, 0);
-	glEnableVertexAttribArray(posAttrib);
+void Renderer::setSpriteAttrib(unsigned int& program) {
+	_posAttrib = glGetAttribLocation(program, "position");
+	_colorAttrib = glGetAttribLocation(program, "customColor");
+	createVertexAttrib();
+	createColorAttrib();
+	createTextureAttrib();
 }
-void Renderer::createColorAttrib(unsigned int &program)
-{
-	unsigned int colorAttrib = glGetAttribLocation(program, "customColor");
-	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(colorAttrib);
+void Renderer::createVertexAttrib(){
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, 0);
+	glEnableVertexAttribArray(_posAttrib);
 }
-void Renderer::createTextureAttrib(unsigned int &program) {
+void Renderer::createColorAttrib(){
+	glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_colorAttrib);
+}
+void Renderer::createTextureAttrib() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 }
@@ -117,14 +133,13 @@ std::string Renderer::CreateVertexShader() {
 		"out vec2 TexCoord;\n"
 		"\n"
 		"uniform mat4 transform;\n"
-		"uniform mat4 view;\n"
-		"uniform mat4 projection;\n"
+
 		"\n"
 		"void main()\n"
 		"{\n"
 		"  color = customColor;\n"
 		"  TexCoord = aTexCoord;\n"
-		"  gl_Position = projection * view * transform * vec4(position, 1.0);\n"
+		"  gl_Position = transform * vec4(position, 1.0);\n"
 		"}\n"
 		;
 	return vertexShader;
@@ -160,36 +175,16 @@ std::string Renderer::CreateTextureShader() {
 		;
 	return textureShader;
 }
-void Renderer::startProgram(unsigned int& shader, glm::mat4 model, glm::mat4 proj, glm::mat4 view) {
+void Renderer::startProgram(unsigned int& shader, glm::mat4 model) {
 	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
-	unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
-	unsigned int viewLoc = glGetUniformLocation(shader, "view");
-
+	//unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
+	//unsigned int viewLoc = glGetUniformLocation(shader, "view");
 	glUseProgram(shader);
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(proj));
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
-void Renderer::bindVBO(float* vertex, int vertexAmmount) {
-	unsigned int vbo;
-	int vertexSize = sizeof(vertex) * vertexAmmount;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertexSize, vertex, GL_STATIC_DRAW);
-}
-void Renderer::bindEBO(unsigned int* index, int indexAmmount) {
-	unsigned int ebo;
-	unsigned int indexSize = sizeof(index) * indexAmmount;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize, index, GL_STATIC_DRAW);
 
-}
-void Renderer::bindVAO() {
-	unsigned int vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-}
 void Renderer::draw(unsigned int shape) {
 	int size;
 	if (shape == GL_TRIANGLES) {
@@ -201,7 +196,15 @@ void Renderer::draw(unsigned int shape) {
 		glDrawArrays(GL_QUADS, 0, size);
 	}
 }
-void Renderer::drawTexture() {
+void Renderer::bindSpriteBuffers(unsigned int vbo) {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+}
+void Renderer::UnbindBuffers() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void Renderer::drawTexture(unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
+	bindSpriteBuffers(vbo);
+	startProgram(shader, trs);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	//glDrawArrays(GL_QUADS, 0, 4);
+	UnbindBuffers();
 }

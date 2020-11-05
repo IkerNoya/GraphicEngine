@@ -12,7 +12,8 @@ GameBase::GameBase() {
 	window = new Window();
 	renderer = new Renderer();
 	shape = new Shape(GL_TRIANGLES, renderer);
-	sprite = new Sprite(renderer);
+	sprite1 = new Sprite(renderer);
+	sprite2 = new Sprite(renderer);
 	time = new Time();
 }
 GameBase::~GameBase() {
@@ -22,8 +23,10 @@ GameBase::~GameBase() {
 		delete renderer;
 	if (shape != NULL)
 		delete shape;
-	if (sprite != NULL)
-		delete sprite;
+	if (sprite1 != NULL)
+		delete sprite1;
+	if (sprite1 != NULL)
+		delete sprite2;
 	if (time != NULL) {
 		delete time;
 	}
@@ -52,60 +55,57 @@ int GameBase::init() {
 	/*shape->setColor(1.0f, 1.0f, 0.0f);
 	shape->init();*/
 	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans = sprite->getTRS();
-	glm::mat4 proj = glm::mat4(1.0f);
-	glm::mat4 ViewMatrix = glm::mat4(1.0f);
-	//                               FOV              Aspect      near  front
-	proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-	//                                 pos                        direction                          up
-	ViewMatrix = glm::lookAt(glm::vec3(0.0f,0.0f,1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 trans = sprite1->getTRS();
+	renderer->setDefaultProjection();
+	renderer->setDefaultView();
 	vec = trans * vec;
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	unsigned int shader = renderer->createTextureProgram();
-	sprite->setColor(1, 1, 1);
-	sprite->setTexture("res/raw/meme.jpg");
-	renderer->createVertexAttrib(shader);
-	renderer->createColorAttrib(shader);
-	renderer->createTextureAttrib(shader);
-	sprite->setPosition(0, 0, -1.0f);
+	//sprite1->setColor(1, 1, 1);
+	sprite1->setTexture("res/raw/meme.jpg");
+	sprite2->setTexture("res/raw/prueba.jpg");
+	//sprite2->setColor(1, 1, 1);
+	renderer->setSpriteAttrib(shader);
+	sprite1->setPosition(0, 0, -1.0f);
+	sprite2->setPosition(0.5f, 0, -1.0f);
 	float rotate = 0;
 	float x = 0; float y = 0; float z = -1;
-	float timer = 0; int secods = 0;
+	float timer = 0; int seconds = 0;
 	while (!glfwWindowShouldClose(newWindow))
 	{
 		time->tick();
 		time->reset();
 		if (timer >= 1) {
-			secods++;
-			std::cout << secods << std::endl;
+			seconds++;
+			std::cout << seconds << std::endl;
 			timer = 0;
 		}
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		renderer->startProgram(shader, sprite->getTRS(), proj, ViewMatrix);
-		/*renderer->draw(shape->getType());*/
-		sprite->bindTexture();
-		renderer->drawTexture();
+		//renderer->draw(shape->getType());
+		sprite1->draw(shader, sprite1->getTRS());
+		sprite2->draw(shader, sprite2->getTRS());
+		sprite2->bindTexture();
+		sprite1->bindTexture();
 		// Swap front and back buffers /
 		glfwSwapBuffers(newWindow);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		if (glfwGetKey(newWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 			x += 2 * time->deltaTime();
-			sprite->setPosition(x, y, z);
+			sprite1->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
 			x -= 2 * time->deltaTime();
-			sprite->setPosition(x, y, z);
+			sprite1->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_UP) == GLFW_PRESS) {
 			y += 2 * time->deltaTime();
-			sprite->setPosition(x, y, z);
+			sprite1->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
 			y -= 2 * time->deltaTime();
-			sprite->setPosition(x, y, z);
+			sprite1->setPosition(x, y, z);
 		}
 		if (glfwGetKey(newWindow, GLFW_KEY_E) == GLFW_PRESS) {
 			rotate -= 2 * time->deltaTime();
@@ -114,7 +114,7 @@ int GameBase::init() {
 			rotate += 2 * time->deltaTime();
 		}
 		timer += time->deltaTime();
-		sprite->setRotZ(rotate);
+		sprite1->setRotZ(rotate);
 		glfwPollEvents();
 	}
 	glDeleteProgram(shader);

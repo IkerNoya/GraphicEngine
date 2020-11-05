@@ -31,7 +31,7 @@ void Shape::initTriangleVertex() {
 	   0.0f, 0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
 	   0.5f, -0.5f, *_material->getR(),*_material->getG(),*_material->getB()
 	};
-	_renderer->bindVBO(vertex, 15);
+	//_renderer->bindVBO(vertex, 15);
 }
 void Shape::initRectangleVertex() {
 	float vertex[20] = {
@@ -40,7 +40,7 @@ void Shape::initRectangleVertex() {
 	0.5f, 0.5f, *_material->getR(),*_material->getG(),*_material->getB(),
 	0.5f, -0.5f, *_material->getR(),*_material->getG(),*_material->getB()
 	};
-	_renderer->bindVBO(vertex, 20);
+	//_renderer->bindVBO(vertex, 20);
 }
 void Shape::setColor(float r, float g, float b) {
 	_material->setColor(r, g, b);

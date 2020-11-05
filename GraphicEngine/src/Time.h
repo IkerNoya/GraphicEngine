@@ -2,7 +2,6 @@
 #define TIME_H
 #include "export.h"
 #include <chrono>
-#include <time.h>
 
 class ENGINE_API Time {
 	std::chrono::system_clock::time_point _startTime;
@@ -21,6 +20,7 @@ public:
 	float getSeconds();
 	float getMinutes();
 	float getHours();
+	float getCurrentTime();
 	void startTime();
 	void tick();
 	float deltaTime();

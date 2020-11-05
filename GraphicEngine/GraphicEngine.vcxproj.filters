@@ -51,6 +51,12 @@
     <ClInclude Include="src\textureImporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gameBase.cpp">
@@ -84,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\textureImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

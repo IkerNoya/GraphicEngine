@@ -72,19 +72,25 @@ unsigned int Renderer::compileShader(unsigned int type, const std::string& sourc
 	return id;
 }
 void Renderer::setSpriteAttrib(unsigned int& program) {
-	_posAttrib = glGetAttribLocation(program, "position");
-	_colorAttrib = glGetAttribLocation(program, "customColor");
-	createVertexAttrib();
-	createColorAttrib();
+	_texturePosAttrib = glGetAttribLocation(program, "position");
+	_textureColorAttrib = glGetAttribLocation(program, "customColor");
+	createVertexAttrib(_texturePosAttrib, 8);
+	createColorAttrib(_textureColorAttrib, 8);
 	createTextureAttrib();
 }
-void Renderer::createVertexAttrib(){
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, 0);
-	glEnableVertexAttribArray(_posAttrib);
+void Renderer::setShapeAttrib(unsigned int& program) {
+	_shapePosAttrib = glGetAttribLocation(program, "position");
+	_shapeColorAttrib = glGetAttribLocation(program, "customColor");
+	createVertexAttrib(_shapePosAttrib, 6);
+	createColorAttrib(_shapePosAttrib, 6);
 }
-void Renderer::createColorAttrib(){
-	glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(_colorAttrib);
+void Renderer::createVertexAttrib(unsigned int posAttrib, int dataSize){
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * dataSize, 0);
+	glEnableVertexAttribArray(posAttrib);
+}
+void Renderer::createColorAttrib(unsigned int colorAttrib, int dataSize){
+	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * dataSize, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(colorAttrib);
 }
 void Renderer::createTextureAttrib() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
@@ -184,23 +190,24 @@ void Renderer::startProgram(unsigned int& shader, glm::mat4 model) {
 	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
-
-void Renderer::draw(unsigned int shape) {
-	int size;
-	if (shape == GL_TRIANGLES) {
-		size = 3;
-		glDrawArrays(GL_TRIANGLES, 0, size);
-	}
-	else if (shape == GL_QUADS) {
-		size = 4;
-		glDrawArrays(GL_QUADS, 0, size);
-	}
-}
 void Renderer::bindSpriteBuffers(unsigned int vbo) {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+}
+void Renderer::bindShapeBuffers(unsigned int vbo) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 }
 void Renderer::UnbindBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
+	bindShapeBuffers(vbo);
+	startProgram(shader, trs);
+	if (shape == GL_TRIANGLES) {
+		glDrawElements(shape, 3, GL_UNSIGNED_INT, 0);
+	}
+	else if (shape == GL_QUADS) {
+		glDrawElements(shape, 6, GL_UNSIGNED_INT, 0);
+	}
 }
 void Renderer::drawTexture(unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
 	bindSpriteBuffers(vbo);

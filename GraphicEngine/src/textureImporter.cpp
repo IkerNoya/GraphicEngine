@@ -24,16 +24,28 @@ TextureImporter::~TextureImporter() {
 
 }
 
-void TextureImporter::loadImage(int height, int width, int nrChannels, const char* path) {
+void TextureImporter::loadImage(int height, int width, int nrChannels, const char* path, bool transparency, unsigned int &texture) {
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	_data = stbi_load(path, &width, &height, &nrChannels, 0);
 	if (_data) {
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
+		if(!transparency)
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
+		else
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
 		std::cout << "Error - Couldn't load texture" << std::endl;
 	}
+
+	freeSpace();
 }
 
 unsigned char* TextureImporter::getData() {

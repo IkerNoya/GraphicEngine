@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\frame.h" />
     <ClInclude Include="src\gameBase.h" />
     <ClInclude Include="src\export.h" />
     <ClInclude Include="src\input.h" />
@@ -33,6 +35,7 @@
     <ClInclude Include="src\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\gameBase.cpp" />
     <ClCompile Include="src\input.cpp" />

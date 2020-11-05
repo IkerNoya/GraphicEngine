@@ -26,7 +26,7 @@ GameBase::~GameBase() {
 		delete shape;
 	if (sprite1 != NULL)
 		delete sprite1;
-	if (sprite1 != NULL)
+	if (sprite2 != NULL)
 		delete sprite2;
 	if (time != NULL) {
 		delete time;
@@ -54,8 +54,8 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
-	shape->setColor(0.5f, 1.0f, 0.7f);
-	shape->init();
+	//shape->setColor(0.5f, 1.0f, 0.7f);
+	//shape->init();
 	//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
 	//glm::mat4 trans = sprite1->getTRS();
 	renderer->setDefaultProjection();
@@ -90,7 +90,7 @@ int GameBase::init() {
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		shape->draw(colorShader, shape->getTRS());
+		//shape->draw(colorShader, shape->getTRS());
 		sprite1->draw(textureShader, sprite1->getTRS());
 		sprite2->draw(textureShader, sprite2->getTRS());
 		// Swap front and back buffers /

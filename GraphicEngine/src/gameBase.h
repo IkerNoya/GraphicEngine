@@ -22,12 +22,13 @@ class ENGINE_API GameBase { // consultar
 protected:
 	Window* window;
 	Renderer* renderer;
-	Shape* shape;
-	Sprite* sprite1;
-	Sprite* sprite2;
-	Sprite* sprite3;
-	Time* time;
+	//Shape* shape;
+	//Sprite* sprite1;
+	//Sprite* sprite2;
+	//Sprite* sprite3;
+	//Time* time;
 	Input* input;
+	unsigned int textureShader;
 public:
 	GameBase();
 	~GameBase();
@@ -37,5 +38,7 @@ public:
 	virtual void initGame() = 0;
 	virtual void updateGame() = 0;
 	virtual void unloadGame() = 0;
+
+	//Time* GetTime();
 };
 #endif // !BASEGAME_H

@@ -19,6 +19,7 @@ GameBase::GameBase() {
 	//sprite3 = new Sprite(renderer, false, true);
 	time = new Time();
 	input = new Input();
+	collisionmanager = new CollisionManager();
 }
 GameBase::~GameBase() {
 	/*if (window != NULL)
@@ -194,6 +195,10 @@ void GameBase::unload() {
 	if (input != NULL) {
 		delete input;
 		input = NULL;
+	}
+	if (collisionmanager != NULL) {
+		delete collisionmanager;
+		collisionmanager = NULL;
 	}
 }
 /*

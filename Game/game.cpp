@@ -38,7 +38,7 @@ void Game::initGame() {
 	sprite2->setColor(1, 1, 1);
 	sprite3->setColor(1, 1, 1);
 	sprite1->setPosition(0, 0, -1.0f);
-	sprite1->setScale(0.5f, 0.5f, 0.5f);
+	sprite1->setScale(0.25f, 0.25f, 0.5f);
 	sprite2->setPosition(0.5f, 0, -1.0f);
 	sprite2->setScale(1, 0.2f, 0.5f);
 	sprite3->setPosition(0, 0.75f, -1.0f);
@@ -88,6 +88,15 @@ void Game::updateGame() {
 	if (input->getKey(Q)) {
 		rotate += 2 * static_cast<float>(time->deltaTime());
 	
+	}
+	if (collisionmanager->CheckCollision2D(sprite1, sprite3, 
+		sprite1->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f), 
+		sprite3->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f))) {
+		std::cout << "colisiono" << std::endl;
+	}
+	else
+	{
+		std::cout << "afuera" << std::endl;
 	}
 	timerr += time->deltaTime();
 	sprite1->setRotZ(rotate);

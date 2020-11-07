@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation.h" />
+    <ClInclude Include="src\collision_manager.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\frame.h" />
     <ClInclude Include="src\gameBase.h" />
@@ -36,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\animation.cpp" />
+    <ClCompile Include="src\collision_manager.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\gameBase.cpp" />
     <ClCompile Include="src\input.cpp" />

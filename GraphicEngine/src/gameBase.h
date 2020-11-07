@@ -9,6 +9,7 @@
 #include "sprite.h";
 #include "Time.h"
 #include "input.h"
+#include "collision_manager.h"
 
 struct Renderer;
 struct Shape;
@@ -28,6 +29,8 @@ protected:
 	//Sprite* sprite3;
 	Time* time;
 	Input* input;
+	CollisionManager* collisionmanager;
+	
 	unsigned int textureShader;
 	unsigned int colorShader;
 public:

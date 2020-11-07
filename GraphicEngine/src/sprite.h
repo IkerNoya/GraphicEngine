@@ -17,7 +17,7 @@ class ENGINE_API Sprite : public Entity {
 	unsigned int _texture;
 	const char* _path;
 	int _size;
-	float* _vertex;
+	float _vertex[32];
 	unsigned int _vbo;
 	unsigned int _ebo;
 	unsigned int _vao;

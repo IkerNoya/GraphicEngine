@@ -18,18 +18,18 @@ Sprite::Sprite(Renderer* renderer, bool isAnimated, bool transparency):Entity(En
 
 Sprite::~Sprite() {
 	glDeleteTextures(1, &_texture);
-	if (_vertex != NULL) {
+	/*if (_vertex != NULL) {
 		delete _vertex;
-	}
+	}*/
 	if (mat != NULL) {
 		delete mat;
 	} 
 	if (anim != NULL) {
 		delete anim;
 	}
-	if (_vertex != NULL) {
+	/*if (_vertex != NULL) {
 		delete _vertex;
-	}
+	}*/
 }
 
 #pragma region SETTERS/GETTERS
@@ -91,7 +91,7 @@ Animation* Sprite::getAnimation() {
 void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
-	_vertex = new float[32] {
+	float _vertex[] = {
 	 1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[0].u, uv[0].v,
 	 1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[1].u, uv[1].v,
 	-1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[2].u, uv[2].v,

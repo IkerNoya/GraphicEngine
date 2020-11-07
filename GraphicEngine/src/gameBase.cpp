@@ -7,7 +7,8 @@
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 
-//float timer = 0; int seconds = 0;
+float timer = 0.0f;
+int seconds = 0;
 
 GameBase::GameBase() {
 	window = new Window();
@@ -16,7 +17,7 @@ GameBase::GameBase() {
 	//sprite1 = new Sprite(renderer, false, false);
 	//sprite2 = new Sprite(renderer, false, true);
 	//sprite3 = new Sprite(renderer, false, true);
-	//time = new Time();
+	time = new Time();
 	input = new Input();
 }
 GameBase::~GameBase() {
@@ -38,8 +39,6 @@ GameBase::~GameBase() {
 }
 
 int GameBase::init() {
-	//GLFWwindow* newWindow;
-
 	window->StartWindow(800, 600, "Graphics Engine");
 	if (!window->GetWindow())
 	{
@@ -65,11 +64,11 @@ int GameBase::init() {
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	textureShader = renderer->createTextureProgram();
-	//unsigned int colorShader = renderer->createColorProgram();
+	renderer->setSpriteAttrib(textureShader);
+	colorShader = renderer->createColorProgram();
 	//sprite1->setTexture("res/raw/meme.jpg");
 	//sprite2->setTexture("res/raw/spriteSheet.png");
 	//sprite3->setTexture("res/raw/Sun.png");
-	//renderer->setSpriteAttrib(textureShader);
 	//sprite1->setColor(1, 1, 1);
 	//sprite2->setColor(1, 1, 1);
 	//sprite3->setColor(1, 1, 1);
@@ -152,13 +151,13 @@ int GameBase::init() {
 
 void GameBase::update() {
 	while (!glfwWindowShouldClose(window->GetWindow())) {
-		//time->tick();
-		//time->reset();
-		/*if (timer >= 1) {
+		time->tick();
+		time->reset();
+		if (timer >= 1) {
 			seconds++;
 			//std::cout << seconds << std::endl;
 			timer = 0;
-		}*/
+		}
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -172,10 +171,14 @@ void GameBase::unload() {
 	glDeleteProgram(textureShader);
 	glfwTerminate();
 
-	if (window != NULL)
+	if (window != NULL) {
 		delete window;
-	if (renderer != NULL)
+		window = NULL;
+	}
+	if (renderer != NULL) {
 		delete renderer;
+		renderer = NULL;
+	}
 	/*if (shape != NULL)
 		delete shape;
 	if (sprite1 != NULL)
@@ -184,9 +187,14 @@ void GameBase::unload() {
 		delete sprite2;
 	if (sprite3 != NULL)
 		delete sprite3;*/
-	/*if (time != NULL) {
+	if (time != NULL) {
 		delete time;
-	}*/
+		time = NULL;
+	}
+	if (input != NULL) {
+		delete input;
+		input = NULL;
+	}
 }
 /*
 Time* GameBase::GetTime() {

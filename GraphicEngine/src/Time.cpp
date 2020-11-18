@@ -62,3 +62,10 @@ void Time::calculateFps() {
 float Time::getFPS() {
 	return fps;
 }
+double oldT = clock();
+void Time::FPS() {
+	double t = clock();
+	float dt = (float)((t - oldT) / 1000.0f);
+	oldT = t;
+	std::cout << "FPS: " << 1.0f / dt << std::endl;
+}

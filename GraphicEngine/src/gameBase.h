@@ -26,8 +26,9 @@ protected:
 	Sprite* sprite1;
 	Sprite* sprite2;
 	Sprite* sprite3;
-	Time* time;
+	Time time;
 	Input* input;
+	Animation* idle;
 public:
 	GameBase();
 	~GameBase();
@@ -37,5 +38,7 @@ public:
 	virtual void initGame() = 0;
 	virtual void updateGame() = 0;
 	virtual void unloadGame() = 0;
+
+	Time& getTime();
 };
 #endif // !BASEGAME_H

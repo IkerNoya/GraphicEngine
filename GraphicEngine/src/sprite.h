@@ -17,7 +17,6 @@ class ENGINE_API Sprite : public Entity {
 	unsigned int _texture;
 	const char* _path;
 	int _size;
-	float* _vertex;
 	unsigned int _vbo;
 	unsigned int _ebo;
 	unsigned int _vao;
@@ -31,6 +30,17 @@ class ENGINE_API Sprite : public Entity {
 	TextureImporter* texImporter;
 	Animation* anim;
 	UV uv[4];
+	unsigned int index[6] = {
+	0, 1, 3,
+	1, 2, 3
+	};
+	float vertex[32] = {
+		1.0f,  1.0f, 0.0f,	1,1,1,  1, 1,
+	    1.0f, -1.0f, 0.0f,	1,1,1,  1, 0,
+	   -1.0f, -1.0f, 0.0f,	1,1,1,  0,0,
+	   -1.0f,  1.0f, 0.0f,	1,1,1,  0, 1
+	};
+	void setColorBuffer();
 public:
 	Sprite(Renderer* renderer, bool isAnimated, bool transparency);
 	~Sprite();
@@ -52,13 +62,13 @@ public:
 	void generateTexture(const char* path);
 	unsigned int getTexture();
 	void bindTexture();
-	float* getVertex();
 	void setAnimCoords(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3);
 	void updateAnimation(Time & time);
 	void setColor(float r, float g, float b);
 	void draw(unsigned int &shader, glm::mat4 trs);
 	void blendSprite();
 	void unblendSprite();
+	void SetCurrentAnimationIndex(int currentAnimation);
 };
 #endif // !SPRITE_H
 

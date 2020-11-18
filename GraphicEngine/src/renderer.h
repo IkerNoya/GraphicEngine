@@ -11,12 +11,9 @@ class ENGINE_API Renderer {
 	unsigned int _vertexShader;
 	unsigned int _fragmentShader;
 	unsigned int _textureShader;
-	unsigned int _texturePosAttrib;
-	unsigned int _textureColorAttrib;
-	unsigned int _shapePosAttrib;
-	unsigned int _shapeColorAttrib;
 	glm::mat4 view;
 	glm::mat4 projection;
+
 public:
 	Renderer();
 	~Renderer();
@@ -37,16 +34,16 @@ public:
 	void setShapeAttrib(unsigned int& program);
 	void createVertexAttrib(unsigned int posAttrib, int dataSize);
 	void createColorAttrib(unsigned int colorAttrib, int dataSize);
-	void createTextureAttrib();
+	void createTextureAttrib(unsigned int colorAttrib, int dataSize);
 	std::string CreateVertexShader();
 	std::string CreateFragmentShader();
 	std::string CreateTextureShader();
 	void startProgram(unsigned int &shader, glm::mat4 model);
-	void bindSpriteBuffers(unsigned int vbo);
+	void bindSpriteBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size);
 	void bindShapeBuffers(unsigned int vbo);
 	void UnbindBuffers();
 	void drawShape(unsigned int shape, unsigned int vbo, unsigned int& shader, glm::mat4 trs);
-	void drawTexture(unsigned int vbo, unsigned int& shader, glm::mat4 trs);
+	void drawTexture(unsigned int vbo, unsigned int vao, float* vertex, unsigned int& shader, glm::mat4 trs);
 };
 
 #endif // !RENDERER_H

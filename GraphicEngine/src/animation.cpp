@@ -1,49 +1,118 @@
 #include "animation.h"
+#include <iostream>
 
-Animation::Animation() {
+Animation::Animation()
+{
 	_currentTime = 0;
-	_length = 200; // find out why
-	_currentTime = 0;
+	_currentFrame = 0;
+	_length = 200;
 }
-Animation::~Animation() {
 
-}
-void Animation::update(Time & time) {
-	_currentTime = time.deltaTime() * _length;
-	while (_currentFrame >= _length)
+Animation::~Animation() {}
+
+void Animation::update(Time& timer)
+{
+	_currentTime = (timer.deltaTime() * _length);
+
+	while (_currentTime >= _length) {
 		_currentTime -= _length;
-	float frameLength = _length / _frames.size();
-	_currentTime = (int)(_currentTime / frameLength);
+	}
+	float frameLength = _length / _animations[_currentAnimation].size();
+	_currentFrame = static_cast<int>(_currentTime / frameLength);
 }
-void Animation::addFrame(float u, float v, int width, int height, int spriteWidth, int spriteHeight, int timeToAnim, int totalFrames, int rowFramesCount) {
+void Animation::addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFramesForFilas)
+{
 	_length = timeToAnim * 200;
-	float indexX = 0;
-	float indexY = 0;
+
+	totalFrames = totalFrames + countFramesForFilas;
+	float index_X = 0;
+	float index_Y = 0;
 	Frame frame;
-	for (int i = 0; i < totalFrames; i++)
-	{
-		frame.frameCoordinates[0].u = (u + indexX) / spriteWidth;
-		frame.frameCoordinates[0].v = (height + indexY) / spriteHeight;
+	for (int i = 0; i < totalFrames; i++) {
+		//--------
+		frame.frameCoordinates[0].u = ((frameX + index_X) / textureWidth);
+		frame.frameCoordinates[0].v = ((spriteHeigth + index_Y) / textureHeigth);
+		std::cout << "u[0] " << frame.frameCoordinates[0].u << std::endl;
+		std::cout << "v[0] " << frame.frameCoordinates[0].v << std::endl;
+		std::cout << std::endl;
 
-		frame.frameCoordinates[1].u = ((u + indexX) + width) / spriteWidth;
-		frame.frameCoordinates[1].v = (height + indexY) / spriteHeight;
+		frame.frameCoordinates[1].u = (((frameX + index_X) + spriteWidth) / textureWidth);
+		frame.frameCoordinates[1].v = ((spriteHeigth + index_Y) / textureHeigth);
+		std::cout << "u[1] " << frame.frameCoordinates[1].u << std::endl;
+		std::cout << "v[1] " << frame.frameCoordinates[1].v << std::endl;
+		std::cout << std::endl;
 
-		frame.frameCoordinates[2].u = ((u + indexX) + width) / spriteWidth;
-		frame.frameCoordinates[2].v = (v + indexY) / spriteHeight;
+		frame.frameCoordinates[2].u = (((frameX + index_X) + spriteWidth) / textureWidth);
+		frame.frameCoordinates[2].v = ((frameY + index_Y) / textureHeigth);
+		std::cout << "u[2] " << frame.frameCoordinates[2].u << std::endl;
+		std::cout << "v[2] " << frame.frameCoordinates[2].v << std::endl;
+		std::cout << std::endl;
 
-		frame.frameCoordinates[3].u = (u + indexX) / spriteWidth;
-		frame.frameCoordinates[3].v = (v + indexY) / spriteHeight;
-		 // averiguar por que ocurren los cambios en las cuentas
-		_frames.push_back(frame);
-		indexX += width;
+		frame.frameCoordinates[3].u = ((frameX + index_X) / textureWidth);
+		frame.frameCoordinates[3].v = ((frameY + index_Y) / textureHeigth);
+		std::cout << "u[3] " << frame.frameCoordinates[3].u << std::endl;
+		std::cout << "v[3] " << frame.frameCoordinates[3].v << std::endl;
+		std::cout << std::endl;
+
+		_totalFrames.push_back(frame);
+		index_X += spriteWidth;
+
 		if (i > 0)
-			if (i % rowFramesCount == 0)
-				indexY += height;
+		{
+			if (i % countFramesForFilas == 0)
+			{
+				index_Y += spriteHeigth;
+				_animations.push_back(_totalFrames);
+				_totalFrames.clear();
+			}
+		}
 	}
 }
-int Animation::getCurrentFrame() {
-	return _currentFrame; 
+void Animation::addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim)
+{
+	_length = timeToAnim * 200;
+
+	Frame frame;
+
+	frame.frameCoordinates[0].u = ((frameX) / textureWidth);
+	frame.frameCoordinates[0].v = ((spriteHeigth + frameY) / textureHeigth);
+
+
+	frame.frameCoordinates[1].u = (((frameX)+spriteWidth) / textureWidth);
+	frame.frameCoordinates[1].v = ((spriteHeigth + frameY) / textureHeigth);
+	
+	frame.frameCoordinates[2].u = (((frameX)+spriteWidth) / textureWidth);
+	frame.frameCoordinates[2].v = ((frameY) / textureHeigth);
+
+	frame.frameCoordinates[3].u = ((frameX) / textureWidth);
+	frame.frameCoordinates[3].v = ((frameY) / textureHeigth);
+
+	_totalFrames.push_back(frame);
 }
-std::vector<Frame>& Animation::GetFrames() {
-	return _frames;
+
+void Animation::addAnimation()
+{
+	if (_totalFrames.size() > 0)
+	{
+		//cout << "PUSHIE LA ANIMACION VIEJA" << endl;
+		_animations.push_back(_totalFrames);
+		_totalFrames.clear();
+		//cout << _animations.size() << endl;
+	}
+}
+int Animation::getCurrentFrame()
+{
+	return _currentFrame;
+}
+
+void Animation::setCurrentAnimation(int currentAnimation) {
+	_currentAnimation = currentAnimation;
+}
+
+vector<Frame>& Animation::getAnimation()
+{
+	if (_currentAnimation < _animations.size())
+		return _animations[_currentAnimation];
+
+	return _animations[_animations.size() - 1];
 }

@@ -4,17 +4,31 @@
 #include "frame.h"
 #include "Time.h"
 #include <vector>
+#include <algorithm>
+
+using namespace std;
+
 class ENGINE_API Animation {
-	int _currentFrame;
-	float _length;
-	float _currentTime;
-	std::vector<Frame> _frames;
+    int _currentFrame;
+    float _currentTime;
+    float _length;
+    int _acumulationWidth;
+    int _acumulationHeighth;
+    vector<Frame> _totalFrames;
+    vector<vector<Frame>> _animations;
+    int _currentAnimation = 0;
+    float* _vertex;
 public:
-	Animation();
-	~Animation();
-	void update(Time & time);
-	void addFrame(float u, float v, int width, int height, int spriteWidth, int spriteHeight, int timeToAnim, int totalFrames, int rowFramesCount);
-	int getCurrentFrame();
-	std::vector<Frame>& GetFrames();
+    Animation();
+    ~Animation();
+    void setVertices(float* vertex);
+    void update(Time& time);
+    void addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFilas);
+    int getCurrentFrame();
+    void setAnimationCoord();
+    vector<Frame>& getAnimation();
+    void setCurrentAnimation(int currentAnimation);
+    void addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim);
+    void addAnimation();
 };
 #endif // !ANIMATION_H

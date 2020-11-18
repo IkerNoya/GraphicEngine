@@ -72,17 +72,19 @@ unsigned int Renderer::compileShader(unsigned int type, const std::string& sourc
 	return id;
 }
 void Renderer::setSpriteAttrib(unsigned int& program) {
-	_texturePosAttrib = glGetAttribLocation(program, "position");
-	_textureColorAttrib = glGetAttribLocation(program, "customColor");
-	createVertexAttrib(_texturePosAttrib, 8);
-	createColorAttrib(_textureColorAttrib, 8);
-	createTextureAttrib();
+	unsigned int texturePosAttrib = glGetAttribLocation(program, "position");
+	unsigned int textureColorAttrib = glGetAttribLocation(program, "customColor");
+	unsigned int uvAttrib = glGetAttribLocation(program, "aTexCoord");
+	//glUniform1i((glGetUniformLocation(program, "ourTexture")), 0);
+	createVertexAttrib(texturePosAttrib, 8);
+	createColorAttrib(textureColorAttrib, 8);
+	createTextureAttrib(uvAttrib, 8);
 }
 void Renderer::setShapeAttrib(unsigned int& program) {
-	_shapePosAttrib = glGetAttribLocation(program, "position");
-	_shapeColorAttrib = glGetAttribLocation(program, "customColor");
-	createVertexAttrib(_shapePosAttrib, 6);
-	createColorAttrib(_shapePosAttrib, 6);
+	unsigned int shapePosAttrib = glGetAttribLocation(program, "position");
+	unsigned int shapeColorAttrib = glGetAttribLocation(program, "customColor");
+	createVertexAttrib(shapePosAttrib, 6);
+	createColorAttrib(shapeColorAttrib, 6);
 }
 void Renderer::createVertexAttrib(unsigned int posAttrib, int dataSize){
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * dataSize, 0);
@@ -92,9 +94,9 @@ void Renderer::createColorAttrib(unsigned int colorAttrib, int dataSize){
 	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * dataSize, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(colorAttrib);
 }
-void Renderer::createTextureAttrib() {
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+void Renderer::createTextureAttrib(unsigned int uvAttribute, int dataSize) {
+	glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, dataSize * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(uvAttribute);
 }
 int Renderer::createColorProgram() {
 	unsigned int program = glCreateProgram();
@@ -185,13 +187,16 @@ void Renderer::startProgram(unsigned int& shader, glm::mat4 model) {
 	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
 	//unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
 	//unsigned int viewLoc = glGetUniformLocation(shader, "view");
-	glUseProgram(shader);
+	glUseProgram(shader);	
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
-void Renderer::bindSpriteBuffers(unsigned int vbo) {
+void Renderer::bindSpriteBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size) {
+	int memorySize = sizeof(float) * size;
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+	glBufferData(GL_ARRAY_BUFFER, memorySize, vertex, GL_STATIC_DRAW);
 }
 void Renderer::bindShapeBuffers(unsigned int vbo) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -200,6 +205,7 @@ void Renderer::UnbindBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
+	
 	bindShapeBuffers(vbo);
 	startProgram(shader, trs);
 	if (shape == GL_TRIANGLES) {
@@ -209,8 +215,9 @@ void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int& sha
 		glDrawElements(shape, 6, GL_UNSIGNED_INT, 0);
 	}
 }
-void Renderer::drawTexture(unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
-	bindSpriteBuffers(vbo);
+void Renderer::drawTexture(unsigned int vbo, unsigned int vao, float* vertex, unsigned int& shader, glm::mat4 trs) {
+	bindSpriteBuffers(vbo, vao, vertex, 32);
+	setSpriteAttrib(shader);
 	startProgram(shader, trs);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	UnbindBuffers();

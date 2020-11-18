@@ -17,6 +17,7 @@ class ENGINE_API Sprite : public Entity {
 	unsigned int _texture;
 	const char* _path;
 	int _size;
+	float _vertex[32];
 	unsigned int _vbo;
 	unsigned int _ebo;
 	unsigned int _vao;
@@ -65,7 +66,7 @@ public:
 	void setAnimCoords(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3);
 	void updateAnimation(Time & time);
 	void setColor(float r, float g, float b);
-	void draw(unsigned int &shader, glm::mat4 trs);
+	void draw(unsigned int &shader);
 	void blendSprite();
 	void unblendSprite();
 	void SetCurrentAnimationIndex(int currentAnimation);

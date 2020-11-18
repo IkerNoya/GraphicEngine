@@ -18,6 +18,7 @@ struct Window;
 struct Input;
 struct Sprite;
 struct Time;
+struct CollisionManager;
 
 class ENGINE_API GameBase { // consultar
 protected:
@@ -27,7 +28,7 @@ protected:
 	//Sprite* sprite1;
 	//Sprite* sprite2;
 	//Sprite* sprite3;
-	Time* time;
+	Time time;
 	Input* input;
 	CollisionManager* collisionmanager;
 	

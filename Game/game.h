@@ -6,6 +6,8 @@ private:
 	Sprite* sprite1;
 	Sprite* sprite2;
 	Sprite* sprite3;
+	Animation* idle;
+
 public:
 	Game();
 	~Game();

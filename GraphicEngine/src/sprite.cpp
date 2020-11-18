@@ -24,13 +24,18 @@ Sprite::Sprite(Renderer* renderer, bool isAnimated, bool transparency):Entity(En
 
 Sprite::~Sprite() {
 	glDeleteTextures(1, &_texture);
-
+	/*if (_vertex != NULL) {
+		delete _vertex;
+	}*/
 	if (mat != NULL) {
 		delete mat;
 	} 
 	if (anim != NULL) {
 		delete anim;
 	}
+	/*if (_vertex != NULL) {
+		delete _vertex;
+	}*/
 }
 #pragma region SETTERS/GETTERS
 void Sprite::setColorBuffer() {
@@ -96,6 +101,12 @@ Animation* Sprite::getAnimation() {
 void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
+	float _vertex[] = {
+	 1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[0].u, uv[0].v,
+	 1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[1].u, uv[1].v,
+	-1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[2].u, uv[2].v,
+	-1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[3].u, uv[3].v
+	};
 	_size = 32;
 
 	createVAO();
@@ -144,19 +155,17 @@ void Sprite::setColor(float r, float g, float b) {
 	setColorBuffer();
 }
 
-void Sprite::draw(unsigned int &shader, glm::mat4 trs) {
+void Sprite::draw(unsigned int &shader) {
 	if (_transparency) {
-
-		std::cout<<_vbo<<std::endl;
 		blendSprite();
 		bindTexture();
-		_renderer->drawTexture(getVBO(), getVAO(), vertex, shader, trs);
+		_renderer->drawTexture(getVBO(), getVAO(), vertex, shader, getTRS());
 		unblendSprite();
 		glDisable(GL_TEXTURE_2D);
 	}
 	else {
 		bindTexture();
-		_renderer->drawTexture(getVBO(), getVAO(), vertex, shader, trs);
+		_renderer->drawTexture(getVBO(), getVAO(), vertex, shader, getTRS());
 		glDisable(GL_TEXTURE_2D);
 	}
 }

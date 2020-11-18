@@ -12,7 +12,11 @@ float timerr = 0.0f;
 float rotate = 0.0f;
 
 Game::Game() : GameBase(){
-	
+
+	sprite1 = new Sprite(renderer, false, false);
+	sprite2 = new Sprite(renderer, true, true);
+	sprite3 = new Sprite(renderer, false, true);
+	idle = new Animation();
 }
 
 Game::~Game() {
@@ -26,12 +30,11 @@ int Game::executeGame() {
 
 void Game::initGame() {
 	//shape = new Shape(GL_QUADS, renderer);
-	sprite1 = new Sprite(renderer, false, false);
-	sprite2 = new Sprite(renderer, false, true);
-	sprite3 = new Sprite(renderer, false, true);
-	
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/spriteSheet.png");
+	idle->addFrame(0, 0, 525 / 7, 75, 525, 75, 1.0f, 7, 7);
+	sprite2->setAnimation(idle);
+	sprite2->SetCurrentAnimationIndex(0);
 	sprite3->setTexture("res/raw/Sun.png");
 	renderer->setSpriteAttrib(textureShader);
 	sprite1->setColor(1, 1, 1);
@@ -46,60 +49,46 @@ void Game::initGame() {
 }
 
 void Game::updateGame() {
-	sprite1->draw(textureShader, sprite1->getTRS());
-	sprite2->draw(textureShader, sprite2->getTRS());
-	sprite3->draw(textureShader, sprite3->getTRS());
-	
+	sprite1->draw(textureShader);
+	sprite2->draw(textureShader);
+	sprite2->updateAnimation(getTime());
+	sprite3->draw(textureShader);
 	if (input->getKey(D)) {
-		x1a += 2.0f * static_cast<float>(time->deltaTime());
+		x1a += 0.0004f * static_cast<float>(time.deltaTime());
 		sprite1->setPosition(x1a, y1a, z1a);
 	}
 	if (input->getKey(RIGHT)) {
-		x2b += 2.0f * static_cast<float>(time->deltaTime());
+		x2b += 0.0004f * static_cast<float>(time.deltaTime());
 		sprite2->setPosition(x2b, y2b, z2b);
 	}
 	if (input->getKey(A)) {
-		x1a -= 2.0f * static_cast<float>(time->deltaTime());
+		x1a -= 0.0004f * static_cast<float>(time.deltaTime());
 		sprite1->setPosition(x1a, y1a, z1a);
 	}
 	if (input->getKey(LEFT)) {
-		x2b -= static_cast<float>(2.0f * time->deltaTime());
+		x2b -= static_cast<float>(0.0004f * time.deltaTime());
 		sprite2->setPosition(x2b, y2b, z2b);
 	}
 	if (input->getKey(W)) {
-		y1a += 2.0f * static_cast<float>(time->deltaTime());
+		y1a += 0.0004f * static_cast<float>(time.deltaTime());
 		sprite1->setPosition(x1a, y1a, z1a);
 	}
 	if (input->getKey(UP)) {
-		y2b += 2.0f * static_cast<float>(time->deltaTime());
+		y2b += 0.0004f * static_cast<float>(time.deltaTime());
 		sprite2->setPosition(x2b, y2b, z2b);
 	}
 	if (input->getKey(S)) {
-		y1a -= 2.0f * static_cast<float>(time->deltaTime());
+		y1a -= 0.0004f * static_cast<float>(time.deltaTime());
 		sprite1->setPosition(x1a, y1a, z1a);
 	}
 	if (input->getKey(DOWN)) {
-		y2b -= 2.0f * static_cast<float>(time->deltaTime());
+		y2b -= 0.0004f * static_cast<float>(time.deltaTime());
 		sprite2->setPosition(x2b, y2b, z2b);
-	}
-	if (input->getKey(E)) {
-		rotate -= 2.0f * static_cast<float>(time->deltaTime());
-	}
-	if (input->getKey(Q)) {
-		rotate += 2 * static_cast<float>(time->deltaTime());
-	
 	}
 	if (collisionmanager->CheckCollision2D(sprite1, sprite3, 
 		sprite1->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f), 
 		sprite3->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f))) {
-		std::cout << "colisiono" << std::endl;
 	}
-	else
-	{
-		std::cout << "afuera" << std::endl;
-	}
-	timerr += time->deltaTime();
-	sprite1->setRotZ(rotate);
 }
 
 void Game::unloadGame() {

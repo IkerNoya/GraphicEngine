@@ -9,6 +9,7 @@
 #include "sprite.h";
 #include "Time.h"
 #include "input.h"
+#include "collision_manager.h"
 
 struct Renderer;
 struct Shape;
@@ -22,13 +23,16 @@ class ENGINE_API GameBase { // consultar
 protected:
 	Window* window;
 	Renderer* renderer;
-	Shape* shape;
-	Sprite* sprite1;
-	Sprite* sprite2;
-	Sprite* sprite3;
-	Time time;
+	//Shape* shape;
+	//Sprite* sprite1;
+	//Sprite* sprite2;
+	//Sprite* sprite3;
+	Time* time;
 	Input* input;
-	Animation* idle;
+	CollisionManager* collisionmanager;
+	
+	unsigned int textureShader;
+	unsigned int colorShader;
 public:
 	GameBase();
 	~GameBase();

@@ -6,11 +6,13 @@
 struct GLFWwindow;
 
 class ENGINE_API Window{
-
+private:
+	GLFWwindow* _window;
 public:
 	Window();
 	~Window();
-	int StartWindow(int width, int height, const char* windowName, GLFWwindow* &window);
+	int StartWindow(int width, int height, const char* windowName);
+	GLFWwindow* GetWindow();
 };
 #endif // !WINDOW_H
 

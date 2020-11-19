@@ -11,8 +11,8 @@ class ENGINE_API Renderer {
 	unsigned int _vertexShader;
 	unsigned int _fragmentShader;
 	unsigned int _textureShader;
-	glm::mat4 view;
-	glm::mat4 projection;
+	//glm::mat4 view;
+	//glm::mat4 projection;
 
 public:
 	Renderer();
@@ -23,10 +23,10 @@ public:
 	unsigned int getVertexShader();
 	unsigned int getFragmentShader();
 	unsigned int getTextureShader();
-	void setDefaultView();
-	void setDefaultProjection();
-	glm::mat4 getView();
-	glm::mat4 getProjection();
+	void setDefaultView(glm::mat4 view);
+	void setDefaultProjection(glm::mat4 projection);
+	/*glm::mat4 getView();
+	glm::mat4 getProjection();*/
 	unsigned int compileShader(unsigned int type, const std::string& source);
 	int createColorProgram();
 	int createTextureProgram();
@@ -42,6 +42,7 @@ public:
 	void bindSpriteBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size);
 	void bindShapeBuffers(unsigned int vbo);
 	void UnbindBuffers();
+	void drawCamera(unsigned int& shader, glm::mat4 view, glm::mat4 projection, glm::mat4 model);
 	void drawShape(unsigned int shape, unsigned int vbo, unsigned int& shader, glm::mat4 trs);
 	void drawTexture(unsigned int vbo, unsigned int vao, float* vertex, unsigned int& shader, glm::mat4 trs);
 };

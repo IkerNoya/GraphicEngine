@@ -27,13 +27,14 @@ void Renderer::setFragmentShader(const std::string& fragmentShader) {
 void Renderer::setTextureShader(const std::string& textureShader) {
 	_textureShader = compileShader(GL_FRAGMENT_SHADER, textureShader);
 }
-void Renderer::setDefaultView() {
+void Renderer::setDefaultView(glm::mat4 view) {
 	//                                 pos                        direction                          up
 	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
-void Renderer::setDefaultProjection() {
+void Renderer::setDefaultProjection(glm::mat4 projection) {
+	//projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
 	//                               FOV              Aspect      near  front
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 unsigned int Renderer::getVertexShader() {
 	return _vertexShader;
@@ -44,12 +45,12 @@ unsigned int Renderer::getFragmentShader() {
 unsigned int Renderer::getTextureShader() {
 	return _textureShader;
 }
-glm::mat4 Renderer::getView() {
-	return view;
-}
-glm::mat4 Renderer::getProjection() {
-	return projection;
-}
+//glm::mat4 Renderer::getView() {
+//	return view;
+//}
+//glm::mat4 Renderer::getProjection() {
+//	return projection;
+//}
 unsigned int Renderer::compileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);
 	const char* src = source.c_str();
@@ -75,7 +76,7 @@ void Renderer::setSpriteAttrib(unsigned int& program) {
 	unsigned int texturePosAttrib = glGetAttribLocation(program, "position");
 	unsigned int textureColorAttrib = glGetAttribLocation(program, "customColor");
 	unsigned int uvAttrib = glGetAttribLocation(program, "aTexCoord");
-	//glUniform1i((glGetUniformLocation(program, "ourTexture")), 0);
+	glUniform1i((glGetUniformLocation(program, "ourTexture")), 0);
 	createVertexAttrib(texturePosAttrib, 8);
 	createColorAttrib(textureColorAttrib, 8);
 	createTextureAttrib(uvAttrib, 8);
@@ -83,6 +84,7 @@ void Renderer::setSpriteAttrib(unsigned int& program) {
 void Renderer::setShapeAttrib(unsigned int& program) {
 	unsigned int shapePosAttrib = glGetAttribLocation(program, "position");
 	unsigned int shapeColorAttrib = glGetAttribLocation(program, "customColor");
+
 	createVertexAttrib(shapePosAttrib, 6);
 	createColorAttrib(shapeColorAttrib, 6);
 }
@@ -141,13 +143,15 @@ std::string Renderer::CreateVertexShader() {
 		"out vec2 TexCoord;\n"
 		"\n"
 		"uniform mat4 transform;\n"
+		"uniform mat4 view;\n"
+		"uniform mat4 projection;\n"
 
 		"\n"
 		"void main()\n"
 		"{\n"
 		"  color = customColor;\n"
 		"  TexCoord = aTexCoord;\n"
-		"  gl_Position = transform * vec4(position, 1.0);\n"
+		"  gl_Position = projection * view * transform * vec4(position, 1.0);\n"
 		"}\n"
 		;
 	return vertexShader;
@@ -185,12 +189,8 @@ std::string Renderer::CreateTextureShader() {
 }
 void Renderer::startProgram(unsigned int& shader, glm::mat4 model) {
 	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
-	//unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
-	//unsigned int viewLoc = glGetUniformLocation(shader, "view");
 	glUseProgram(shader);	
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
-	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
 void Renderer::bindSpriteBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size) {
 	int memorySize = sizeof(float) * size;
@@ -203,6 +203,15 @@ void Renderer::bindShapeBuffers(unsigned int vbo) {
 }
 void Renderer::UnbindBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void Renderer::drawCamera(unsigned int& shader, glm::mat4 view, glm::mat4 projection, glm::mat4 model) {
+	unsigned int transformLoc = glGetUniformLocation(shader, "transform");
+	unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
+	unsigned int viewLoc = glGetUniformLocation(shader, "view");
+	glUseProgram(shader);
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 }
 void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
 	

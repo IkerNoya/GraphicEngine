@@ -20,11 +20,11 @@ void Animation::update(Time& timer)
 	float frameLength = _length / _animations[_currentAnimation].size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
 }
-void Animation::addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFramesForFilas)
+void Animation::addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int counFilas)
 {
 	_length = timeToAnim * 200;
 
-	totalFrames = totalFrames + countFramesForFilas;
+	totalFrames = totalFrames + counFilas;
 	float index_X = 0;
 	float index_Y = 0;
 	Frame frame;
@@ -32,34 +32,22 @@ void Animation::addFrame(float frameX, float frameY, int spriteWidth, int sprite
 		//--------
 		frame.frameCoordinates[0].u = ((frameX + index_X) / textureWidth);
 		frame.frameCoordinates[0].v = ((spriteHeigth + index_Y) / textureHeigth);
-		std::cout << "u[0] " << frame.frameCoordinates[0].u << std::endl;
-		std::cout << "v[0] " << frame.frameCoordinates[0].v << std::endl;
-		std::cout << std::endl;
 
 		frame.frameCoordinates[1].u = (((frameX + index_X) + spriteWidth) / textureWidth);
 		frame.frameCoordinates[1].v = ((spriteHeigth + index_Y) / textureHeigth);
-		std::cout << "u[1] " << frame.frameCoordinates[1].u << std::endl;
-		std::cout << "v[1] " << frame.frameCoordinates[1].v << std::endl;
-		std::cout << std::endl;
 
 		frame.frameCoordinates[2].u = (((frameX + index_X) + spriteWidth) / textureWidth);
 		frame.frameCoordinates[2].v = ((frameY + index_Y) / textureHeigth);
-		std::cout << "u[2] " << frame.frameCoordinates[2].u << std::endl;
-		std::cout << "v[2] " << frame.frameCoordinates[2].v << std::endl;
-		std::cout << std::endl;
 
 		frame.frameCoordinates[3].u = ((frameX + index_X) / textureWidth);
 		frame.frameCoordinates[3].v = ((frameY + index_Y) / textureHeigth);
-		std::cout << "u[3] " << frame.frameCoordinates[3].u << std::endl;
-		std::cout << "v[3] " << frame.frameCoordinates[3].v << std::endl;
-		std::cout << std::endl;
 
 		_totalFrames.push_back(frame);
 		index_X += spriteWidth;
 
 		if (i > 0)
 		{
-			if (i % countFramesForFilas == 0)
+			if (i % counFilas == 0)
 			{
 				index_Y += spriteHeigth;
 				_animations.push_back(_totalFrames);

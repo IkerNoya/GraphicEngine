@@ -55,12 +55,17 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
-	renderer->setDefaultProjection();
-	renderer->setDefaultView();
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);
+	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	projection = glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	//projection = glm::ortho(0.0f,800.0f,0.0f,600.0f,0.1f,100.0f);
 	textureShader = renderer->createTextureProgram();
 	renderer->setSpriteAttrib(textureShader);
+	renderer->drawCamera(textureShader, view, projection, model);
 	return 0;
 }
 

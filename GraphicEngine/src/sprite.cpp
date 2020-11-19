@@ -3,23 +3,15 @@
 #include "sprite.h"
 #include "stb_image.h"
 
-Sprite::Sprite(Renderer* renderer, bool isAnimated, bool transparency):Entity(Entity::_renderer){
+Sprite::Sprite(Renderer* renderer, bool transparency):Entity(Entity::_renderer){
 	texImporter = new TextureImporter();
 	mat = new Material();
-	_isAnimated = isAnimated;
 	_transparency = transparency;
-	if (!_isAnimated) {
-		uv[0].u = 1.0f; uv[0].v = 1.0f;
-		uv[1].u = 1.0f; uv[1].v = 0;
-		uv[2].u = 0;    uv[2].v = 0;
-		uv[3].u = 0;    uv[3].v = 1.0f;
-	}
-	else {
-		uv[0].u = 0;    uv[0].v = 0;
-		uv[1].u = 0;    uv[1].v = 0;
-		uv[2].u = 0;    uv[2].v = 0;
-		uv[3].u = 0;    uv[3].v = 0;
-	}
+	uv[0].u = 0.0f; uv[0].v = 0.0f;
+	uv[1].u = 0.0f; uv[1].v = 0;
+	uv[2].u = 0;    uv[2].v = 0;
+	uv[3].u = 0;    uv[3].v = 0.0f;
+
 }
 
 Sprite::~Sprite() {
@@ -125,10 +117,11 @@ unsigned int Sprite::getTexture() {
 
 void Sprite::bindTexture() {
 	glBindTexture(GL_TEXTURE_2D, _texture);
+	glActiveTexture(GL_TEXTURE0);
 }
 
 void Sprite::setAnimCoords(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3) {
-	vertex[6] = u0;  vertex[7] = v0;
+	vertex[6] = u0;   vertex[7] = v0;
 	vertex[14] = u1;  vertex[15] = v1;
 	vertex[22] = u2;  vertex[23] = v2;
 	vertex[30] = u3;  vertex[31] = v3;

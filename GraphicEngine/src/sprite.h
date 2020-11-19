@@ -21,7 +21,6 @@ class ENGINE_API Sprite : public Entity {
 	unsigned int _vbo;
 	unsigned int _ebo;
 	unsigned int _vao;
-	bool _isAnimated;
 	bool _transparency;
 	int _currentFrame;
 	int _previousFrame;
@@ -43,7 +42,7 @@ class ENGINE_API Sprite : public Entity {
 	};
 	void setColorBuffer();
 public:
-	Sprite(Renderer* renderer, bool isAnimated, bool transparency);
+	Sprite(Renderer* renderer, bool transparency);
 	~Sprite();
 	void setHeight(int height);
 	int getHeight();

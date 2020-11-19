@@ -134,9 +134,9 @@ void Sprite::updateAnimation(Time& time) {
 
 		if (_currentFrame != _previousFrame) {
 			setAnimCoords(anim->getAnimation()[_currentFrame].frameCoordinates[0].u, anim->getAnimation()[_currentFrame].frameCoordinates[0].v,
-						  anim->getAnimation()[_currentFrame].frameCoordinates[1].u, anim->getAnimation()[_currentFrame].frameCoordinates[1].v,
+						  anim->getAnimation()[_currentFrame].frameCoordinates[3].u, anim->getAnimation()[_currentFrame].frameCoordinates[3].v,
 				          anim->getAnimation()[_currentFrame].frameCoordinates[2].u, anim->getAnimation()[_currentFrame].frameCoordinates[2].v,
-				          anim->getAnimation()[_currentFrame].frameCoordinates[3].u, anim->getAnimation()[_currentFrame].frameCoordinates[3].v);
+				          anim->getAnimation()[_currentFrame].frameCoordinates[1].u, anim->getAnimation()[_currentFrame].frameCoordinates[1].v);
 			_previousFrame = _currentFrame;
 		}
 		setAnimation(anim);

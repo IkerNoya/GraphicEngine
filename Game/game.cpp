@@ -42,7 +42,6 @@ void Game::initGame() {
 	sprite2->setPosition(x, y, z);
 	sprite3->setPosition(0, 0.75f, -1.0f);
 	sprite3->setScale(0.25f, 0.25f, 0.5f);
-	sprite2->setRotZ(1.575f);
 	sprite2->setScale(0.25f, 0.25f, 0.25f);
 }
 

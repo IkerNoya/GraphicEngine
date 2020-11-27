@@ -9,7 +9,8 @@
 #include <fstream>
 
 Renderer::Renderer() {
-
+	view = glm::mat4(1.0f);
+	projection = glm::mat4(1.0f);
 }
 
 Renderer::~Renderer() {
@@ -27,14 +28,14 @@ void Renderer::setFragmentShader(const std::string& fragmentShader) {
 void Renderer::setTextureShader(const std::string& textureShader) {
 	_textureShader = compileShader(GL_FRAGMENT_SHADER, textureShader);
 }
-void Renderer::setDefaultView(glm::mat4 view) {
+void Renderer::setDefaultView() {
 	//                                 pos                        direction                          up
 	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
-void Renderer::setDefaultProjection(glm::mat4 projection) {
-	//projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+void Renderer::setDefaultProjection() {
+	projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, 0.1f, 100.0f);
 	//                               FOV              Aspect      near  front
-	projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	//projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 unsigned int Renderer::getVertexShader() {
 	return _vertexShader;
@@ -45,12 +46,12 @@ unsigned int Renderer::getFragmentShader() {
 unsigned int Renderer::getTextureShader() {
 	return _textureShader;
 }
-//glm::mat4 Renderer::getView() {
-//	return view;
-//}
-//glm::mat4 Renderer::getProjection() {
-//	return projection;
-//}
+glm::mat4 Renderer::getView() {
+	return view;
+}
+glm::mat4 Renderer::getProjection() {
+	return projection;
+}
 unsigned int Renderer::compileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);
 	const char* src = source.c_str();
@@ -218,10 +219,10 @@ void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int& sha
 	bindShapeBuffers(vbo);
 	startProgram(shader, trs);
 	if (shape == GL_TRIANGLES) {
-		glDrawElements(shape, 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 	}
 	else if (shape == GL_QUADS) {
-		glDrawElements(shape, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_QUADS, 6, GL_UNSIGNED_INT, 0);
 	}
 }
 void Renderer::drawTexture(unsigned int vbo, unsigned int vao, float* vertex, unsigned int& shader, glm::mat4 trs) {

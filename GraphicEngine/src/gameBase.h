@@ -28,6 +28,7 @@ protected:
 	//Sprite* sprite1;
 	//Sprite* sprite2;
 	//Sprite* sprite3;
+	Time animationTime;
 	Time time;
 	Input* input;
 	CollisionManager* collisionmanager;

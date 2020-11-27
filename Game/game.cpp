@@ -2,7 +2,8 @@
 
 float x = 0;
 float y = 0;
-float z = -1;
+float z = 0;
+float speed = 500;
 
 float timerr = 0.0f; 
 //int seconds = 0;
@@ -37,12 +38,16 @@ void Game::initGame() {
 	sprite1->setColor(1, 1, 1);
 	sprite2->setColor(1, 1, 1);
 	sprite3->setColor(1, 1, 1);
-	sprite1->setPosition(0, 0, -1.0f);
-	sprite1->setScale(0.25f, 0.25f, 0.5f);
-	sprite2->setPosition(x, y, z);
-	sprite3->setPosition(0, 0.75f, -1.0f);
-	sprite3->setScale(0.25f, 0.25f, 0.5f);
-	sprite2->setScale(0.25f, 0.25f, 0.25f);
+	sprite1->setPosition(1180, 620, 0);
+	sprite1->setScale(100, 100, 100);
+	sprite2->setPosition(window->getWidth()/2, window->getHeight()/2, 0);
+	x = window->getWidth() / 2;
+	y = window->getHeight() / 2;
+	sprite2->setScale(100,100,100);
+	sprite3->setPosition(window->getWidth() / 2, 600.0f, 0);
+	sprite3->setScale(100,100,100);
+
+
 }
 
 void Game::updateGame() {
@@ -50,28 +55,22 @@ void Game::updateGame() {
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
 	sprite3->draw(textureShader);
-	if (input->getKey(W)) {
-		z += 0.0004f;
-		sprite2->setPosition(x, y, z);
-	}
-	if (input->getKey(S)) {
-		z -= 0.0004f;
-		sprite2->setPosition(x, y, z);
-	}
+	std::cout << sprite2->transform.position.x << std::endl;
+	std::cout << sprite2->transform.position.y << std::endl;
 	if (input->getKey(D)) {
-		x += 0.0004f;
+		x += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
 	if (input->getKey(A)) {
-		x -= 0.0004f;
+		x -= speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
-	if (input->getKey(Q)) {
-		y -= 0.0004f;
+	if (input->getKey(S)) {
+		y -= speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
-	if (input->getKey(E)) {
-		y += 0.0004f;
+	if (input->getKey(W)) {
+		y += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
 	if (collisionmanager->CheckCollision2D(sprite1, sprite3,

@@ -11,7 +11,7 @@ float timer = 0.0f;
 int seconds = 0;
 
 GameBase::GameBase() {
-	window = new Window();
+	window = new Window(1280.0f, 720.0f);
 	renderer = new Renderer();
 	input = new Input();
 	collisionmanager = new CollisionManager();
@@ -38,7 +38,7 @@ GameBase::~GameBase() {
 }
 
 int GameBase::init() {
-	window->StartWindow(800, 600, "Graphics Engine");
+	window->StartWindow("Graphics Engine");
 	if (!window->GetWindow())
 	{
 		glfwTerminate();
@@ -47,7 +47,7 @@ int GameBase::init() {
 	input->setInputWindow(window->GetWindow());
 
 	glfwMakeContextCurrent(window->GetWindow());
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, 1280, 720);
 	glewExperimental = GL_TRUE;
 
 	glewInit();
@@ -57,21 +57,20 @@ int GameBase::init() {
 	}
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
+	renderer->setDefaultView();
+	renderer->setDefaultProjection();
 	glm::mat4 model = glm::mat4(1.0f);
-	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	projection = glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-	//projection = glm::ortho(0.0f,800.0f,0.0f,600.0f,0.1f,100.0f);
 	textureShader = renderer->createTextureProgram();
+	renderer->drawCamera(textureShader, renderer->getView(), renderer->getProjection(), model);
 	renderer->setSpriteAttrib(textureShader);
-	renderer->drawCamera(textureShader, view, projection, model);
 	return 0;
 }
 
 void GameBase::update() {
 	while (!glfwWindowShouldClose(window->GetWindow())) {
+		animationTime.tick();
 		time.tick();
+		time.reset();
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -87,6 +86,6 @@ void GameBase::unload() {
 
 }
 Time& GameBase::getTime() {
-	return time;
+	return animationTime;
 }
 

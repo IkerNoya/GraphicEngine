@@ -16,21 +16,15 @@ Sprite::Sprite(Renderer* renderer, bool transparency):Entity(Entity::_renderer){
 
 Sprite::~Sprite() {
 	glDeleteTextures(1, &_texture);
-	/*if (_vertex != NULL) {
-		delete _vertex;
-	}*/
 	if (mat != NULL) {
 		delete mat;
 	} 
 	if (anim != NULL) {
 		delete anim;
 	}
-	/*if (_vertex != NULL) {
-		delete _vertex;
-	}*/
 }
 #pragma region SETTERS/GETTERS
-void Sprite::setColorBuffer() {
+void Sprite::setColorVertex() {
 	vertex[3] = *mat->getR(); vertex[4] = *mat->getG(); vertex[5] = *mat->getB();
 	vertex[11] = *mat->getR(); vertex[12] = *mat->getG(); vertex[13] = *mat->getB();
 	vertex[19] = *mat->getR(); vertex[20] = *mat->getG(); vertex[21] = *mat->getB();
@@ -93,14 +87,7 @@ Animation* Sprite::getAnimation() {
 void Sprite::setTexture(const char* path) {
 	stbi_set_flip_vertically_on_load(true);
 	generateTexture(path);
-	float _vertex[] = {
-	 1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[0].u, uv[0].v,
-	 1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[1].u, uv[1].v,
-	-1, -1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[2].u, uv[2].v,
-	-1,  1, 0.0f, *mat->getR(), *mat->getG(), *mat->getB(),  uv[3].u, uv[3].v
-	};
 	_size = 32;
-
 	createVAO();
 	createEBO(index, 6);
 	createVBO(vertex, _size);
@@ -145,7 +132,7 @@ void Sprite::updateAnimation(Time& time) {
 
 void Sprite::setColor(float r, float g, float b) {
 	mat->setColor(r, g, b);
-	setColorBuffer();
+	setColorVertex();
 }
 
 void Sprite::draw(unsigned int &shader) {

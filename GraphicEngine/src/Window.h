@@ -8,10 +8,14 @@ struct GLFWwindow;
 class ENGINE_API Window{
 private:
 	GLFWwindow* _window;
+	float _width;
+	float _height;
 public:
-	Window();
+	Window(float width, float height);
 	~Window();
-	int StartWindow(int width, int height, const char* windowName);
+	float getWidth();
+	float getHeight();
+	int StartWindow(const char* windowName);
 	GLFWwindow* GetWindow();
 };
 #endif // !WINDOW_H

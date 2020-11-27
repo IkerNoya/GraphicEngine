@@ -21,11 +21,9 @@ class ENGINE_API Animation {
 public:
     Animation();
     ~Animation();
-    void setVertices(float* vertex);
     void update(Time& time);
     void addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFilas);
     int getCurrentFrame();
-    void setAnimationCoord();
     vector<Frame>& getAnimation();
     void setCurrentAnimation(int currentAnimation);
     void addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim);

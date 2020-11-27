@@ -30,6 +30,7 @@ class ENGINE_API Sprite : public Entity {
 	TextureImporter* texImporter;
 	Animation* anim;
 	UV uv[4];
+
 	unsigned int index[6] = {
 	0, 1, 3,
 	1, 2, 3
@@ -37,10 +38,10 @@ class ENGINE_API Sprite : public Entity {
 	float vertex[32] = {
 		1.0f,  1.0f, 0.0f,	1,1,1,  1, 1,
 	    1.0f, -1.0f, 0.0f,	1,1,1,  1, 0,
-	   -1.0f, -1.0f, 0.0f,	1,1,1,  0,0,
+	   -1.0f, -1.0f, 0.0f,	1,1,1,  0, 0,
 	   -1.0f,  1.0f, 0.0f,	1,1,1,  0, 1
 	};
-	void setColorBuffer();
+	void setColorVertex();
 public:
 	Sprite(Renderer* renderer, bool transparency);
 	~Sprite();

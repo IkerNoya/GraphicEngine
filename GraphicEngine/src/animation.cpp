@@ -5,7 +5,7 @@ Animation::Animation()
 {
 	_currentTime = 0;
 	_currentFrame = 0;
-	_length = 200;
+	_length = 0;
 }
 
 Animation::~Animation() {}
@@ -22,7 +22,8 @@ void Animation::update(Time& timer)
 }
 void Animation::addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int counFilas)
 {
-	_length = timeToAnim * 200;
+	int miliseconds = 1000;
+	_length = timeToAnim * miliseconds;
 
 	totalFrames = totalFrames + counFilas;
 	float index_X = 0;
@@ -58,7 +59,7 @@ void Animation::addFrame(float frameX, float frameY, int spriteWidth, int sprite
 }
 void Animation::addFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim)
 {
-	_length = timeToAnim * 200;
+	_length = timeToAnim;
 
 	Frame frame;
 
@@ -82,10 +83,8 @@ void Animation::addAnimation()
 {
 	if (_totalFrames.size() > 0)
 	{
-		//cout << "PUSHIE LA ANIMACION VIEJA" << endl;
 		_animations.push_back(_totalFrames);
 		_totalFrames.clear();
-		//cout << _animations.size() << endl;
 	}
 }
 int Animation::getCurrentFrame()

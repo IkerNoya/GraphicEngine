@@ -11,8 +11,8 @@ class ENGINE_API Renderer {
 	unsigned int _vertexShader;
 	unsigned int _fragmentShader;
 	unsigned int _textureShader;
-	//glm::mat4 view;
-	//glm::mat4 projection;
+	glm::mat4 view;
+	glm::mat4 projection;
 
 public:
 	Renderer();
@@ -23,10 +23,10 @@ public:
 	unsigned int getVertexShader();
 	unsigned int getFragmentShader();
 	unsigned int getTextureShader();
-	void setDefaultView(glm::mat4 view);
-	void setDefaultProjection(glm::mat4 projection);
-	/*glm::mat4 getView();
-	glm::mat4 getProjection();*/
+	void setDefaultView();
+	void setDefaultProjection();
+	glm::mat4 getView();
+	glm::mat4 getProjection();
 	unsigned int compileShader(unsigned int type, const std::string& source);
 	int createColorProgram();
 	int createTextureProgram();

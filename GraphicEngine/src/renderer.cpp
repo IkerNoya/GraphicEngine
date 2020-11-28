@@ -9,8 +9,6 @@
 #include <fstream>
 
 Renderer::Renderer() {
-	view = glm::mat4(1.0f);
-	projection = glm::mat4(1.0f);
 }
 
 Renderer::~Renderer() {
@@ -28,15 +26,6 @@ void Renderer::setFragmentShader(const std::string& fragmentShader) {
 void Renderer::setTextureShader(const std::string& textureShader) {
 	_textureShader = compileShader(GL_FRAGMENT_SHADER, textureShader);
 }
-void Renderer::setDefaultView() {
-	//                                 pos                        direction                          up
-	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-}
-void Renderer::setDefaultProjection() {
-	projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, 0.1f, 100.0f);
-	//                               FOV              Aspect      near  front
-	//projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-}
 unsigned int Renderer::getVertexShader() {
 	return _vertexShader;
 }
@@ -45,12 +34,6 @@ unsigned int Renderer::getFragmentShader() {
 }
 unsigned int Renderer::getTextureShader() {
 	return _textureShader;
-}
-glm::mat4 Renderer::getView() {
-	return view;
-}
-glm::mat4 Renderer::getProjection() {
-	return projection;
 }
 unsigned int Renderer::compileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);

@@ -55,8 +55,6 @@ void Game::updateGame() {
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
 	sprite3->draw(textureShader);
-	std::cout << sprite2->transform.position.x << std::endl;
-	std::cout << sprite2->transform.position.y << std::endl;
 	if (input->getKey(D)) {
 		x += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);

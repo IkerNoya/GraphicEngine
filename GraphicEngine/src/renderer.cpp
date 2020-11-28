@@ -195,10 +195,9 @@ void Renderer::drawCamera(unsigned int& shader, glm::mat4 view, glm::mat4 projec
 	glUseProgram(shader);
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view)); 
 }
 void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int& shader, glm::mat4 trs) {
-	
 	bindShapeBuffers(vbo);
 	startProgram(shader, trs);
 	if (shape == GL_TRIANGLES) {

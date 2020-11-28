@@ -32,13 +32,12 @@ void Camera::setViewport(int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-void Camera::setDefaultView() {
-	setPosition(0.0f, 0.0f, 1.0f);
+void Camera::setDefaultView(float x, float y, float z) {
 	//                                 pos                        direction                          up
-	view = glm::lookAt(glm::vec3(transform.position.x, transform.position.y, transform.position.z), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	std::cout << "x: " << transform.position.x << std::endl;
-	std::cout << "y: " << transform.position.y << std::endl;
-	std::cout << "z: " << transform.position.z << std::endl;
+	view = glm::lookAt(glm::vec3(x,y,z), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	std::cout << "x: " << x << std::endl;
+	std::cout << "y: " << y << std::endl;
+	std::cout << "z: " << z << std::endl;
 }
 
 void Camera::setProjectionType(Type type) {
@@ -46,13 +45,13 @@ void Camera::setProjectionType(Type type) {
 	switch (type)
 	{
 	case orthographic:
-		//                      x      width   y    height   near   far
+		//                       x                 width           y               height            near   far
 		projection = glm::ortho(0.0f, static_cast<float>(_width), 0.0f, static_cast<float>(_height), 0.1f, 100.0f);
 		break;
 
 	case perspective:
-		//                               FOV              Aspect      near  front
-		projection = glm::perspective(glm::radians(90.0f), static_cast<float>(_width) / static_cast<float>(_height), 0.1f, 100.0f);
+		//                               FOV                                        Aspect                            near  front
+		projection = glm::perspective(glm::radians(45.0f), static_cast<float>(_width) / static_cast<float>(_height), 0.1f, 100.0f);
 		break;
 
 	default:

@@ -24,7 +24,7 @@ public:
 	void setHeight(int height);
 	int getHeight();
 	void setViewport(int width, int height);
-	void setDefaultView();
+	void setDefaultView(float x, float y, float z);
 	void setProjectionType(Type type);
 	Type getType();
 	glm::mat4 getView();

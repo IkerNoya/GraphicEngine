@@ -9,7 +9,7 @@
 
 float timer = 0.0f;
 int seconds = 0;
-int z = 0;
+int z = 1;
 int x = 0;
 int y = 0;
 
@@ -65,6 +65,8 @@ int GameBase::init() {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	textureShader = renderer->createTextureProgram();
 	renderer->setSpriteAttrib(textureShader);
+	camera->setDefaultView(0.0f,0.0f,1);
+	camera->setProjectionType(camera->getType()); // perspective doesn't work with coordinate system
 
 	return 0;
 }
@@ -74,21 +76,7 @@ void GameBase::update() {
 		animationTime.tick();
 		time.tick();
 		time.reset();
-		camera->setDefaultView();
-		camera->setProjectionType(orthographic);
 		camera->drawCamera(textureShader); // change shader later
-		if (input->getKeyDown(DOWN)) {
-			z -= 100 * time.deltaTime();
-			camera->setPosition(camera->transform.position.x, camera->transform.position.y, z);
-		}
-		if (input->getKeyDown(LEFT)) {
-			x -= 100 * time.deltaTime();
-			camera->setPosition(camera->transform.position.x, camera->transform.position.y, z);
-		}
-		if (input->getKeyDown(RIGHT)) {
-			x += 100 * time.deltaTime();
-			camera->setPosition(camera->transform.position.x, camera->transform.position.y, z);
-		}
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

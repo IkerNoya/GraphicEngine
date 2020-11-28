@@ -14,9 +14,16 @@ class ENGINE_API Camera : public Entity {
 	Type _type;
 	glm::mat4 view;
 	glm::mat4 projection;
+	int _width;
+	int _height;
 public:
 	Camera(Type type);
 	~Camera();
+	void setWidth(int width);
+	int getWidth();
+	void setHeight(int height);
+	int getHeight();
+	void setViewport(int width, int height);
 	void setDefaultView();
 	void setProjectionType(Type type);
 	Type getType();

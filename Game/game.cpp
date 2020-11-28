@@ -10,7 +10,6 @@ float timerr = 0.0f;
 float rotate = 0.0f;
 
 Game::Game() : GameBase(){
-
 	sprite1 = new Sprite(renderer, false);
 	sprite2 = new Sprite(renderer, true);
 	sprite3 = new Sprite(renderer, true);
@@ -46,8 +45,6 @@ void Game::initGame() {
 	sprite2->setScale(100,100,100);
 	sprite3->setPosition(window->getWidth() / 2, 600.0f, 0);
 	sprite3->setScale(100,100,100);
-
-
 }
 
 void Game::updateGame() {

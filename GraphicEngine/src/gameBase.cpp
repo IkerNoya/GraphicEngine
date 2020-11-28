@@ -9,12 +9,16 @@
 
 float timer = 0.0f;
 int seconds = 0;
+int z = 0;
+int x = 0;
+int y = 0;
 
 GameBase::GameBase() {
 	window = new Window(1280.0f, 720.0f);
 	renderer = new Renderer();
 	input = new Input();
 	collisionmanager = new CollisionManager();
+	camera = new Camera(orthographic);
 
 }
 GameBase::~GameBase() {
@@ -35,6 +39,10 @@ GameBase::~GameBase() {
 		delete collisionmanager;
 		collisionmanager = NULL;
 	}
+	if (camera != NULL) {
+		delete camera;
+		camera = NULL;
+	}
 }
 
 int GameBase::init() {
@@ -45,11 +53,9 @@ int GameBase::init() {
 		return -1;
 	}
 	input->setInputWindow(window->GetWindow());
-
 	glfwMakeContextCurrent(window->GetWindow());
-	glViewport(0, 0, 1280, 720);
 	glewExperimental = GL_TRUE;
-
+	camera->setViewport(1280, 720);
 	glewInit();
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Error in Glew Init" << std::endl;
@@ -57,12 +63,9 @@ int GameBase::init() {
 	}
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	renderer->setDefaultView();
-	renderer->setDefaultProjection();
-	glm::mat4 model = glm::mat4(1.0f);
 	textureShader = renderer->createTextureProgram();
-	renderer->drawCamera(textureShader, renderer->getView(), renderer->getProjection(), model);
 	renderer->setSpriteAttrib(textureShader);
+
 	return 0;
 }
 
@@ -71,6 +74,21 @@ void GameBase::update() {
 		animationTime.tick();
 		time.tick();
 		time.reset();
+		camera->setDefaultView();
+		camera->setProjectionType(orthographic);
+		camera->drawCamera(textureShader); // change shader later
+		if (input->getKeyDown(DOWN)) {
+			z -= 100 * time.deltaTime();
+			camera->setPosition(camera->transform.position.x, camera->transform.position.y, z);
+		}
+		if (input->getKeyDown(LEFT)) {
+			x -= 100 * time.deltaTime();
+			camera->setPosition(camera->transform.position.x, camera->transform.position.y, z);
+		}
+		if (input->getKeyDown(RIGHT)) {
+			x += 100 * time.deltaTime();
+			camera->setPosition(camera->transform.position.x, camera->transform.position.y, z);
+		}
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -10,6 +10,7 @@
 #include "Time.h"
 #include "input.h"
 #include "collision_manager.h"
+#include "camera.h"
 
 struct Renderer;
 struct Shape;
@@ -24,14 +25,11 @@ class ENGINE_API GameBase { // consultar
 protected:
 	Window* window;
 	Renderer* renderer;
-	//Shape* shape;
-	//Sprite* sprite1;
-	//Sprite* sprite2;
-	//Sprite* sprite3;
 	Time animationTime;
 	Time time;
 	Input* input;
 	CollisionManager* collisionmanager;
+	Camera* camera;
 	
 	unsigned int textureShader;
 	unsigned int colorShader;

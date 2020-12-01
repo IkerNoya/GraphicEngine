@@ -3,6 +3,9 @@
 float x = 0;
 float y = 0;
 float z = 0;
+float xShape = 0;
+float yShape = 0;
+float zShape = 0;
 float speed = 500;
 
 float timerr = 0.0f; 
@@ -57,6 +60,8 @@ void Game::updateGame() {
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
 	sprite3->draw(textureShader);
+
+#pragma region SPRITE_INPUT
 	if (input.getKey(D)) {
 		x += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
@@ -73,9 +78,32 @@ void Game::updateGame() {
 		y += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
+
+#pragma endregion
+
+#pragma region SHAPE_INPUT
+
 	if (input.getKey(SPACE)) {
 		shape->setColor(1, 0, 0);
 	}
+	if (input.getKey(RIGHT)) {
+		xShape += speed * time.deltaTime();
+		shape->setPosition(xShape, yShape, zShape);
+	}
+	if (input.getKey(LEFT)) {
+		xShape -= speed * time.deltaTime();
+		shape->setPosition(xShape, yShape, zShape);
+	}
+	if (input.getKey(UP)) {
+		yShape += speed * time.deltaTime();
+		shape->setPosition(xShape, yShape, zShape);
+	}
+	if (input.getKey(DOWN)) {
+		yShape -= speed * time.deltaTime();
+		shape->setPosition(xShape, yShape, zShape);
+	}
+#pragma endregion
+
 	if (collisionmanager->CheckCollision2D(sprite1, sprite3,
 		sprite1->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f),
 		sprite3->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f))) {

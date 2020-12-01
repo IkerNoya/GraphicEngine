@@ -27,12 +27,14 @@ protected:
 	Renderer* renderer;
 	Time animationTime;
 	Time time;
-	Input* input;
+	Input input;
 	CollisionManager* collisionmanager;
 	Camera* camera;
+	Shader textureShader;
+	Shader colorShader;
 	
-	unsigned int textureShader;
-	unsigned int colorShader;
+	//unsigned int textureShader;
+	//unsigned int colorShader;
 public:
 	GameBase();
 	~GameBase();

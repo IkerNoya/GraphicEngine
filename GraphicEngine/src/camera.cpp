@@ -2,8 +2,9 @@
 #include "camera.h"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
+#include "shader.h"
 
-Camera::Camera(Type type):Entity(Entity::_renderer) {
+Camera::Camera(RenderType type):Entity(Entity::_renderer) {
 	_type = type;
 	view = glm::mat4(1.0f);
 	projection = glm::mat4(1.0f);
@@ -40,7 +41,7 @@ void Camera::setDefaultView(float x, float y, float z) {
 	std::cout << "z: " << z << std::endl;
 }
 
-void Camera::setProjectionType(Type type) {
+void Camera::setProjectionType(RenderType type) {
 	_type = type;
 	switch (type)
 	{
@@ -58,7 +59,7 @@ void Camera::setProjectionType(Type type) {
 		break;
 	}
 }
-Type Camera::getType() {
+RenderType Camera::getType() {
 	return _type;
 }
 glm::mat4 Camera::getView() {
@@ -67,6 +68,6 @@ glm::mat4 Camera::getView() {
 glm::mat4 Camera::getProjection() {
 	return projection;
 }
-void Camera::drawCamera(unsigned int& shader) {
+void Camera::drawCamera(Shader& shader) {
 	_renderer->drawCamera(shader, view, projection, getTRS());
 }

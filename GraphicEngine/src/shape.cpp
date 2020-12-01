@@ -6,8 +6,18 @@
 #include "GLFW/glfw3.h"
 
 
-Shape::Shape(unsigned int shape, Renderer* renderer):Entity(Entity::_renderer) {
-	_shape = shape;
+Shape::Shape(Type shape, Renderer* renderer):Entity(Entity::_renderer) {
+	switch (type)
+	{
+	case triangle:
+		_shape = GL_TRIANGLES;
+		break;
+	case rectangle:
+		_shape = GL_QUADS;
+		break;
+	default:
+		break;
+	}
 	_material = new Material();
 }
 Shape::~Shape() {
@@ -53,36 +63,33 @@ void Shape::init() {
 	}
 }
 void Shape::initTriangleVertex() {
-	float vertex[18] = {
-	   -0.5f, -0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB(),
-	   0.0f, 0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB(),
-	   0.5f, -0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB()
-	};
-	unsigned int index[] = {
-		0, 1, 3,
-	};
+
 	createVAO();
-	createEBO(index, 3);
-	createVBO(vertex, 18);
+	createEBO(triIndex, 3);
+	createVBO(triVertex, 18);
 }
 void Shape::initRectangleVertex() {
-	float vertex[24] = {
-	-0.5f, -0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB(),
-	-0.5f, 0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB(),
-	0.5f, 0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB(),
-	0.5f, -0.5f, 0, *_material->getR(),*_material->getG(),*_material->getB()
-	};
-	unsigned int index[] = {
-		0, 1, 3,
-		1, 2, 3
-	};
 	createVAO();
-	createEBO(index, 6);
-	createVBO(vertex, 24);
+	createEBO(quadIndex, 6);
+	createVBO(quadVertex, 24);
+}
+void Shape::setColorVertex(){
+	if (_shape == GL_TRIANGLES) {
+		triVertex[3] = *_material->getR(); triVertex[4] = *_material->getG(); triVertex[5] = *_material->getB();
+		triVertex[9] = *_material->getR(); triVertex[10] = *_material->getG(); triVertex[11] = *_material->getB();
+		triVertex[15] = *_material->getR(); triVertex[16] = *_material->getG(); triVertex[17] = *_material->getB();
+	}
+	else if (_shape == GL_QUADS){
+		quadVertex[3] = *_material->getR(); quadVertex[4] = *_material->getG(); quadVertex[5] = *_material->getB();
+		quadVertex[9] = *_material->getR(); quadVertex[10] = *_material->getG(); quadVertex[11] = *_material->getB();
+		quadVertex[15] = *_material->getR(); quadVertex[16] = *_material->getG(); quadVertex[17] = *_material->getB();
+		quadVertex[21] = *_material->getR(); quadVertex[22] = *_material->getG(); quadVertex[23] = *_material->getB();
+	}
 }
 void Shape::setColor(float r, float g, float b) {
 	_material->setColor(r, g, b);
+	setColorVertex();
 }
-void Shape::draw(unsigned int& shader, glm::mat4 trs) {
-	_renderer->drawShape(_shape, getVBO(), shader, trs);
+void Shape::draw(Shader& shader) {
+	_renderer->drawShape(_shape, getVBO(), shader, getTRS());
 }

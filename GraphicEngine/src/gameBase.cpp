@@ -7,6 +7,7 @@
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 
+
 float timer = 0.0f;
 int seconds = 0;
 int z = 1;
@@ -16,7 +17,6 @@ int y = 0;
 GameBase::GameBase() {
 	window = new Window(1280.0f, 720.0f);
 	renderer = new Renderer();
-	input = new Input();
 	collisionmanager = new CollisionManager();
 	camera = new Camera(orthographic);
 
@@ -31,10 +31,6 @@ GameBase::~GameBase() {
 		renderer = NULL;
 	}
 
-	if (input != NULL) {
-		delete input;
-		input = NULL;
-	}
 	if (collisionmanager != NULL) {
 		delete collisionmanager;
 		collisionmanager = NULL;
@@ -52,7 +48,7 @@ int GameBase::init() {
 		glfwTerminate();
 		return -1;
 	}
-	input->setInputWindow(window->GetWindow());
+	input.setInputWindow(window->GetWindow());
 	glfwMakeContextCurrent(window->GetWindow());
 	glewExperimental = GL_TRUE;
 	camera->setViewport(1280, 720);
@@ -61,9 +57,12 @@ int GameBase::init() {
 		std::cout << "Error in Glew Init" << std::endl;
 		return 0;
 	}
+	textureShader.CreateShader("..//GraphicEngine//src//Shaders//VertexShader.shader", "..//GraphicEngine//src//Shaders//TextureShader.shader");
+	//colorShader.CreateShader("..//GraphicEngine//src//Shaders//VertexShader.shader", "..//GraphicEngine//src//Shaders//ColorShader.shader");
+
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	textureShader = renderer->createTextureProgram();
+	//renderer->setShapeAttrib(colorShader);
 	renderer->setSpriteAttrib(textureShader);
 	camera->setDefaultView(0.0f,0.0f,1);
 	camera->setProjectionType(camera->getType()); // perspective doesn't work with coordinate system
@@ -76,7 +75,7 @@ void GameBase::update() {
 		animationTime.tick();
 		time.tick();
 		time.reset();
-		camera->drawCamera(textureShader); // change shader later
+		camera->drawCamera(textureShader);
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -87,7 +86,7 @@ void GameBase::update() {
 
 }
 void GameBase::unload() {
-	glDeleteProgram(textureShader);
+	glDeleteProgram(textureShader.id);
 	glfwTerminate();
 
 }

@@ -7,8 +7,6 @@ Input::Input() {
 }
 
 Input::~Input() {
-	if (_window != NULL)
-		delete _window;
 }
 
 void Input::setInputWindow(GLFWwindow* window) {

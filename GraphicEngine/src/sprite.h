@@ -6,6 +6,7 @@
 #include "textureImporter.h"
 #include "material.h"
 #include "animation.h"
+#include "shader.h"
 struct UV {
 	float u;
 	float v;
@@ -66,7 +67,7 @@ public:
 	void setAnimCoords(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3);
 	void updateAnimation(Time & time);
 	void setColor(float r, float g, float b);
-	void draw(unsigned int &shader);
+	void draw(Shader &shader);
 	void blendSprite();
 	void unblendSprite();
 	void SetCurrentAnimationIndex(int currentAnimation);

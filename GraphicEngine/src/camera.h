@@ -5,19 +5,20 @@
 #include "vec3.hpp"
 #include "mat4x4.hpp"
 #include "vec4.hpp"
+#include "shader.h"
 
-enum ENGINE_API Type {
+enum ENGINE_API RenderType {
 	orthographic, perspective
 };
 
 class ENGINE_API Camera : public Entity {
-	Type _type;
+	RenderType _type;
 	glm::mat4 view;
 	glm::mat4 projection;
 	int _width;
 	int _height;
 public:
-	Camera(Type type);
+	Camera(RenderType type);
 	~Camera();
 	void setWidth(int width);
 	int getWidth();
@@ -25,11 +26,11 @@ public:
 	int getHeight();
 	void setViewport(int width, int height);
 	void setDefaultView(float x, float y, float z);
-	void setProjectionType(Type type);
-	Type getType();
+	void setProjectionType(RenderType type);
+	RenderType getType();
 	glm::mat4 getView();
 	glm::mat4 getProjection();
-	void drawCamera(unsigned int& shader);
+	void drawCamera(Shader& shader);
 };
 #endif // !CAMERA_H
 

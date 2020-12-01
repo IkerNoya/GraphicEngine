@@ -13,6 +13,6 @@ uniform mat4 projection;
 
 void main() {
 	color = customColor;
-	texCoord = aTexCoord;
-	gl_position = projection * view * transform * vec4(position, 1.0);
+	TexCoord = aTexCoord;
+	gl_Position = projection * view * transform * vec4(position, 1.0);
 }

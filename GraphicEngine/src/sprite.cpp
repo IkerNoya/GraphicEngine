@@ -135,7 +135,7 @@ void Sprite::setColor(float r, float g, float b) {
 	setColorVertex();
 }
 
-void Sprite::draw(unsigned int &shader) {
+void Sprite::draw(Shader &shader) {
 	if (_transparency) {
 		blendSprite();
 		bindTexture();

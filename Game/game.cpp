@@ -26,14 +26,12 @@ int Game::executeGame() {
 }
 
 void Game::initGame() {
-	//shape = new Shape(GL_QUADS, renderer);
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/spriteSheet.png");
 	idle->addFrame(0, 0, 525 / 7, 75, 525, 75, 1.0f, 7, 7);
 	sprite2->setAnimation(idle);
 	sprite2->SetCurrentAnimationIndex(0);
 	sprite3->setTexture("res/raw/Sun.png");
-	renderer->setSpriteAttrib(textureShader);
 	sprite1->setColor(1, 1, 1);
 	sprite2->setColor(1, 1, 1);
 	sprite3->setColor(1, 1, 1);
@@ -52,19 +50,19 @@ void Game::updateGame() {
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
 	sprite3->draw(textureShader);
-	if (input->getKey(D)) {
+	if (input.getKey(D)) {
 		x += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
-	if (input->getKey(A)) {
+	if (input.getKey(A)) {
 		x -= speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
-	if (input->getKey(S)) {
+	if (input.getKey(S)) {
 		y -= speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
-	if (input->getKey(W)) {
+	if (input.getKey(W)) {
 		y += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
@@ -83,5 +81,8 @@ void Game::unloadGame() {
 	}
 	if (sprite3 != NULL) {
 		delete sprite3;
+	}
+	if (idle != NULL) {
+		delete idle;
 	}
 }

@@ -10,6 +10,7 @@ float timerr = 0.0f;
 float rotate = 0.0f;
 
 Game::Game() : GameBase(){
+	shape = new Shape(rectangle, renderer);
 	sprite1 = new Sprite(renderer, false);
 	sprite2 = new Sprite(renderer, true);
 	sprite3 = new Sprite(renderer, true);
@@ -26,6 +27,11 @@ int Game::executeGame() {
 }
 
 void Game::initGame() {
+	shape->init();
+	shape->setPosition(300, 300,0);
+	shape->setScale(300, 300, 300);
+	shape->setColor(1,0.5f, 0);
+
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/spriteSheet.png");
 	idle->addFrame(0, 0, 525 / 7, 75, 525, 75, 1.0f, 7, 7);
@@ -46,6 +52,7 @@ void Game::initGame() {
 }
 
 void Game::updateGame() {
+	shape->draw(colorShader);
 	sprite1->draw(textureShader);
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
@@ -65,6 +72,9 @@ void Game::updateGame() {
 	if (input.getKey(W)) {
 		y += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
+	}
+	if (input.getKey(SPACE)) {
+		shape->setColor(1, 0, 0);
 	}
 	if (collisionmanager->CheckCollision2D(sprite1, sprite3,
 		sprite1->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f),

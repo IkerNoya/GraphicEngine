@@ -15,19 +15,19 @@ class ENGINE_API Shape :public Entity {
 	unsigned int _vao;
 
 	float triVertex[18] = {
-   -0.5f, -0.5f, 0, 1,1,1,
-   0.0f, 0.5f, 0, 1,1,1,
-   0.5f, -0.5f, 0, 1,1,1
+	 -0.5f, -0.5f, 0.0f, 1,1,1,
+	  0.5f, -0.5f, 0.0f, 1,1,1,
+	  0.0f,  0.5f, 0.0f, 1,1,1
 	};
 	unsigned int triIndex[3] = {
 		0, 1, 2
 	};
 
 	float quadVertex[24] = {
-	-0.5f, -0.5f, 0, 1,1,1,
-	-0.5f, 0.5f, 0, 1,1,1,
-	0.5f, 0.5f, 0, 1,1,1,
-	0.5f, -0.5f, 0, 1,1,1
+	 0.5f,  0.5f, 0.0f, 1,1,1,
+	 0.5f, -0.5f, 0.0f, 1,1,1,
+	-0.5f, -0.5f, 0.0f, 1,1,1,
+	-0.5f,  0.5f, 0.0f, 1,1,1 
 	};
 	unsigned int quadIndex[6] = {
 		0, 1, 3,

@@ -58,11 +58,11 @@ int GameBase::init() {
 		return 0;
 	}
 	textureShader.CreateShader("..//GraphicEngine//src//Shaders//VertexShader.shader", "..//GraphicEngine//src//Shaders//TextureShader.shader");
-	//colorShader.CreateShader("..//GraphicEngine//src//Shaders//VertexShader.shader", "..//GraphicEngine//src//Shaders//ColorShader.shader");
+	colorShader.CreateShader("..//GraphicEngine//src//Shaders//VertexShader.shader", "..//GraphicEngine//src//Shaders//ColorShader.shader");
 
 	glGetIntegerv(GL_CONTEXT_COMPATIBILITY_PROFILE_BIT, nullptr);
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	//renderer->setShapeAttrib(colorShader);
+	renderer->setShapeAttrib(colorShader);
 	renderer->setSpriteAttrib(textureShader);
 	camera->setDefaultView(0.0f,0.0f,1);
 	camera->setProjectionType(camera->getType()); // perspective doesn't work with coordinate system
@@ -75,7 +75,7 @@ void GameBase::update() {
 		animationTime.tick();
 		time.tick();
 		time.reset();
-		camera->drawCamera(textureShader);
+		camera->drawCamera(colorShader);
 		glClearColor(0.1f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -87,8 +87,8 @@ void GameBase::update() {
 }
 void GameBase::unload() {
 	glDeleteProgram(textureShader.id);
+	glDeleteProgram(colorShader.id);
 	glfwTerminate();
-
 }
 Time& GameBase::getTime() {
 	return animationTime;

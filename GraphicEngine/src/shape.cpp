@@ -7,13 +7,16 @@
 
 
 Shape::Shape(Type shape, Renderer* renderer):Entity(Entity::_renderer) {
-	switch (type)
+	type = shape;
+	switch (shape)
 	{
 	case triangle:
 		_shape = GL_TRIANGLES;
+		cout << "Tri" << endl;
 		break;
 	case rectangle:
 		_shape = GL_QUADS;
+		cout << "Quads" << endl;
 		break;
 	default:
 		break;
@@ -57,6 +60,7 @@ unsigned int Shape::getVAO() {
 void Shape::init() {
 	if (_shape == GL_TRIANGLES) {
 		initTriangleVertex();
+
 	}
 	else if (_shape == GL_QUADS) {
 		initRectangleVertex();
@@ -91,5 +95,8 @@ void Shape::setColor(float r, float g, float b) {
 	setColorVertex();
 }
 void Shape::draw(Shader& shader) {
-	_renderer->drawShape(_shape, getVBO(), shader, getTRS());
+	if (type == triangle)
+		_renderer->drawShape(_shape, getVBO(), getVAO(), triVertex, 18, shader, getTRS());
+	else if (type == rectangle)
+		_renderer->drawShape(_shape, getVBO(), getVAO(), quadVertex, 24, shader, getTRS());
 }

@@ -18,10 +18,10 @@ public:
 	void createTextureAttrib(unsigned int colorAttrib, int dataSize);
 	void startProgram(Shader &shader, glm::mat4 model);
 	void bindSpriteBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size);
-	void bindShapeBuffers(unsigned int vbo);
+	void bindShapeBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size);
 	void UnbindBuffers();
 	void drawCamera(Shader &shader, glm::mat4 view, glm::mat4 projection, glm::mat4 model);
-	void drawShape(unsigned int shape, unsigned int vbo, Shader &shader, glm::mat4 trs);
+	void drawShape(unsigned int shape, unsigned int vbo, unsigned int vao, float* vertex, int size,Shader &shader, glm::mat4 trs);
 	void drawTexture(unsigned int vbo, unsigned int vao, float* vertex, Shader &shader, glm::mat4 trs);
 };
 

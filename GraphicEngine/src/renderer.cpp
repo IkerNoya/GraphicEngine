@@ -28,7 +28,6 @@ void Renderer::setSpriteAttrib(Shader &shader) {
 void Renderer::setShapeAttrib(Shader& shader) {
 	unsigned int shapePosAttrib = glGetAttribLocation(shader.getId(), "position");
 	unsigned int shapeColorAttrib = glGetAttribLocation(shader.getId(), "customColor");
-
 	createVertexAttrib(shapePosAttrib, 6);
 	createColorAttrib(shapeColorAttrib, 6);
 }
@@ -56,8 +55,11 @@ void Renderer::bindSpriteBuffers(unsigned int vbo, unsigned int vao, float* vert
 	glBindVertexArray(vao);
 	glBufferData(GL_ARRAY_BUFFER, memorySize, vertex, GL_STATIC_DRAW);
 }
-void Renderer::bindShapeBuffers(unsigned int vbo) {
+void Renderer::bindShapeBuffers(unsigned int vbo, unsigned int vao, float* vertex, float size) {
+	int memorySize = sizeof(float) * size;
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+	glBufferData(GL_ARRAY_BUFFER, memorySize, vertex, GL_STATIC_DRAW);
 }
 void Renderer::UnbindBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -71,15 +73,15 @@ void Renderer::drawCamera(Shader &shader, glm::mat4 view, glm::mat4 projection, 
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view)); 
 }
-void Renderer::drawShape(unsigned int shape, unsigned int vbo, Shader &shader, glm::mat4 trs) {
-	bindShapeBuffers(vbo);
+void Renderer::drawShape(unsigned int shape, unsigned int vbo, unsigned int vao, float *vertex, int size,Shader &shader, glm::mat4 trs) {
+	bindShapeBuffers(vbo, vao, vertex, size);
 	setShapeAttrib(shader);
 	startProgram(shader, trs);
 	if (shape == GL_TRIANGLES) {
 		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 	}
 	else if (shape == GL_QUADS) {
-		glDrawElements(GL_QUADS, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 	UnbindBuffers();
 }

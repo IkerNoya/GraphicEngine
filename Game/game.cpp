@@ -107,9 +107,8 @@ void Game::updateGame() {
 	}
 #pragma endregion
 
-	if (collisionmanager->CheckTrigger2D(sprite2, sprite1)) {
-		cout << "HOLA" << endl;
-	}
+	collisionmanager->CheckCollision2D(sprite2, sprite1);
+		
 }
 
 void Game::unloadGame() {

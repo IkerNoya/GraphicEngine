@@ -10,6 +10,7 @@ private:
 public:
 	CollisionManager();
 	~CollisionManager();
+	bool CheckTrigger2D(Entity* entity1, Entity* entity2, glm::vec3 boxColliderEntity1, glm::vec3 boxColliderEntity2);
 	bool CheckCollision2D(Entity* entity1, Entity* entity2, glm::vec3 boxColliderEntity1, glm::vec3 boxColliderEntity2);
 };
 

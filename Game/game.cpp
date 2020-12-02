@@ -78,6 +78,9 @@ void Game::updateGame() {
 		y += speed * time.deltaTime();
 		sprite2->setPosition(x, y, z);
 	}
+	if (input.getKey(X)) {
+		sprite2->transform.position[0] = 100.0f;
+	}
 
 #pragma endregion
 
@@ -104,9 +107,13 @@ void Game::updateGame() {
 	}
 #pragma endregion
 
-	if (collisionmanager->CheckCollision2D(sprite1, sprite3,
-		sprite1->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f),
-		sprite3->transform.scale + glm::vec3(0.25f, 0.25f, 0.5f))) {
+	if (collisionmanager->CheckCollision2D(sprite2, shape,
+		sprite2->transform.scale + glm::vec3(sprite2->transform.scale.x, sprite2->transform.scale.y, sprite2->transform.scale.z),
+		shape->transform.scale + glm::vec3(shape->transform.scale.x, shape->transform.scale.y, shape->transform.scale.z))) {
+		std::cout << "Colisiono!" << std::endl;
+	}
+	else {
+		std::cout << "no Colisiono!" << std::endl;
 	}
 }
 

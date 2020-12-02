@@ -3,8 +3,8 @@
 float x = 0;
 float y = 0;
 float z = 0;
-float xShape = 0;
-float yShape = 0;
+float xShape = 300;
+float yShape = 300;
 float zShape = 0;
 float speed = 500;
 
@@ -30,10 +30,10 @@ int Game::executeGame() {
 }
 
 void Game::initGame() {
-	shape->init();
-	shape->setPosition(300, 300,0);
-	shape->setScale(300, 300, 300);
-	shape->setColor(1,0.5f, 0);
+	//shape->init();
+	//shape->setPosition(300, 300,0);
+	//shape->setScale(300, 300, 300);
+	//shape->setColor(1,0.5f, 0);
 
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/spriteSheet.png");
@@ -44,7 +44,7 @@ void Game::initGame() {
 	sprite1->setColor(1, 1, 1);
 	sprite2->setColor(1, 1, 1);
 	sprite3->setColor(1, 1, 1);
-	sprite1->setPosition(1180, 620, 0);
+	sprite1->setPosition(300, 300, 0);
 	sprite1->setScale(100, 100, 100);
 	sprite2->setPosition(window->getWidth()/2, window->getHeight()/2, 0);
 	x = window->getWidth() / 2;
@@ -55,7 +55,7 @@ void Game::initGame() {
 }
 
 void Game::updateGame() {
-	shape->draw(colorShader);
+	//shape->draw(colorShader);
 	sprite1->draw(textureShader);
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
@@ -91,29 +91,24 @@ void Game::updateGame() {
 	}
 	if (input.getKey(RIGHT)) {
 		xShape += speed * time.deltaTime();
-		shape->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(xShape, yShape, zShape);
 	}
 	if (input.getKey(LEFT)) {
 		xShape -= speed * time.deltaTime();
-		shape->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(xShape, yShape, zShape);
 	}
 	if (input.getKey(UP)) {
 		yShape += speed * time.deltaTime();
-		shape->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(xShape, yShape, zShape);
 	}
 	if (input.getKey(DOWN)) {
 		yShape -= speed * time.deltaTime();
-		shape->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(xShape, yShape, zShape);
 	}
 #pragma endregion
 
-	if (collisionmanager->CheckCollision2D(sprite2, shape,
-		sprite2->transform.scale + glm::vec3(sprite2->transform.scale.x, sprite2->transform.scale.y, sprite2->transform.scale.z),
-		shape->transform.scale + glm::vec3(shape->transform.scale.x, shape->transform.scale.y, shape->transform.scale.z))) {
-		std::cout << "Colisiono!" << std::endl;
-	}
-	else {
-		std::cout << "no Colisiono!" << std::endl;
+	if (collisionmanager->CheckTrigger2D(sprite2, sprite1)) {
+		cout << "HOLA" << endl;
 	}
 }
 

@@ -107,7 +107,7 @@ void Game::updateGame() {
 	}
 #pragma endregion
 
-	collisionmanager->CheckCollision2D(sprite2, sprite1);
+	collisionmanager->CheckCollision2D(sprite2, sprite1, speed, speed);
 		
 }
 

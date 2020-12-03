@@ -15,7 +15,7 @@ public:
 	CollisionManager();
 	~CollisionManager();
 	bool CheckTrigger2D(Entity* entity1, Entity* entity2);
-	bool CheckCollision2D(Entity* entity1, Entity* entity2);
+	bool CheckCollision2D(Entity* entity1, Entity* entity2, float speedEntity1, float speedEntity2);
 };
 
 #endif

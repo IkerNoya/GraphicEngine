@@ -55,20 +55,23 @@ bool CollisionManager::CheckTrigger2D(Entity* entity1, Entity* entity2) {
 	return false;
 }
 
-bool CollisionManager::CheckCollision2D(Entity* entity1, Entity* entity2) {
+bool CollisionManager::CheckCollision2D(Entity* entity1, Entity* entity2, float speedEntity1, float speedEntity2) {
 	collisionPosition cPosition = partialCollision(entity1, entity2);
-	switch (cPosition)
-	{
+	switch (cPosition){
 	case none:
 		return false;
 		break;
 	case topCollision:
+		entity1->setPosition(entity1->transform.position.x, entity1->transform.position.y + 1.0f, entity1->transform.position.z);
 		break;
 	case rightCollision:
+		entity1->setPosition(entity1->transform.position.x + 1.0f, entity1->transform.position.y, entity1->transform.position.z);
 		break;
 	case bottomCollision:
+		entity1->setPosition(entity1->transform.position.x, entity1->transform.position.y - 1.0f, entity1->transform.position.z);
 		break;
 	case leftCollision:
+		entity1->setPosition(entity1->transform.position.x -1.0f, entity1->transform.position.y, entity1->transform.position.z);
 		break;
 	default:
 		break;

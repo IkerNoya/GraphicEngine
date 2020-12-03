@@ -1,12 +1,6 @@
 #include "game.h"
 
-float x = 0;
-float y = 0;
-float z = 0;
-float xShape = 300;
-float yShape = 300;
-float zShape = 0;
-float speed = 500;
+float speed = 450;
 
 float timerr = 0.0f; 
 //int seconds = 0;
@@ -30,10 +24,10 @@ int Game::executeGame() {
 }
 
 void Game::initGame() {
-	//shape->init();
-	//shape->setPosition(300, 300,0);
-	//shape->setScale(300, 300, 300);
-	//shape->setColor(1,0.5f, 0);
+	shape->init();
+	shape->setPosition(300, 300,0);
+	shape->setScale(300, 300, 300);
+	shape->setColor(1,0.5f, 0);
 
 	sprite1->setTexture("res/raw/meme.jpg");
 	sprite2->setTexture("res/raw/spriteSheet.png");
@@ -47,15 +41,13 @@ void Game::initGame() {
 	sprite1->setPosition(300, 300, 0);
 	sprite1->setScale(100, 100, 100);
 	sprite2->setPosition(window->getWidth()/2, window->getHeight()/2, 0);
-	x = window->getWidth() / 2;
-	y = window->getHeight() / 2;
 	sprite2->setScale(100,100,100);
 	sprite3->setPosition(window->getWidth() / 2, 600.0f, 0);
 	sprite3->setScale(100,100,100);
 }
 
 void Game::updateGame() {
-	//shape->draw(colorShader);
+	shape->draw(colorShader);
 	sprite1->draw(textureShader);
 	sprite2->draw(textureShader);
 	sprite2->updateAnimation(getTime());
@@ -63,23 +55,16 @@ void Game::updateGame() {
 
 #pragma region SPRITE_INPUT
 	if (input.getKey(D)) {
-		x += speed * time.deltaTime();
-		sprite2->setPosition(x, y, z);
+		sprite2->setPosition(sprite2->transform.position.x + speed * time.deltaTime(), sprite2->transform.position.y, sprite2->transform.position.z);
 	}
 	if (input.getKey(A)) {
-		x -= speed * time.deltaTime();
-		sprite2->setPosition(x, y, z);
+		sprite2->setPosition(sprite2->transform.position.x - speed * time.deltaTime(), sprite2->transform.position.y, sprite2->transform.position.z);
 	}
 	if (input.getKey(S)) {
-		y -= speed * time.deltaTime();
-		sprite2->setPosition(x, y, z);
+		sprite2->setPosition(sprite2->transform.position.x, sprite2->transform.position.y - speed * time.deltaTime(), sprite2->transform.position.z);
 	}
 	if (input.getKey(W)) {
-		y += speed * time.deltaTime();
-		sprite2->setPosition(x, y, z);
-	}
-	if (input.getKey(X)) {
-		sprite2->transform.position[0] = 100.0f;
+		sprite2->setPosition(sprite2->transform.position.x, sprite2->transform.position.y + speed * time.deltaTime(), sprite2->transform.position.z);
 	}
 
 #pragma endregion
@@ -90,20 +75,16 @@ void Game::updateGame() {
 		shape->setColor(1, 0, 0);
 	}
 	if (input.getKey(RIGHT)) {
-		xShape += speed * time.deltaTime();
-		sprite1->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(sprite1->transform.position.x + speed * time.deltaTime(), sprite1->transform.position.y, sprite1->transform.position.z);
 	}
 	if (input.getKey(LEFT)) {
-		xShape -= speed * time.deltaTime();
-		sprite1->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(sprite1->transform.position.x - speed * time.deltaTime(), sprite1->transform.position.y, sprite1->transform.position.z);
 	}
 	if (input.getKey(UP)) {
-		yShape += speed * time.deltaTime();
-		sprite1->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(sprite1->transform.position.x, sprite1->transform.position.y + speed * time.deltaTime(), sprite1->transform.position.z);
 	}
 	if (input.getKey(DOWN)) {
-		yShape -= speed * time.deltaTime();
-		sprite1->setPosition(xShape, yShape, zShape);
+		sprite1->setPosition(sprite1->transform.position.x, sprite1->transform.position.y - speed * time.deltaTime(), sprite1->transform.position.z);
 	}
 #pragma endregion
 

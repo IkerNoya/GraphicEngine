@@ -62,7 +62,7 @@ bool CollisionManager::CheckCollision2D(Entity* entity1, Entity* entity2, float 
 		return false;
 		break;
 	case topCollision:
-		entity1->setPosition(entity1->transform.position.x, entity1->transform.position.y + entity1->transform.scale.y / 2, entity1->transform.position.z);
+		entity1->setPosition(entity1->transform.position.x, entity1->transform.position.y + entity1->transform.scale.y, entity1->transform.position.z);
 		break;
 	case rightCollision:
 		entity1->setPosition(entity1->transform.position.x + entity1->transform.scale.x / 2, entity1->transform.position.y, entity1->transform.position.z);

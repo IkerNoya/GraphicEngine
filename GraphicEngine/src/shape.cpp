@@ -67,7 +67,6 @@ void Shape::init() {
 	}
 }
 void Shape::initTriangleVertex() {
-
 	createVAO();
 	createEBO(triIndex, 3);
 	createVBO(triVertex, 18);

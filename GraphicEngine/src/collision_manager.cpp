@@ -8,20 +8,73 @@ CollisionManager::~CollisionManager() {
 
 }
 
-bool CollisionManager::CheckCollision2D(Entity* entity1, Entity* entity2, glm::vec3 boxColliderEntity1, glm::vec3 boxColliderEntity2) {
-	if (entity1->transform.position.x + boxColliderEntity1.x >= entity2->transform.position.x &&
-		entity2->transform.position.x + boxColliderEntity2.x >= entity1->transform.position.x &&
-		entity1->transform.position.y + boxColliderEntity1.y >= entity2->transform.position.y &&
-		entity2->transform.position.y + boxColliderEntity2.y >= entity1->transform.position.y) {
+collisionPosition CollisionManager::partialCollision(Entity* entity, Entity* obstacle) {
+	glm::vec2 entityScale(entity->transform.scale.x, entity->transform.scale.y);
+	glm::vec2 obstacleScale(obstacle->transform.scale.x, obstacle->transform.scale.y);
+	glm::vec2 entityPos(entity->transform.position.x, entity->transform.position.y);
+	glm::vec2 obstaclePos(obstacle->transform.position.x, obstacle->transform.position.y);
+
+	float minX = 0.0f;
+	float maxX = glm::min(entityPos.x + fabs(entityScale.x/2), obstaclePos.x + fabs(obstacleScale.x)) - glm::max(entityPos.x - fabs(entityScale.x/2), obstaclePos.x - fabs(obstacleScale.x));
+	float overlapX = glm::max(minX, maxX);
+
+	float minY = 0.0f;
+	float maxY = glm::min(entityPos.y + fabs(entityScale.y), obstaclePos.y + fabs(obstacleScale.y)) - glm::max(entityPos.y - fabs(entityScale.y/2), obstaclePos.y - fabs(obstacleScale.y));
+	float overlapY = glm::max(minY, maxY);
+
+	if (overlapX != 0.0f && overlapY != 0.0f){
+		if (overlapX > overlapY){
+			if (obstaclePos.y < 0 && entityPos.y < obstaclePos.y || entityPos.y > 0 && entityPos.y < obstaclePos.y) {
+				std::cout << "BOTTOM" << std::endl;
+				return bottomCollision;
+			}
+			else if (entityPos.y < 0 && entityPos.y > obstaclePos.y || entityPos.y > 0 && entityPos.y > obstaclePos.y) {
+				std::cout << "TOP" << std::endl;
+				return topCollision;
+			}
+		}
+		else{
+			if (entityPos.x < 0 && entityPos.x < obstaclePos.x || entityPos.x > 0 && entityPos.x < obstaclePos.x) {
+				std::cout << "LEFT" << std::endl;
+				return leftCollision;
+			}
+			else if (entityPos.x < 0 && entityPos.x > obstaclePos.x || entityPos.x > 0 && entityPos.x > obstaclePos.x) {
+				std::cout << "RIGHT" << std::endl;
+				return rightCollision;
+			}
+		}
+	}
+	return none;
+}
+
+bool CollisionManager::CheckTrigger2D(Entity* entity1, Entity* entity2) {
+	collisionPosition cPosition = partialCollision(entity1, entity2);
+	if (cPosition != none) {
 		return true;
 	}
-
 	return false;
-	/*bool collisionX = entity1->transform.position.x + entity1->transform.scale.x >= entity2->transform.position.x &&
-		entity2->transform.position.x + entity2->transform.scale.x >= entity1->transform.position.x;
+}
 
-	bool collisionY = entity1->transform.position.y + entity1->transform.scale.y >= entity2->transform.position.y &&
-		entity2->transform.position.y + entity2->transform.scale.y >= entity1->transform.position.y;*/
-
-	//return collisionX && collisionY;
+bool CollisionManager::CheckCollision2D(Entity* entity1, Entity* entity2, float speedEntity1, float speedEntity2) {
+	collisionPosition cPosition = partialCollision(entity1, entity2);
+	switch (cPosition){
+	case none:
+		return false;
+		break;
+	case topCollision:
+		entity1->setPosition(entity1->transform.position.x, entity1->transform.position.y + entity1->transform.scale.y / 2, entity1->transform.position.z);
+		break;
+	case rightCollision:
+		entity1->setPosition(entity1->transform.position.x + entity1->transform.scale.x / 2, entity1->transform.position.y, entity1->transform.position.z);
+		break;
+	case bottomCollision:
+		entity1->setPosition(entity1->transform.position.x, entity1->transform.position.y - entity1->transform.scale.y / 2, entity1->transform.position.z);
+		break;
+	case leftCollision:
+		entity1->setPosition(entity1->transform.position.x - entity1->transform.scale.x / 2, entity1->transform.position.y, entity1->transform.position.z);
+		break;
+	default:
+		break;
+	}
+	return false;
 }

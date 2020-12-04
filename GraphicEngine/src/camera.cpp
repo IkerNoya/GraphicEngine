@@ -34,11 +34,8 @@ void Camera::setViewport(int width, int height) {
 }
 
 void Camera::setDefaultView(float x, float y, float z) {
-	//                                 pos                        direction                          up
+	//                        pos                        direction                          up
 	view = glm::lookAt(glm::vec3(x,y,z), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	std::cout << "x: " << x << std::endl;
-	std::cout << "y: " << y << std::endl;
-	std::cout << "z: " << z << std::endl;
 }
 
 void Camera::setProjectionType(RenderType type) {

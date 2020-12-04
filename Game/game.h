@@ -3,11 +3,11 @@
 #include "gameBase.h"
 class Game : public GameBase{
 private:
-	Shape* shape;
-	Sprite* sprite1;
-	Sprite* sprite2;
-	Sprite* sprite3;
-	Animation* idle;
+	Shape* square;
+	Sprite* cursedImage;
+	Sprite* idleSprite;
+	Sprite* sun;
+	Animation* idleAnim;
 
 public:
 	Game();

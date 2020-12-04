@@ -22,16 +22,16 @@ struct Time;
 struct CollisionManager;
 
 class ENGINE_API GameBase { // consultar
+	Time animationTime;
 protected:
 	Window* window;
 	Renderer* renderer;
-	Time animationTime;
 	Time time;
 	Input input;
 	CollisionManager* collisionmanager;
 	Camera* camera;
-	Shader textureShader;
-	Shader colorShader;
+	Shader textureProgram;
+	Shader colorProgram;
 	
 	//unsigned int textureShader;
 	//unsigned int colorShader;

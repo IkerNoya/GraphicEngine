@@ -13,7 +13,7 @@ collisionPosition CollisionManager::partialCollision(Entity* entity, Entity* obs
 	glm::vec2 obstacleScale(obstacle->transform.scale.x, obstacle->transform.scale.y);
 	glm::vec2 entityPos(entity->transform.position.x, entity->transform.position.y);
 	glm::vec2 obstaclePos(obstacle->transform.position.x, obstacle->transform.position.y);
-
+	cout << "entityPosX: " << entityPos.x << "||" << "obstaclePosX: " << obstaclePos.x << endl;
 	float minX = 0.0f;
 	float maxX = glm::min(entityPos.x + fabs(entityScale.x/2), obstaclePos.x + fabs(obstacleScale.x)) - glm::max(entityPos.x - fabs(entityScale.x/2), obstaclePos.x - fabs(obstacleScale.x));
 	float overlapX = glm::max(minX, maxX);
